@@ -1,5 +1,179 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <?xml-stylesheet type="text/xsl" href="xsl/lexanal.xsl"?>
 <lexanal>
-<terminal token="BOOL_CONST" lexeme="true" line="1" column="1"/>
+<terminal token="IDENTIFIER" lexeme="Program" line="13" column="1"/>
+<terminal token="IDENTIFIER" lexeme="program_name" line="13" column="9"/>
+<terminal token="SEMIC" line="13" column="21"/>
+<terminal token="CONST" line="15" column="1"/>
+<terminal token="IDENTIFIER" lexeme="Var" line="21" column="1"/>
+<terminal token="IDENTIFIER" lexeme="A_Variable" line="22" column="2"/>
+<terminal token="COLON" line="22" column="12"/>
+<terminal token="INT" line="22" column="14"/>
+<terminal token="SEMIC" line="22" column="21"/>
+<terminal token="IDENTIFIER" lexeme="Procedure" line="26" column="1"/>
+<terminal token="IDENTIFIER" lexeme="neki" line="26" column="11"/>
+<terminal token="SEMIC" line="26" column="15"/>
+<terminal token="VAR" line="27" column="1"/>
+<terminal token="IDENTIFIER" lexeme="a" line="28" column="4"/>
+<terminal token="COLON" line="28" column="5"/>
+<terminal token="ARRAY" line="28" column="7"/>
+<terminal token="LBRACKET" line="28" column="12"/>
+<terminal token="INT_CONST" lexeme="1" line="28" column="13"/>
+<terminal token="DOTS" line="28" column="14"/>
+<terminal token="INT_CONST" lexeme="5" line="28" column="16"/>
+<terminal token="RBRACKET" line="28" column="17"/>
+<terminal token="OF" line="28" column="19"/>
+<terminal token="IDENTIFIER" lexeme="Integer" line="28" column="22"/>
+<terminal token="SEMIC" line="28" column="29"/>
+<terminal token="IDENTIFIER" lexeme="i" line="29" column="4"/>
+<terminal token="COMMA" line="29" column="5"/>
+<terminal token="IDENTIFIER" lexeme="j" line="29" column="7"/>
+<terminal token="COMMA" line="29" column="8"/>
+<terminal token="IDENTIFIER" lexeme="tmp" line="29" column="10"/>
+<terminal token="COLON" line="29" column="13"/>
+<terminal token="IDENTIFIER" lexeme="Integer" line="29" column="15"/>
+<terminal token="SEMIC" line="29" column="22"/>
+<terminal token="BEGIN" line="30" column="1"/>
+<terminal token="IDENTIFIER" lexeme="a" line="31" column="4"/>
+<terminal token="LBRACKET" line="31" column="5"/>
+<terminal token="INT_CONST" lexeme="1" line="31" column="6"/>
+<terminal token="RBRACKET" line="31" column="7"/>
+<terminal token="ASSIGN" line="31" column="9"/>
+<terminal token="INT_CONST" lexeme="23" line="31" column="12"/>
+<terminal token="SEMIC" line="31" column="14"/>
+<terminal token="IDENTIFIER" lexeme="a" line="32" column="4"/>
+<terminal token="LBRACKET" line="32" column="5"/>
+<terminal token="INT_CONST" lexeme="2" line="32" column="6"/>
+<terminal token="RBRACKET" line="32" column="7"/>
+<terminal token="ASSIGN" line="32" column="9"/>
+<terminal token="INT_CONST" lexeme="45" line="32" column="12"/>
+<terminal token="SEMIC" line="32" column="14"/>
+<terminal token="IDENTIFIER" lexeme="a" line="33" column="4"/>
+<terminal token="LBRACKET" line="33" column="5"/>
+<terminal token="INT_CONST" lexeme="3" line="33" column="6"/>
+<terminal token="RBRACKET" line="33" column="7"/>
+<terminal token="ASSIGN" line="33" column="9"/>
+<terminal token="INT_CONST" lexeme="12" line="33" column="12"/>
+<terminal token="SEMIC" line="33" column="14"/>
+<terminal token="IDENTIFIER" lexeme="a" line="34" column="4"/>
+<terminal token="LBRACKET" line="34" column="5"/>
+<terminal token="INT_CONST" lexeme="4" line="34" column="6"/>
+<terminal token="RBRACKET" line="34" column="7"/>
+<terminal token="ASSIGN" line="34" column="9"/>
+<terminal token="INT_CONST" lexeme="56" line="34" column="12"/>
+<terminal token="SEMIC" line="34" column="14"/>
+<terminal token="IDENTIFIER" lexeme="a" line="35" column="4"/>
+<terminal token="LBRACKET" line="35" column="5"/>
+<terminal token="INT_CONST" lexeme="5" line="35" column="6"/>
+<terminal token="RBRACKET" line="35" column="7"/>
+<terminal token="ASSIGN" line="35" column="9"/>
+<terminal token="INT_CONST" lexeme="34" line="35" column="12"/>
+<terminal token="SEMIC" line="35" column="14"/>
+<terminal token="FOR" line="37" column="4"/>
+<terminal token="IDENTIFIER" lexeme="i" line="37" column="8"/>
+<terminal token="ASSIGN" line="37" column="10"/>
+<terminal token="INT_CONST" lexeme="1" line="37" column="13"/>
+<terminal token="TO" line="37" column="15"/>
+<terminal token="INT_CONST" lexeme="4" line="37" column="18"/>
+<terminal token="DO" line="37" column="20"/>
+<terminal token="FOR" line="38" column="7"/>
+<terminal token="IDENTIFIER" lexeme="j" line="38" column="11"/>
+<terminal token="ASSIGN" line="38" column="13"/>
+<terminal token="IDENTIFIER" lexeme="i" line="38" column="16"/>
+<terminal token="ADD" line="38" column="18"/>
+<terminal token="INT_CONST" lexeme="1" line="38" column="20"/>
+<terminal token="TO" line="38" column="22"/>
+<terminal token="INT_CONST" lexeme="5" line="38" column="25"/>
+<terminal token="DO" line="38" column="27"/>
+<terminal token="IF" line="39" column="10"/>
+<terminal token="IDENTIFIER" lexeme="a" line="39" column="13"/>
+<terminal token="LBRACKET" line="39" column="14"/>
+<terminal token="IDENTIFIER" lexeme="i" line="39" column="15"/>
+<terminal token="RBRACKET" line="39" column="16"/>
+<terminal token="GTH" line="39" column="18"/>
+<terminal token="IDENTIFIER" lexeme="a" line="39" column="20"/>
+<terminal token="LBRACKET" line="39" column="21"/>
+<terminal token="IDENTIFIER" lexeme="j" line="39" column="22"/>
+<terminal token="RBRACKET" line="39" column="23"/>
+<terminal token="THEN" line="39" column="25"/>
+<terminal token="BEGIN" line="40" column="10"/>
+<terminal token="IDENTIFIER" lexeme="tmp" line="41" column="13"/>
+<terminal token="ASSIGN" line="41" column="17"/>
+<terminal token="IDENTIFIER" lexeme="a" line="41" column="20"/>
+<terminal token="LBRACKET" line="41" column="21"/>
+<terminal token="IDENTIFIER" lexeme="i" line="41" column="22"/>
+<terminal token="RBRACKET" line="41" column="23"/>
+<terminal token="SEMIC" line="41" column="24"/>
+<terminal token="IDENTIFIER" lexeme="a" line="42" column="13"/>
+<terminal token="LBRACKET" line="42" column="14"/>
+<terminal token="IDENTIFIER" lexeme="i" line="42" column="15"/>
+<terminal token="RBRACKET" line="42" column="16"/>
+<terminal token="ASSIGN" line="42" column="18"/>
+<terminal token="IDENTIFIER" lexeme="a" line="42" column="21"/>
+<terminal token="LBRACKET" line="42" column="22"/>
+<terminal token="IDENTIFIER" lexeme="j" line="42" column="23"/>
+<terminal token="RBRACKET" line="42" column="24"/>
+<terminal token="SEMIC" line="42" column="25"/>
+<terminal token="IDENTIFIER" lexeme="a" line="43" column="13"/>
+<terminal token="LBRACKET" line="43" column="14"/>
+<terminal token="IDENTIFIER" lexeme="j" line="43" column="15"/>
+<terminal token="RBRACKET" line="43" column="16"/>
+<terminal token="ASSIGN" line="43" column="18"/>
+<terminal token="IDENTIFIER" lexeme="tmp" line="43" column="21"/>
+<terminal token="SEMIC" line="43" column="24"/>
+<terminal token="END" line="44" column="10"/>
+<terminal token="SEMIC" line="44" column="13"/>
+<terminal token="FOR" line="45" column="4"/>
+<terminal token="IDENTIFIER" lexeme="i" line="45" column="8"/>
+<terminal token="ASSIGN" line="45" column="10"/>
+<terminal token="INT_CONST" lexeme="1" line="45" column="13"/>
+<terminal token="TO" line="45" column="15"/>
+<terminal token="INT_CONST" lexeme="5" line="45" column="18"/>
+<terminal token="DO" line="45" column="20"/>
+<terminal token="IDENTIFIER" lexeme="writeln" line="46" column="7"/>
+<terminal token="LPARENTHESIS" line="46" column="14"/>
+<terminal token="CHAR" line="46" column="15"/>
+<terminal token="RPARENTHESIS" line="46" column="18"/>
+<terminal token="IDENTIFIER" lexeme="End" line="47" column="1"/>
+<terminal token="SEMIC" line="47" column="4"/>
+<terminal token="IDENTIFIER" lexeme="Procedure" line="49" column="1"/>
+<terminal token="IDENTIFIER" lexeme="SayHello" line="49" column="11"/>
+<terminal token="SEMIC" line="49" column="19"/>
+<terminal token="IDENTIFIER" lexeme="Var" line="52" column="2"/>
+<terminal token="IDENTIFIER" lexeme="T" line="53" column="3"/>
+<terminal token="COLON" line="53" column="5"/>
+<terminal token="CHAR" line="53" column="7"/>
+<terminal token="SEMIC" line="53" column="11"/>
+<terminal token="IDENTIFIER" lexeme="Begin" line="55" column="2"/>
+<terminal token="IDENTIFIER" lexeme="T" line="57" column="3"/>
+<terminal token="ASSIGN" line="57" column="5"/>
+<terminal token="CHAR" line="57" column="8"/>
+<terminal token="SEMIC" line="57" column="11"/>
+<terminal token="IDENTIFIER" lexeme="Writeln" line="58" column="3"/>
+<terminal token="LPARENTHESIS" line="58" column="10"/>
+<terminal token="IDENTIFIER" lexeme="h" line="58" column="11"/>
+<terminal token="COMMA" line="58" column="12"/>
+<terminal token="IDENTIFIER" lexeme="e" line="58" column="13"/>
+<terminal token="COMMA" line="58" column="14"/>
+<terminal token="IDENTIFIER" lexeme="l" line="58" column="15"/>
+<terminal token="COMMA" line="58" column="16"/>
+<terminal token="IDENTIFIER" lexeme="l" line="58" column="17"/>
+<terminal token="COMMA" line="58" column="18"/>
+<terminal token="IDENTIFIER" lexeme="o" line="58" column="19"/>
+<terminal token="COMMA" line="58" column="20"/>
+<terminal token="IDENTIFIER" lexeme="T" line="58" column="21"/>
+<terminal token="COMMA" line="58" column="22"/>
+<terminal token="IDENTIFIER" lexeme="w" line="58" column="23"/>
+<terminal token="COMMA" line="58" column="24"/>
+<terminal token="IDENTIFIER" lexeme="o" line="58" column="25"/>
+<terminal token="COMMA" line="58" column="26"/>
+<terminal token="IDENTIFIER" lexeme="r" line="58" column="27"/>
+<terminal token="COMMA" line="58" column="28"/>
+<terminal token="IDENTIFIER" lexeme="l" line="58" column="29"/>
+<terminal token="COMMA" line="58" column="30"/>
+<terminal token="IDENTIFIER" lexeme="d" line="58" column="31"/>
+<terminal token="RPARENTHESIS" line="58" column="32"/>
+<terminal token="SEMIC" line="58" column="33"/>
+<terminal token="IDENTIFIER" lexeme="End" line="59" column="2"/>
+<terminal token="SEMIC" line="59" column="5"/>
 </lexanal>
