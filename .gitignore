@@ -1,4 +1,9 @@
-*.classpath
-*.project
-*.class
+.classpath
+.project
+.class
 *~
+.externalToolBuilders/
+lexanal.xml
+PascalLex.java
+*.pascal
+bin/**

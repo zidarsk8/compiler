@@ -22,12 +22,17 @@ import compiler.synanal.*;
 %function   next_token
 %type       PascalSym
 %eofval{
+	if (nestedComments > 0){
+		Report.warning("Unclosed comment (line: " + commentStartLine + ", column: " + commentStartColumn + ")");
+	}
     return new PascalSym(PascalTok.EOF);
 %eofval}
 %eofclose
 
 %{	
 	int nestedComments = 0;
+	int commentStartLine = 0;
+	int commentStartColumn = 0;
     private PascalSym sym(int type) {
         return new PascalSym(type, yyline + 1, yycolumn + 1, yytext());
     }
@@ -108,13 +113,18 @@ identifier = {letter}({letter}|{digit}|"_")*
 	{white_space}		{ }
 	
 	{boolean_const}		{ return sym(PascalTok.BOOL_CONST); }
-	{char_const}		{ return sym(PascalTok.CHAR); }
+	{char_const}		{ return sym(PascalTok.CHAR_CONST); }
 	{integer}		{ return sym(PascalTok.INT_CONST); }
 	
 	
 	{identifier}		{ return sym(PascalTok.IDENTIFIER); }
 	
-	{lbrace}			{ nestedComments++; yybegin(YYCOMMENT);}	
+	{lbrace}			{ nestedComments++; 
+						  commentStartLine = yyline;
+						  commentStartColumn = yycolumn;
+						  yybegin(YYCOMMENT);
+						  
+						}	
 	.					{ Report.warning("something is wrong with '" + yytext() + "' (line: " + 
 										yyline + ", column: " + yycolumn + ")"); }
 }

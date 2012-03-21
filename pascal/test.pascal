@@ -55,7 +55,9 @@ begin
 	writeln(T,e,l,l,o,d,a,o,b,l,c);
 end;
 
-{ Main function }
+  {
+  
+  { Main function }
 
 begin
 	{ Do something }

@@ -90,27 +90,27 @@
 <terminal token="CONST" line="37" column="1"/>
 <terminal token="IDENTIFIER" lexeme="e" line="38" column="2"/>
 <terminal token="EQU" line="38" column="4"/>
-<terminal token="CHAR" line="38" column="6"/>
+<terminal token="CHAR_CONST" lexeme="&#39;e&#39;" line="38" column="6"/>
 <terminal token="SEMIC" line="38" column="9"/>
 <terminal token="IDENTIFIER" lexeme="l" line="39" column="2"/>
 <terminal token="EQU" line="39" column="4"/>
-<terminal token="CHAR" line="39" column="6"/>
+<terminal token="CHAR_CONST" lexeme="&#39;l&#39;" line="39" column="6"/>
 <terminal token="SEMIC" line="39" column="9"/>
 <terminal token="IDENTIFIER" lexeme="o" line="40" column="2"/>
 <terminal token="EQU" line="40" column="4"/>
-<terminal token="CHAR" line="40" column="6"/>
+<terminal token="CHAR_CONST" lexeme="&#39;o&#39;" line="40" column="6"/>
 <terminal token="SEMIC" line="40" column="9"/>
 <terminal token="IDENTIFIER" lexeme="a" line="41" column="2"/>
 <terminal token="EQU" line="41" column="4"/>
-<terminal token="CHAR" line="41" column="6"/>
+<terminal token="CHAR_CONST" lexeme="&#39;w&#39;" line="41" column="6"/>
 <terminal token="SEMIC" line="41" column="9"/>
 <terminal token="IDENTIFIER" lexeme="b" line="42" column="2"/>
 <terminal token="EQU" line="42" column="4"/>
-<terminal token="CHAR" line="42" column="6"/>
+<terminal token="CHAR_CONST" lexeme="&#39;r&#39;" line="42" column="6"/>
 <terminal token="SEMIC" line="42" column="9"/>
 <terminal token="IDENTIFIER" lexeme="c" line="43" column="2"/>
 <terminal token="EQU" line="43" column="4"/>
-<terminal token="CHAR" line="43" column="6"/>
+<terminal token="CHAR_CONST" lexeme="&#39;d&#39;" line="43" column="6"/>
 <terminal token="SEMIC" line="43" column="9"/>
 <terminal token="VAR" line="45" column="1"/>
 <terminal token="IDENTIFIER" lexeme="i" line="46" column="2"/>
@@ -128,13 +128,13 @@
 <terminal token="BEGIN" line="48" column="1"/>
 <terminal token="IDENTIFIER" lexeme="T" line="51" column="2"/>
 <terminal token="ASSIGN" line="51" column="4"/>
-<terminal token="CHAR" line="51" column="7"/>
+<terminal token="CHAR_CONST" lexeme="&#39;H&#39;" line="51" column="7"/>
 <terminal token="SEMIC" line="51" column="10"/>
 <terminal token="IDENTIFIER" lexeme="i" line="52" column="2"/>
 <terminal token="ASSIGN" line="52" column="4"/>
 <terminal token="IDENTIFIER" lexeme="ord" line="52" column="7"/>
 <terminal token="LPARENTHESIS" line="52" column="10"/>
-<terminal token="CHAR" line="52" column="11"/>
+<terminal token="CHAR_CONST" lexeme="&#39; &#39;" line="52" column="11"/>
 <terminal token="RPARENTHESIS" line="52" column="14"/>
 <terminal token="SEMIC" line="52" column="15"/>
 <terminal token="IDENTIFIER" lexeme="d" line="53" column="2"/>
@@ -159,12 +159,12 @@
 <terminal token="SUB" line="54" column="17"/>
 <terminal token="IDENTIFIER" lexeme="ord" line="54" column="18"/>
 <terminal token="LPARENTHESIS" line="54" column="21"/>
-<terminal token="CHAR" line="54" column="22"/>
+<terminal token="CHAR_CONST" lexeme="&#39;x&#39;" line="54" column="22"/>
 <terminal token="RPARENTHESIS" line="54" column="25"/>
 <terminal token="ADD" line="54" column="26"/>
 <terminal token="IDENTIFIER" lexeme="ord" line="54" column="27"/>
 <terminal token="LPARENTHESIS" line="54" column="30"/>
-<terminal token="CHAR" line="54" column="31"/>
+<terminal token="CHAR_CONST" lexeme="&#39;X&#39;" line="54" column="31"/>
 <terminal token="RPARENTHESIS" line="54" column="34"/>
 <terminal token="RPARENTHESIS" line="54" column="35"/>
 <terminal token="SEMIC" line="54" column="36"/>
@@ -195,9 +195,4 @@
 <terminal token="SEMIC" line="55" column="32"/>
 <terminal token="END" line="56" column="1"/>
 <terminal token="SEMIC" line="56" column="4"/>
-<terminal token="BEGIN" line="60" column="1"/>
-<terminal token="IDENTIFIER" lexeme="SayHello" line="62" column="2"/>
-<terminal token="SEMIC" line="62" column="10"/>
-<terminal token="END" line="63" column="1"/>
-<terminal token="DOT" line="63" column="4"/>
 </lexanal>
