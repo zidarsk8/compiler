@@ -1,36 +1,39 @@
-Program program_name;
+program program_name;
 
 { Global variables }
-Var
+var
 	A_Variable: integer;
 
 	{ Other functions/procedures }
 
-function Weird(A : integer) : Integer;
-Var
-	S : Integer;
-Begin
+function Weird(A : integer) : integer;
+var
+	S : integer;
+begin
 	S := A;
 
-	If S < 10 Then
-	Begin
+	if S < 10 and -S >-3 then
+	begin
 		Weird := 1;
-		Exit;
-	End;
+		exit;
+	end;
 
-	S := S + 9;
+	S := S+9-323;
 
-	If S >= 10 Then
-	Begin
+	if S >= 10 then
+	begin
 		Weird := 0;
 		Exit;
-	End;
+	end;
+	If S <-5 then
+	begin
+		
 
 	Weird := 2;
-End;
+end;
 
 
-Procedure SayHello;
+procedure SayHello;
 const
 	e = 'e';
 	l = 'l';
@@ -39,22 +42,22 @@ const
 	b = 'r';
 	c = 'd';
 	{ Local variables }
-Var
+var
 	i : integer;
 	d,T,f : char;
-Begin
+begin
 	{ Redundant code to illustrate the use of local 
 	variables in a procedure }
 	T := 'H'; 
 	i := ord(' ');
 	d := chr(23+32-23);
 	f := chr(ord(a)-ord('x')+ord('X'));
-	Writeln(T,e,l,l,o,d,a,o,b,l,c);
-End;
+	writeln(T,e,l,l,o,d,a,o,b,l,c);
+end;
 
 { Main function }
 
-Begin
+begin
 	{ Do something }
 	SayHello;
-End.
+end.
