@@ -6,4 +6,4 @@
 lexanal.xml
 PascalLex.java
 *.pascal
-bin/**
+pascal/bin/**
