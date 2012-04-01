@@ -26,10 +26,198 @@ terminal COLON, COMMA, DOT, DOTS, LBRACKET, LPARENTHESIS, RBRACKET, RPARENTHESIS
 terminal ADD, AND, DIV, EQU, GEQ, GTH, LEQ, LTH, MEM, MUL, NEQ, NOT, OR, PTR, SUB, UADD, USUB, VAL;
 terminal ARRAY, ASSIGN, BEGIN, CONST, DO, ELSE, END, FOR, FUNCTION, IF, OF, PROCEDURE, PROGRAM, RECORD, THEN, TO, TYPE, VAR, WHILE;
 
-non terminal	source;
+non terminal	source, 
+				source_body,
+				program_name,
+				declarations,
+					declarations_const,
+						const_list,
+							single_const,
+					declarations_type,
+						type_list,
+							single_type,
+					declarations_var,
+						var_list,
+							single_var,
+					declarations_subrutine,
+						subrutine_procedure, 
+							procedure_name,
+						subrutine_function,
+							function_name,
+				statement_block,
+				parameter_declaration,
+					parameter_list,
+						single_parameter,
+				type_description, // izraz za opis tipov
+					primitive_type,
+					reference_type,
+						type_array,
+						type_record,
+							record_components,
+								single_record_component,
+						type_pointer,
+				value_expression, // izraz za opis vrednosti
+					const_values,
+					binary_expression
+				;
 
 start with source;
 
-source
-    ;
+
+
+//////////// start ////////////
+
+source ::= program_name source_body DOT;
+
+source_body ::=
+				statement_block
+		|		declarations statement_block;
+
+program_name ::= PROGRAM IDENTIFIER SEMIC;
+
+
+
+//////////// seznam deklaracij ////////////
+
+declarations ::= 	
+				declarations_const
+		|		declarations_type
+		|		declarations_var
+		|		declarations_subrutine
+		|		declarations declarations_const
+		|		declarations declarations_type
+		|		declarations declarations_var
+		|		declarations declarations_subrutine;
+
+
+
+
+//////////// deklaracije konstant ////////////
+
+declarations_const ::= CONST const_list;
+
+const_list ::= 
+				single_const
+		|		const_list single_const;
+		
+single_const ::= IDENTIFIER EQU value_expression SEMIC ;
+
+
+
+//////////// deklaracije tipov ////////////
+
+declarations_type ::= TYPE type_list;
+
+type_list ::= single_type | type_list single_type;
+
+single_type ::= IDENTIFIER EQU type_description SEMIC;
+
+
+
+
+//////////// deklaracije spremenljivk ////////////
+
+declarations_var ::= VAR var_list;
+
+var_list ::= single_var | single_var var_list;
+
+single_var ::= IDENTIFIER COLON type_description SEMIC;
+
+
+
+//////////// deklaracije podprogramov ////////////
+
+
+declarations_subrutine ::= 
+				subrutine_procedure 
+		| 		subrutine_function;
+
+
+
+//////////// deklaracije procedur ////////////
+
+subrutine_procedure  ::= procedure_name source_body SEMIC;
+
+procedure_name ::= PROCEDURE IDENTIFIER parameter_declaration SEMIC;
+
+
+
+//////////// deklaracije funkcij ////////////
+ 
+subrutine_function ::= function_name source_body SEMIC;
+
+function_name ::= FUNCTION IDENTIFIER parameter_declaration COLON type_description SEMIC;
+
+
+
+//////////// opis parametrov ////////////
+
+parameter_declaration ::= 
+				LPARENTHESIS RPARENTHESIS 
+		|		LPARENTHESIS parameter_list RPARENTHESIS;
+
+parameter_list ::= 
+				single_parameter
+		|		parameter_list SEMIC single_parameter;
+
+single_parameter ::= IDENTIFIER COLON type_description;
+
+
+
+//////////// opis tipov ////////////
+
+type_description ::=
+				primitive_type
+		|		reference_type
+		|		IDENTIFIER
+		|		LPARENTHESIS type_description RPARENTHESIS;
+
+
+primitive_type ::= 
+				CHAR
+		|		BOOL
+		|		INT;
+
+reference_type ::= 
+				type_array
+		|		type_record
+		|		type_pointer;
+
+
+type_array ::= ARRAY LBRACKET value_expression DOTS value_expression RBRACKET OF type_description;
+
+
+type_record ::= RECORD record_components END;
+
+
+record_components ::= 
+				single_record_component
+		|		record_components SEMIC single_record_component;
+
+single_record_component ::= IDENTIFIER COLON type_description;
+
+
+type_pointer ::= PTR type_description;
+
+
+
+//////////// opis vrednosti ////////////
+
+value_expression ::= 
+				const_values
+		|		binary_expression;
+
+const_values ::= 
+				BOOL_CONST
+		| 		CHAR_CONST
+		|		INT_CONST
+		|		NIL;
+
+binary_expression ::= ;
+
+
+
+
+statement_block ::= ;
+
 
