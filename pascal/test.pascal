@@ -1,66 +1,33 @@
-program program_name;
-
-{ Global variables }
-var
-	A_Variable: integer;
-
-	{ Other functions/procedures }
-
-function Weird(A : integer) : integer;
-var
-	S : integer;
-begin
-	S := A;
-
-	if S < 10 and -S >-3 then
-	begin
-		Weird := 1;
-		exit;
-	end;
-
-	S := S+9-323;
-
-	if S >= 10 then
-	begin
-		Weird := 0;
-		Exit;
-	end;
-	If S <-5 then
-	begin
-		
-
-	Weird := 2;
-end;
+{a.b.c[3] + a(^b^) * [char]}
 
 
-procedure SayHello;
+program HelloWorld; 
+
 const
-	e = 'e';
-	l = 'l';
-	o = 'o';
-	a = 'w';
-	b = 'r';
-	c = 'd';
-	{ Local variables }
+	a = 3;
+	a = 2;
+	a = 3;
+
+type
+	stevilo = integer;
+	seznam = array [3..4] of char;
+	kazalec = ^stevilo;
+
 var
-	i : integer;
-	d,T,f : char;
+	a : integer;
+	b : stevilo;
+	c : array [23..222] of integer;
+	p : ^integer;
+	r : ^seznam;
+
+
+function a(c:char; b: array [3..3] of integer):integer;
 begin
-	{ Redundant code to illustrate the use of local 
-	variables in a procedure }
-	T := 'H'; 
-	i := ord(' ');
-	d := chr(23+32-23);
-	f := chr(ord(a)-ord('x')+ord('X'));
-	writeln(T,e,l,l,o,d,a,o,b,l,c);
 end;
 
-  
-  
-  { Main function }
+procedure b(a:integer; c:char);
+begin
+end;
 
 begin
-	{ Do something }
-		
-	SayHello;
 end.

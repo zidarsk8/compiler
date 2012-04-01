@@ -26,102 +26,148 @@ terminal COLON, COMMA, DOT, DOTS, LBRACKET, LPARENTHESIS, RBRACKET, RPARENTHESIS
 terminal ADD, AND, DIV, EQU, GEQ, GTH, LEQ, LTH, MEM, MUL, NEQ, NOT, OR, PTR, SUB, UADD, USUB, VAL;
 terminal ARRAY, ASSIGN, BEGIN, CONST, DO, ELSE, END, FOR, FUNCTION, IF, OF, PROCEDURE, PROGRAM, RECORD, THEN, TO, TYPE, VAR, WHILE;
 
-non terminal	source, 
-				source_body,
-				program_name,
-				declarations,
-					declarations_const,
-						const_list,
-							single_const,
-					declarations_type,
-						type_list,
-							single_type,
-					declarations_var,
-						var_list,
-							single_var,
-					declarations_subrutine,
-						subrutine_procedure, 
-							procedure_name,
-						subrutine_function,
-							function_name,
-				statement_block,
-				parameter_declaration,
-					parameter_list,
-						single_parameter,
-				type_description, // izraz za opis tipov
-					primitive_type,
-					reference_type,
-						type_array,
-						type_record,
-							record_components,
-								single_record_component,
-						type_pointer,
-				value_expression, // izraz za opis vrednosti
-					const_values,
-					binary_expression
+non terminal	source,
+					program_name,
+					source_body,
+					declarations,
+						declarations_const,
+							const_list,
+								single_const,
+						declarations_type,
+							type_list,
+								single_type,
+						declarations_var,
+							var_list,
+								single_var,
+						declarations_subrutine,
+							subrutine_procedure, 
+								procedure_name,
+							subrutine_function,
+								function_name,
+						parameter_declaration,
+							parameter_discription_list,
+								single_parameter_discription,
+						input_parameters,
+							parameter_list,
+								single_parameter,
+					type_description, // izraz za opis tipov
+						primitive_type,
+						reference_type,
+							type_array,
+							type_record,
+								record_components,
+									single_record_component,
+							type_pointer,
+					value_expression,
+						const_values,
+						or_expression,
+						and_expression,
+						relation_expression,
+						add_sub_expression,
+						mul_div_expression,
+						not_expression,
+						unary_prefix_expression,
+						unary_postfix_expression,
+							values,
+					statement_block,
+						statement_list,
+							statement,
+								unmatched_if_statement,
+								matched_if_statement,
+								no_if_statement,
+								while_statement
 				;
 
 start with source;
 
 
-
+///////////////////////////////
 //////////// start ////////////
+///////////////////////////////
 
-source ::= program_name source_body DOT;
 
-source_body ::=
+source ::= 
+				program_name source_body DOT
+//				value_expression
+		;
+
+
+program_name ::= 
+				PROGRAM IDENTIFIER SEMIC
+		;
+
+
+source_body ::= 
 				statement_block
-		|		declarations statement_block;
-
-program_name ::= PROGRAM IDENTIFIER SEMIC;
-
+		|		declarations statement_block
+		;
 
 
+///////////////////////////////////////////
 //////////// seznam deklaracij ////////////
+///////////////////////////////////////////
 
 declarations ::= 	
 				declarations_const
-		|		declarations_type
-		|		declarations_var
-		|		declarations_subrutine
-		|		declarations declarations_const
-		|		declarations declarations_type
-		|		declarations declarations_var
-		|		declarations declarations_subrutine;
-
-
+		;
 
 
 //////////// deklaracije konstant ////////////
 
-declarations_const ::= CONST const_list;
+declarations_const ::= 
+				CONST const_list
+		|		CONST const_list declarations_type
+		|		declarations_type
+		;
 
 const_list ::= 
 				single_const
-		|		const_list single_const;
+		|		const_list single_const
+		;
 		
-single_const ::= IDENTIFIER EQU value_expression SEMIC ;
+single_const ::= 
+				IDENTIFIER EQU value_expression SEMIC 
+		;
 
 
 
 //////////// deklaracije tipov ////////////
 
-declarations_type ::= TYPE type_list;
+declarations_type ::= 
+				TYPE type_list
+		|		TYPE type_list declarations_var
+		|		declarations_var
+		;
+				
 
-type_list ::= single_type | type_list single_type;
+type_list ::= 
+				single_type 
+		| 		type_list single_type
+		;
 
-single_type ::= IDENTIFIER EQU type_description SEMIC;
+single_type ::= 
+				IDENTIFIER EQU type_description SEMIC
+		;
 
 
 
 
 //////////// deklaracije spremenljivk ////////////
 
-declarations_var ::= VAR var_list;
+declarations_var ::= 
+				VAR var_list
+		|		VAR var_list declarations_subrutine
+		|		declarations_subrutine
+		;
 
-var_list ::= single_var | single_var var_list;
+var_list ::= 
+				single_var 
+		|		single_var var_list
+		;
 
-single_var ::= IDENTIFIER COLON type_description SEMIC;
+single_var ::= 
+				IDENTIFIER COLON type_description SEMIC
+		;
 
 
 
@@ -130,94 +176,248 @@ single_var ::= IDENTIFIER COLON type_description SEMIC;
 
 declarations_subrutine ::= 
 				subrutine_procedure 
-		| 		subrutine_function;
+		| 		subrutine_function
+		|		declarations_subrutine subrutine_procedure 
+		| 		declarations_subrutine subrutine_function
+		;
 
 
 
 //////////// deklaracije procedur ////////////
 
-subrutine_procedure  ::= procedure_name source_body SEMIC;
+subrutine_procedure ::= 
+				procedure_name source_body SEMIC
+		;
 
-procedure_name ::= PROCEDURE IDENTIFIER parameter_declaration SEMIC;
+procedure_name ::= 
+				PROCEDURE IDENTIFIER parameter_declaration SEMIC
+		;
 
 
 
 //////////// deklaracije funkcij ////////////
  
-subrutine_function ::= function_name source_body SEMIC;
+subrutine_function ::= 
+				function_name source_body SEMIC
+		;
 
-function_name ::= FUNCTION IDENTIFIER parameter_declaration COLON type_description SEMIC;
+function_name ::= 
+				FUNCTION IDENTIFIER parameter_declaration COLON type_description SEMIC
+		;
 
 
 
-//////////// opis parametrov ////////////
+////////////////////////////////////////////////////////
+//////////// opis parametrov (deklaracije) /////////////
+////////////////////////////////////////////////////////
 
 parameter_declaration ::= 
 				LPARENTHESIS RPARENTHESIS 
-		|		LPARENTHESIS parameter_list RPARENTHESIS;
+		|		LPARENTHESIS parameter_discription_list RPARENTHESIS
+		;
+
+parameter_discription_list ::= 
+				single_parameter_discription
+		|		parameter_discription_list SEMIC single_parameter_discription
+		;
+
+single_parameter_discription ::= 
+				IDENTIFIER COLON type_description
+		;
+
+
+//////////////////////////////////////////////////
+//////////// opis parametrov (klici) /////////////
+//////////////////////////////////////////////////
+
+
+input_parameters ::= 
+				LPARENTHESIS RPARENTHESIS 
+		|		LPARENTHESIS parameter_list RPARENTHESIS
+		;
 
 parameter_list ::= 
 				single_parameter
-		|		parameter_list SEMIC single_parameter;
+		|		parameter_list COMMA single_parameter
+		;
 
-single_parameter ::= IDENTIFIER COLON type_description;
+single_parameter ::= 
+				value_expression
+		;
 
 
-
+////////////////////////////////////
 //////////// opis tipov ////////////
+////////////////////////////////////
 
 type_description ::=
 				primitive_type
 		|		reference_type
 		|		IDENTIFIER
-		|		LPARENTHESIS type_description RPARENTHESIS;
+		|		LPARENTHESIS type_description RPARENTHESIS
+		;
 
 
 primitive_type ::= 
 				CHAR
 		|		BOOL
-		|		INT;
+		|		INT
+		;
 
 reference_type ::= 
 				type_array
 		|		type_record
-		|		type_pointer;
+		|		type_pointer
+		;
 
 
-type_array ::= ARRAY LBRACKET value_expression DOTS value_expression RBRACKET OF type_description;
+type_array ::= 	
+				ARRAY LBRACKET value_expression DOTS value_expression RBRACKET OF type_description
+		;
 
 
-type_record ::= RECORD record_components END;
+type_record ::=  
+				RECORD record_components END
+		;
 
 
 record_components ::= 
 				single_record_component
-		|		record_components SEMIC single_record_component;
+		|		record_components SEMIC single_record_component
+		;
 
-single_record_component ::= IDENTIFIER COLON type_description;
+single_record_component ::= 
+				IDENTIFIER COLON type_description
+		;
 
 
-type_pointer ::= PTR type_description;
+type_pointer ::= 
+				PTR type_description
+		;
 
 
 
+
+////////////////////////////////////////
 //////////// opis vrednosti ////////////
+////////////////////////////////////////
+
 
 value_expression ::= 
+				or_expression
+		;
+
+or_expression ::=
+				and_expression
+		|		or_expression OR and_expression
+		;
+		
+and_expression ::=
+				relation_expression
+		|		and_expression AND relation_expression
+		;
+		
+relation_expression ::=
+				add_sub_expression
+		|		relation_expression EQU add_sub_expression
+		|		relation_expression NEQ add_sub_expression
+		|		relation_expression GTH add_sub_expression
+		|		relation_expression LTH add_sub_expression
+		|		relation_expression LEQ add_sub_expression
+		|		relation_expression GEQ add_sub_expression
+		;
+
+add_sub_expression ::= 
+				mul_div_expression
+		|		add_sub_expression ADD mul_div_expression
+		|		add_sub_expression SUB mul_div_expression
+		;
+
+mul_div_expression ::= 
+				not_expression
+		|		mul_div_expression MUL not_expression
+		|		mul_div_expression DIV not_expression
+		;
+		
+not_expression ::=
+				unary_postfix_expression
+		|		NOT unary_postfix_expression
+		;
+
+unary_postfix_expression ::=
+				unary_prefix_expression
+		|		unary_prefix_expression PTR
+		;
+
+unary_prefix_expression ::= 
+				values
+		|		SUB values
+		|		ADD values
+		|		PTR values
+		;
+
+
+values ::= 
 				const_values
-		|		binary_expression;
+		|		IDENTIFIER
+		|		LPARENTHESIS value_expression RPARENTHESIS
+		|		values LBRACKET value_expression RBRACKET
+		|		values DOT IDENTIFIER
+		|		IDENTIFIER input_parameters
+		|		LBRACKET type_description RBRACKET
+		;
+		
 
 const_values ::= 
 				BOOL_CONST
 		| 		CHAR_CONST
 		|		INT_CONST
-		|		NIL;
-
-binary_expression ::= ;
-
+		|		NIL
+		;
 
 
 
-statement_block ::= ;
+////////////////////////////////
+//////////// stavki ////////////
+////////////////////////////////
 
 
+
+statement_block ::= 
+				BEGIN END
+		|		BEGIN statement_list END
+//		|		BEGIN statement_list SEMIC END // v pascal.pdf ne pise da bi blo to valid.
+		;
+
+statement_list ::= 
+				statement
+		|		statement_list SEMIC statement
+		;
+		
+statement ::= 
+				matched_if_statement
+		|		unmatched_if_statement
+		;
+		
+		
+unmatched_if_statement ::= 
+				IF value_expression THEN statement
+		|		IF value_expression THEN matched_if_statement ELSE unmatched_if_statement
+		;
+		
+matched_if_statement ::= 
+				no_if_statement
+		|		IF value_expression THEN matched_if_statement ELSE matched_if_statement
+		;
+		
+		
+no_if_statement ::= 
+				value_expression
+		|		value_expression ASSIGN value_expression
+		|		while_statement
+		;
+		
+		
+while_statement ::= 
+			WHILE value_expression DO 
+		;
