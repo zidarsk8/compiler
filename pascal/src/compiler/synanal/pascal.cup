@@ -74,13 +74,14 @@ non terminal	source,
 							statement,
 								if_statement,
 									unmatched_if_statement,
-									matched_if_statement,
 									full_matched_if_statement,
-								no_if_statement,
-								no_if_while_statement,
-								no_if_for_statement,
+										matched_if_statement,
+											no_if_statement,
+											no_if_while_statement,
+											no_if_for_statement,
 								while_statement,
-								for_statement
+								for_statement,
+								final_statement
 				;
 
 start with source;
@@ -404,7 +405,24 @@ statement ::=
 				if_statement
 		|		while_statement
 		|		for_statement
+		|		final_statement
 		;
+		
+final_statement ::=
+				value_expression
+		|		value_expression ASSIGN value_expression
+		|		statement_block
+		;
+
+
+while_statement ::= 
+				WHILE value_expression DO statement
+		;
+		
+for_statement ::= 
+				FOR IDENTIFIER ASSIGN value_expression TO value_expression DO statement
+		;
+		
 		
 if_statement ::= 
 				full_matched_if_statement
@@ -441,14 +459,6 @@ no_if_while_statement ::=
 
 no_if_for_statement ::=
 				FOR IDENTIFIER ASSIGN value_expression TO value_expression DO matched_if_statement
-		;
-
-while_statement ::= 
-				WHILE value_expression DO statement
-		;
-		
-for_statement ::= 
-				FOR IDENTIFIER ASSIGN value_expression TO value_expression DO statement
 		;
 
 		

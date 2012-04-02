@@ -1,24 +1,3 @@
-program helloWorld;
-begin
-	if 2 then 
-		while 3 do 
-			if 3 then
-				3
-			else 
-				a 
-end.
-
-
-
-
-
-
-
-
-
-
-{
-a.b.c[3] + a(^b^) * [char]
 
 
 program HelloWorld; 
@@ -50,5 +29,18 @@ begin
 end;
 
 begin
+	a.b.c[3] + a(^b^) * [char];
+	if 3 then 
+		if 3 then 
+			while a do
+				if 3 then
+					a
+				else
+					b
+		else 
+			for a:=^b to 100 do
+				begin
+					c := ^a^;
+					b := ^a^
+				end
 end.
-}
