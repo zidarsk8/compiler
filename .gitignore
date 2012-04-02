@@ -2,6 +2,7 @@
 .classpath
 .project
 bin/**
+programs/**
 
 # External tool builders
 .externalToolBuilders/
