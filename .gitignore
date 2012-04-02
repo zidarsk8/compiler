@@ -1,9 +1,15 @@
+# Eclipse
 .classpath
 .project
-.class
-*~
+bin/**
+
+# External tool builders
 .externalToolBuilders/
+
+# Custom
+synanal.xml
 lexanal.xml
 PascalLex.java
+PascalSyn.java
+PascalTok.java
 *.pascal
-pascal/bin/**

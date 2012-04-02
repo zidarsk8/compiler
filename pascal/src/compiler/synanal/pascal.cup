@@ -87,15 +87,13 @@ non terminal	source,
 start with source;
 
 
+
 ///////////////////////////////
 //////////// start ////////////
 ///////////////////////////////
 
-
 source ::= 
 				program_name source_body DOT
-//				value_expression
-//				statement
 		;
 
 
@@ -103,11 +101,11 @@ program_name ::=
 				PROGRAM IDENTIFIER SEMIC
 		;
 
-
 source_body ::= 
 				statement_block
 		|		declarations statement_block
 		;
+
 
 
 ///////////////////////////////////////////
@@ -145,7 +143,7 @@ declarations_type ::=
 		|		TYPE type_list declarations_var
 		|		declarations_var
 		;
-				
+
 
 type_list ::= 
 				single_type 
@@ -155,7 +153,6 @@ type_list ::=
 single_type ::= 
 				IDENTIFIER EQU type_description SEMIC
 		;
-
 
 
 
@@ -179,7 +176,6 @@ single_var ::=
 
 
 //////////// deklaracije podprogramov ////////////
-
 
 declarations_subrutine ::= 
 				subrutine_procedure 
@@ -233,6 +229,7 @@ single_parameter_discription ::=
 		;
 
 
+
 //////////////////////////////////////////////////
 //////////// opis parametrov (klici) /////////////
 //////////////////////////////////////////////////
@@ -264,7 +261,6 @@ type_description ::=
 		|		LPARENTHESIS type_description RPARENTHESIS
 		;
 
-
 primitive_type ::= 
 				CHAR
 		|		BOOL
@@ -282,11 +278,9 @@ type_array ::=
 				ARRAY LBRACKET value_expression DOTS value_expression RBRACKET OF type_description
 		;
 
-
 type_record ::=  
 				RECORD record_components END
 		;
-
 
 record_components ::= 
 				single_record_component
@@ -297,11 +291,9 @@ single_record_component ::=
 				IDENTIFIER COLON type_description
 		;
 
-
 type_pointer ::= 
 				PTR type_description
 		;
-
 
 
 
@@ -318,12 +310,12 @@ or_expression ::=
 				and_expression
 		|		or_expression OR and_expression
 		;
-		
+
 and_expression ::=
 				relation_expression
 		|		and_expression AND relation_expression
 		;
-		
+
 relation_expression ::=
 				add_sub_expression
 		|		relation_expression EQU add_sub_expression
@@ -345,7 +337,7 @@ mul_div_expression ::=
 		|		mul_div_expression MUL not_expression
 		|		mul_div_expression DIV not_expression
 		;
-		
+
 not_expression ::=
 				unary_postfix_expression
 		|		NOT unary_postfix_expression
@@ -363,7 +355,6 @@ unary_prefix_expression ::=
 		|		PTR values
 		;
 
-
 values ::= 
 				const_values
 		|		IDENTIFIER
@@ -373,7 +364,6 @@ values ::=
 		|		IDENTIFIER input_parameters
 		|		LBRACKET type_description RBRACKET
 		;
-		
 
 const_values ::= 
 				BOOL_CONST
@@ -388,47 +378,45 @@ const_values ::=
 //////////// stavki ////////////
 ////////////////////////////////
 
-
-
 statement_block ::= 
 				BEGIN END
 		|		BEGIN statement_list END
-//		|		BEGIN statement_list SEMIC END // v pascal.pdf ne pise da bi blo to valid.
 		;
 
 statement_list ::= 
 				statement
 		|		statement_list SEMIC statement
 		;
-		
+
 statement ::= 
 				if_statement
 		|		while_statement
 		|		for_statement
 		|		final_statement
 		;
-		
+
 final_statement ::=
 				value_expression
 		|		value_expression ASSIGN value_expression
 		|		statement_block
 		;
 
-
 while_statement ::= 
 				WHILE value_expression DO statement
 		;
-		
+
 for_statement ::= 
 				FOR IDENTIFIER ASSIGN value_expression TO value_expression DO statement
 		;
-		
-		
+
+
+
+//////////// if else stavek ////////////
+
 if_statement ::= 
 				full_matched_if_statement
 		|		unmatched_if_statement
 		;
-
 
 full_matched_if_statement ::= 
 				IF value_expression THEN matched_if_statement ELSE matched_if_statement
@@ -443,7 +431,6 @@ unmatched_if_statement ::=
 				IF value_expression THEN statement
 		|		IF value_expression THEN matched_if_statement ELSE unmatched_if_statement
 		;
-
 
 no_if_statement ::= 
 				value_expression
@@ -461,4 +448,3 @@ matched_if_for_statement ::=
 				FOR IDENTIFIER ASSIGN value_expression TO value_expression DO matched_if_statement
 		;
 
-		

@@ -29,33 +29,13 @@ end;
 begin
 	begin
 		a.b.c[3] + a(^b^) * [char];
-		if 3 then 
-			while a do
-				if 3 then
-					a
-				else
-					b
-	end;
-	begin
-		a.b.c[3] + a(^b^) * [char];
-		if 3 then 
-			if 3 then 
+		if 3 then
+			begin
 				while a do
 					if 3 then
-						for a:=2 to 200 do
-							if b<>^b^ then
-								c
-	end;
-	begin
-		a.b.c[3] + a(^b^) * [char];
-		if 3 then 
-			if 3 then 
-				while a do
-					if 3 then
-						for a:=2 to 200 do
-							if b<>^b^ then
-								c
-							else 
-								lol
+						a
+			end
+		else
+			b
 	end
 end.
