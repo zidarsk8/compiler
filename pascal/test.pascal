@@ -1,4 +1,24 @@
-{a.b.c[3] + a(^b^) * [char]}
+program helloWorld;
+begin
+	if 2 then 
+		while 3 do 
+			if 3 then
+				3
+			else 
+				a 
+end.
+
+
+
+
+
+
+
+
+
+
+{
+a.b.c[3] + a(^b^) * [char]
 
 
 program HelloWorld; 
@@ -31,3 +51,4 @@ end;
 
 begin
 end.
+}
