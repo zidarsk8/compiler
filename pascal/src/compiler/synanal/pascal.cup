@@ -23,7 +23,7 @@ terminal String IDENTIFIER;
 
 terminal BOOL, CHAR, INT;
 terminal COLON, COMMA, DOT, DOTS, LBRACKET, LPARENTHESIS, RBRACKET, RPARENTHESIS, SEMIC;
-terminal ADD, AND, DIV, EQU, GEQ, GTH, LEQ, LTH, MEM, MUL, NEQ, NOT, OR, PTR, SUB, UADD, USUB, VAL;
+terminal ADD, AND, DIV, EQU, GEQ, GTH, LEQ, LTH, MUL, NEQ, NOT, OR, PTR, SUB ;
 terminal ARRAY, ASSIGN, BEGIN, CONST, DO, ELSE, END, FOR, FUNCTION, IF, OF, PROCEDURE, PROGRAM, RECORD, THEN, TO, TYPE, VAR, WHILE;
 
 non terminal	source,
@@ -72,10 +72,15 @@ non terminal	source,
 					statement_block,
 						statement_list,
 							statement,
-								unmatched_if_statement,
-								matched_if_statement,
+								if_statement,
+									unmatched_if_statement,
+									matched_if_statement,
+									full_matched_if_statement,
 								no_if_statement,
-								while_statement
+								no_if_while_statement,
+								no_if_for_statement,
+								while_statement,
+								for_statement
 				;
 
 start with source;
@@ -89,6 +94,7 @@ start with source;
 source ::= 
 				program_name source_body DOT
 //				value_expression
+//				statement
 		;
 
 
@@ -395,29 +401,54 @@ statement_list ::=
 		;
 		
 statement ::= 
-				matched_if_statement
+				if_statement
+		|		while_statement
+		|		for_statement
+		;
+		
+if_statement ::= 
+				full_matched_if_statement
 		|		unmatched_if_statement
 		;
-		
-		
-unmatched_if_statement ::= 
-				IF value_expression THEN statement
-		|		IF value_expression THEN matched_if_statement ELSE unmatched_if_statement
+
+
+full_matched_if_statement ::= 
+				IF value_expression THEN matched_if_statement ELSE matched_if_statement
 		;
-		
+
 matched_if_statement ::= 
 				no_if_statement
 		|		IF value_expression THEN matched_if_statement ELSE matched_if_statement
 		;
-		
-		
+
+unmatched_if_statement ::= 
+				IF value_expression THEN matched_if_statement
+		|		IF value_expression THEN unmatched_if_statement
+		|		IF value_expression THEN matched_if_statement ELSE unmatched_if_statement
+		;
+
 no_if_statement ::= 
 				value_expression
 		|		value_expression ASSIGN value_expression
-		|		while_statement
+		|		statement_block
+		|		no_if_while_statement
+		|		no_if_for_statement
 		;
-		
-		
+
+no_if_while_statement ::= 
+				WHILE value_expression DO matched_if_statement
+		;
+
+no_if_for_statement ::=
+				FOR IDENTIFIER ASSIGN value_expression TO value_expression DO matched_if_statement
+		;
+
 while_statement ::= 
-			WHILE value_expression DO 
+				WHILE value_expression DO statement
 		;
+		
+for_statement ::= 
+				FOR IDENTIFIER ASSIGN value_expression TO value_expression DO statement
+		;
+
+		
