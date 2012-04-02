@@ -1,5 +1,3 @@
-
-
 program HelloWorld; 
 
 const
@@ -29,18 +27,35 @@ begin
 end;
 
 begin
-	a.b.c[3] + a(^b^) * [char];
-	if 3 then 
+	begin
+		a.b.c[3] + a(^b^) * [char];
 		if 3 then 
 			while a do
 				if 3 then
 					a
 				else
 					b
-		else 
-			for a:=^b to 100 do
-				begin
-					c := ^a^;
-					b := ^a^
-				end
+	end;
+	begin
+		a.b.c[3] + a(^b^) * [char];
+		if 3 then 
+			if 3 then 
+				while a do
+					if 3 then
+						for a:=2 to 200 do
+							if b<>^b^ then
+								c
+	end;
+	begin
+		a.b.c[3] + a(^b^) * [char];
+		if 3 then 
+			if 3 then 
+				while a do
+					if 3 then
+						for a:=2 to 200 do
+							if b<>^b^ then
+								c
+							else 
+								lol
+	end
 end.
