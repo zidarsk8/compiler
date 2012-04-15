@@ -94,8 +94,7 @@ start with source;
 ///////////////////////////////
 
 source ::= 
-//				program_name:programName source_body:sourceBody DOT
-				value_expression
+				program_name:programName source_body:sourceBody DOT
 		;
 
 program_name ::= 
