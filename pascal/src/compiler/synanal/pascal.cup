@@ -66,9 +66,7 @@ non terminal	source,
 						add_sub_expression,
 						mul_div_expression,
 						not_expression,
-						unary_prefix_expression,
-						unary_postfix_expression,
-							values,
+						values,
 					statement_block,
 						statement_list,
 							statement,
@@ -83,6 +81,9 @@ non terminal	source,
 								for_statement,
 								final_statement
 				;
+				
+precedence left PTR,ADD,SUB;
+precedence left DOT;
 
 start with source;
 
@@ -93,9 +94,9 @@ start with source;
 ///////////////////////////////
 
 source ::= 
-				program_name source_body DOT
+//				program_name:programName source_body:sourceBody DOT
+				value_expression
 		;
-
 
 program_name ::= 
 				PROGRAM IDENTIFIER SEMIC
@@ -339,29 +340,21 @@ mul_div_expression ::=
 		;
 
 not_expression ::=
-				unary_postfix_expression
-		|		NOT unary_postfix_expression
-		;
-
-unary_postfix_expression ::=
-				unary_prefix_expression
-		|		unary_prefix_expression PTR
-		;
-
-unary_prefix_expression ::= 
 				values
-		|		SUB values
-		|		ADD values
-		|		PTR values
+		|		NOT not_expression
 		;
-
+		
 values ::= 
 				const_values
 		|		IDENTIFIER
+		|		IDENTIFIER input_parameters
+		|		SUB values
+		|		ADD values
+		|		PTR values
+		|		values PTR
+		|		values DOT IDENTIFIER
 		|		LPARENTHESIS value_expression RPARENTHESIS
 		|		values LBRACKET value_expression RBRACKET
-		|		values DOT IDENTIFIER
-		|		IDENTIFIER input_parameters
 		|		LBRACKET type_description RBRACKET
 		;
 
