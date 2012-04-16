@@ -3,6 +3,7 @@ package compiler.synanal;
 import java_cup.runtime.*;
 
 import compiler.report.*;
+import compiler.abstree.tree.*;
 
 parser code
 {:
@@ -21,66 +22,70 @@ parser code
 terminal String BOOL_CONST, CHAR_CONST, INT_CONST, NIL;
 terminal String IDENTIFIER;
 
-terminal BOOL, CHAR, INT;
-terminal COLON, COMMA, DOT, DOTS, LBRACKET, LPARENTHESIS, RBRACKET, RPARENTHESIS, SEMIC;
-terminal ADD, AND, DIV, EQU, GEQ, GTH, LEQ, LTH, MUL, NEQ, NOT, OR, PTR, SUB ;
-terminal ARRAY, ASSIGN, BEGIN, CONST, DO, ELSE, END, FOR, FUNCTION, IF, OF, PROCEDURE, PROGRAM, RECORD, THEN, TO, TYPE, VAR, WHILE;
+terminal String BOOL, CHAR, INT;
+terminal String COLON, COMMA, DOT, DOTS, LBRACKET, LPARENTHESIS, RBRACKET, RPARENTHESIS, SEMIC;
+terminal String ADD, AND, DIV, EQU, GEQ, GTH, LEQ, LTH, MUL, NEQ, NOT, OR, PTR, SUB ;
+terminal String ARRAY, ASSIGN, BEGIN, CONST, DO, ELSE, END, FOR, FUNCTION, IF, OF, PROCEDURE, PROGRAM, RECORD, THEN, TO, TYPE, VAR, WHILE;
 
-non terminal	source,
-					program_name,
-					source_body,
-					declarations,
-						declarations_const,
-							const_list,
-								single_const,
-						declarations_type,
-							type_list,
-								single_type,
-						declarations_var,
-							var_list,
-								single_var,
-						declarations_subrutine,
-							subrutine_procedure, 
-								procedure_name,
-							subrutine_function,
-								function_name,
-						parameter_declaration,
-							parameter_discription_list,
-								single_parameter_discription,
-						input_parameters,
-							parameter_list,
-								single_parameter,
-					type_description, // izraz za opis tipov
-						primitive_type,
-						reference_type,
-							type_array,
-							type_record,
-								record_components,
-									single_record_component,
-							type_pointer,
-					value_expression,
-						const_values,
-						or_expression,
-						and_expression,
-						relation_expression,
-						add_sub_expression,
-						mul_div_expression,
-						not_expression,
-						values,
-					statement_block,
-						statement_list,
-							statement,
-								if_statement,
-									unmatched_if_statement,
-									full_matched_if_statement,
-										matched_if_statement,
-											no_if_statement,
-											matched_if_while_statement,
-											matched_if_for_statement,
-								while_statement,
-								for_statement,
-								final_statement
-				;
+
+non terminal AbsProgram 	source;
+non terminal AbsDeclName 		program_name;
+non terminal AbsProgram 		source_body;
+non terminal AbsDecls			declarations;
+non terminal AbsDecls				declarations_const;
+non terminal AbsDecls					const_list;
+non terminal AbsConstDecl					single_const;
+non terminal AbsDecls				declarations_type;
+non terminal AbsDecls					type_list;
+non terminal AbsTypeDecl					single_type;
+non terminal AbsDecls				declarations_var;
+non terminal AbsDecls					var_list;
+non terminal AbsVarDecl						single_var;
+non terminal AbsDecls				declarations_subrutine;
+
+non terminal AbsProcDecl				subrutine_procedure;
+non terminal AbsProcDecl					procedure_name;
+non terminal AbsFunDecl					subrutine_function;
+non terminal AbsFunDecl						function_name;
+non terminal AbsDecls					parameter_declaration;
+non terminal AbsDecls						parameter_discription_list;
+non terminal AbsTypeDecl						single_parameter_discription;
+non terminal AbsValExprs				input_parameters;
+non terminal AbsValExprs					parameter_list;
+non terminal AbsValExpr							single_parameter;
+
+non terminal AbsTypeExpr		type_description;
+non terminal AbsTypeExpr			primitive_type;
+non terminal AbsTypeExpr			reference_type;
+non terminal AbsArrayType				type_array;
+non terminal AbsRecordType				type_record;
+non terminal AbsDecls						record_components;
+non terminal AbsTypeDecl						single_record_component;
+non terminal AbsTypeExpr				type_pointer;
+
+non terminal AbsValExpr			value_expression;
+non terminal AbsValExpr				const_values;
+non terminal AbsValExpr				or_expression;
+non terminal AbsValExpr				and_expression;
+non terminal AbsValExpr				relation_expression;
+non terminal AbsValExpr				add_sub_expression;
+non terminal AbsValExpr				mul_div_expression;
+non terminal AbsValExpr				not_expression;
+non terminal AbsValExpr				values;
+
+non terminal AbsBlockStmt		statement_block;
+non terminal			statement_list;
+non terminal				statement;
+non terminal					if_statement;
+non terminal						unmatched_if_statement;
+non terminal						full_matched_if_statement;
+non terminal							matched_if_statement;
+non terminal								no_if_statement;
+non terminal								matched_if_while_statement;
+non terminal								matched_if_for_statement;
+non terminal					while_statement;
+non terminal					for_statement;
+non terminal					final_statement;
 				
 precedence left PTR,ADD,SUB;
 precedence left DOT;
@@ -94,16 +99,52 @@ start with source;
 ///////////////////////////////
 
 source ::= 
-				program_name:programName source_body:sourceBody DOT
+				program_name:name source_body:body DOT:d
+				{:
+					AbsProgram p = new AbsProgram(
+							name, 
+							body.decls, 
+							body.stmt
+					);
+					p.setBeg(name);
+					p.setEnd(d,dleft,dright);
+					RESULT = p;
+				:}
 		;
 
 program_name ::= 
-				PROGRAM IDENTIFIER SEMIC
+				PROGRAM:p IDENTIFIER:name SEMIC:s
+				{:
+					AbsDeclName r = new AbsDeclName(name);
+					r.setBeg(p,pleft,pright);
+					r.setEnd(s,sleft,sright);
+					RESULT = r;
+				:}
 		;
 
 source_body ::= 
-				statement_block
-		|		declarations statement_block
+				statement_block:stmt
+				{:
+					AbsProgram r = new AbsProgram(
+							null,
+							new AbsDecls(),
+							stmt
+					);
+					r.setBeg(stmt);
+					r.setEnd(stmt);
+					RESULT = r;
+				:}
+		|		declarations:decls statement_block:stmt
+				{:
+					AbsProgram r = new AbsProgram(
+							null,
+							decls,
+							stmt
+					);
+					r.setBeg(decls);
+					r.setEnd(stmt);
+					RESULT = r;
+				:}
 		;
 
 
@@ -113,25 +154,63 @@ source_body ::=
 ///////////////////////////////////////////
 
 declarations ::= 	
-				declarations_const
+				declarations_const:constDecl
+				{:
+					RESULT = constDecl;
+				:}
 		;
 
 
 //////////// deklaracije konstant ////////////
 
 declarations_const ::= 
-				CONST const_list
-		|		CONST const_list declarations_type
-		|		declarations_type
+				CONST const_list:constList
+					{:
+						RESULT = constList;
+					:}
+		|		CONST const_list:constList declarations_type:typeDecl
+					{:
+						constList.decls.addAll(typeDecl.decls);
+						constList.setEnd(typeDecl);
+						RESULT = constList;
+					:}
+		|		declarations_type:typeDecl
+					{:
+						RESULT = typeDecl;
+					:}
 		;
 
 const_list ::= 
-				single_const
-		|		const_list single_const
+				single_const:singleDecl
+					{:
+						AbsDecls list = new AbsDecls();
+						list.decls.add(singleDecl);
+						list.setBeg(singleDecl);
+						list.setEnd(singleDecl);
+						RESULT = list;
+					:}
+		|		const_list:list single_const:singleDecl
+					{:
+						list.decls.add(singleDecl);
+						list.setEnd(singleDecl);
+						RESULT = list;
+					:}
 		;
 		
 single_const ::= 
-				IDENTIFIER EQU value_expression SEMIC 
+				IDENTIFIER:name EQU value_expression:val SEMIC:s
+					{:
+						AbsDeclName dname = new AbsDeclName(name);
+						dname.setBeg(name,nameleft,nameright);
+						dname.setEnd(name,nameleft,nameright);
+						AbsConstDecl r = new AbsConstDecl(
+								dname,
+								val
+						);
+						r.setBeg(name,nameleft,nameright);
+						r.setEnd(s,sleft,sright);
+						RESULT = r;
+					:}
 		;
 
 
@@ -139,19 +218,54 @@ single_const ::=
 //////////// deklaracije tipov ////////////
 
 declarations_type ::= 
-				TYPE type_list
-		|		TYPE type_list declarations_var
-		|		declarations_var
+				TYPE type_list:typeList
+					{:
+						RESULT = typeList;
+					:}
+		|		TYPE type_list:typeList declarations_var:varDecl
+					{:
+						typeList.decls.addAll(varDecl.decls);
+						typeList.setEnd(varDecl);
+						RESULT = typeList;
+					:}
+		|		declarations_var:varDecl
+					{:
+						RESULT = varDecl;
+					:}
 		;
 
 
 type_list ::= 
-				single_type 
-		| 		type_list single_type
+				single_type:singleDecl
+					{:
+						AbsDecls list = new AbsDecls();
+						list.decls.add(singleDecl);
+						list.setBeg(singleDecl);
+						list.setEnd(singleDecl);
+						RESULT = list;
+					:}
+		| 		type_list:list single_type:singleDecl
+					{:
+						list.decls.add(singleDecl);
+						list.setEnd(singleDecl);
+						RESULT = list;
+					:}
 		;
 
 single_type ::= 
-				IDENTIFIER EQU type_description SEMIC
+				IDENTIFIER:name EQU type_description:type SEMIC:s
+					{:
+						AbsDeclName dname = new AbsDeclName(name);
+						dname.setBeg(name,nameleft,nameright);
+						dname.setEnd(name,nameleft,nameright);
+						AbsTypeDecl r = new AbsTypeDecl(
+								dname,
+								type
+						);
+						r.setBeg(name,nameleft,nameright);
+						r.setEnd(s,sleft,sright);
+						RESULT = r;
+					:}
 		;
 
 
@@ -159,18 +273,53 @@ single_type ::=
 //////////// deklaracije spremenljivk ////////////
 
 declarations_var ::= 
-				VAR var_list
-		|		VAR var_list declarations_subrutine
-		|		declarations_subrutine
+				VAR var_list:varList
+					{:
+						RESULT = varList;
+					:}
+		|		VAR var_list:varList declarations_subrutine:subDecl
+					{:
+						varList.decls.addAll(subDecl.decls);
+						varList.setEnd(subDecl);
+						RESULT = varList;
+					:}
+		|		declarations_subrutine:subDecl
+					{:
+						RESULT = subDecl;
+					:}
 		;
 
 var_list ::= 
-				single_var 
-		|		single_var var_list
+				single_var :singleDecl
+					{:
+						AbsDecls list = new AbsDecls();
+						list.decls.add(singleDecl);
+						list.setBeg(singleDecl);
+						list.setEnd(singleDecl);
+						RESULT = list;
+					:}
+		|		var_list:list single_var:singleDecl
+					{:
+						list.decls.add(singleDecl);
+						list.setEnd(singleDecl);
+						RESULT = list;
+					:}
 		;
 
 single_var ::= 
-				IDENTIFIER COLON type_description SEMIC
+				IDENTIFIER:name COLON type_description:type SEMIC:s
+					{:
+						AbsDeclName dname = new AbsDeclName(name);
+						dname.setBeg(name,nameleft,nameright);
+						dname.setEnd(name,nameleft,nameright);
+						AbsVarDecl r = new AbsVarDecl(
+								dname,
+								type
+						);
+						r.setBeg(name,nameleft,nameright);
+						r.setEnd(s,sleft,sright);
+						RESULT = r;
+					:}
 		;
 
 
@@ -178,10 +327,34 @@ single_var ::=
 //////////// deklaracije podprogramov ////////////
 
 declarations_subrutine ::= 
-				subrutine_procedure 
-		| 		subrutine_function
-		|		declarations_subrutine subrutine_procedure 
-		| 		declarations_subrutine subrutine_function
+				subrutine_procedure:singleDecl
+					{:
+						AbsDecls list = new AbsDecls();
+						list.decls.add(singleDecl);
+						list.setBeg(singleDecl);
+						list.setEnd(singleDecl);
+						RESULT = list;
+					:}
+		| 		subrutine_function:singleDecl
+					{:
+						AbsDecls list = new AbsDecls();
+						list.decls.add(singleDecl);
+						list.setBeg(singleDecl);
+						list.setEnd(singleDecl);
+						RESULT = list;
+					:}
+		|		declarations_subrutine:list subrutine_procedure:singleDecl
+					{:
+						list.decls.add(singleDecl);
+						list.setEnd(singleDecl);
+						RESULT = list;
+					:}
+		| 		declarations_subrutine:list subrutine_function:singleDecl
+					{:
+						list.decls.add(singleDecl);
+						list.setEnd(singleDecl);
+						RESULT = list;
+					:}
 		;
 
 
@@ -189,11 +362,27 @@ declarations_subrutine ::=
 //////////// deklaracije procedur ////////////
 
 subrutine_procedure ::= 
-				procedure_name source_body SEMIC
+				procedure_name:procName source_body:procBody SEMIC:s
+					{:
+						// AbsProcDecl(AbsDeclName name, AbsDecls pars, AbsDecls decls, AbsBlockStmt stmt) {
+						AbsProcDecl r = new AbsProcDecl(procName.name,procName.pars,procBody.decls,procBody.stmt);
+						r.setBeg(procName);
+						r.setEnd(s,sleft,sright);
+						RESULT = r;
+					:}
 		;
 
 procedure_name ::= 
-				PROCEDURE IDENTIFIER parameter_declaration SEMIC
+				PROCEDURE:p IDENTIFIER:name parameter_declaration:params SEMIC:s
+				{:
+					AbsDeclName n = new AbsDeclName(name);
+					n.setBeg(name,nameleft,nameright);
+					n.setEnd(name,nameleft,nameright);
+					AbsProcDecl r = new AbsProcDecl(n,params,null,null);
+					r.setBeg(p,pleft,pright);
+					r.setEnd(s,sleft,sright);
+					RESULT = r;
+				:}
 		;
 
 
@@ -201,11 +390,27 @@ procedure_name ::=
 //////////// deklaracije funkcij ////////////
  
 subrutine_function ::= 
-				function_name source_body SEMIC
+				function_name:funName source_body:funBody SEMIC:s
+					{:
+						// AbsFunDecl(AbsDeclName name, AbsDecls pars, AbsTypeExpr type, AbsDecls decls, AbsBlockStmt stmt) {
+						AbsFunDecl r = new AbsFunDecl(funName.name, funName.pars, funName.type, funBody.decls, funBody.stmt);
+						r.setBeg(funName);
+						r.setEnd(s,sleft,sright);
+						RESULT = r;
+					:}
 		;
 
 function_name ::= 
-				FUNCTION IDENTIFIER parameter_declaration COLON type_description SEMIC
+				FUNCTION:f IDENTIFIER:name parameter_declaration:params COLON type_description:type SEMIC:s
+				{:
+					AbsDeclName n = new AbsDeclName(name);
+					n.setBeg(name,nameleft,nameright);
+					n.setEnd(name,nameleft,nameright);
+					AbsFunDecl r = new AbsFunDecl(n,params,type,null,null);
+					r.setBeg(f,fleft,fright);
+					r.setEnd(s,sleft,sright);
+					RESULT = r;
+				:}
 		;
 
 
@@ -215,17 +420,49 @@ function_name ::=
 ////////////////////////////////////////////////////////
 
 parameter_declaration ::= 
-				LPARENTHESIS RPARENTHESIS 
-		|		LPARENTHESIS parameter_discription_list RPARENTHESIS
+				LPARENTHESIS:lp RPARENTHESIS:rp
+					{:
+						AbsDecls r = new AbsDecls();
+						r.setBeg(lp,lpleft,lpright);
+						r.setEnd(rp,rpleft,rpright);
+						RESULT = r;
+					:}
+		|		LPARENTHESIS:l parameter_discription_list:list RPARENTHESIS:r
+					{:
+						list.setBeg(l,lleft,lright);
+						list.setEnd(r,rleft,rright);
+						RESULT = list;
+					:}
 		;
 
 parameter_discription_list ::= 
-				single_parameter_discription
-		|		parameter_discription_list SEMIC single_parameter_discription
+				single_parameter_discription:singleDecl
+					{:
+						AbsDecls list = new AbsDecls();
+						list.decls.add(singleDecl);
+						list.setBeg(singleDecl);
+						list.setEnd(singleDecl);
+						RESULT = list;
+					:}
+		|		parameter_discription_list:list SEMIC single_parameter_discription:singleDecl
+					{:
+						list.decls.add(singleDecl);
+						list.setEnd(singleDecl);
+						RESULT = list;
+					:}
 		;
 
 single_parameter_discription ::= 
-				IDENTIFIER COLON type_description
+				IDENTIFIER:name COLON type_description:type
+					{:
+						AbsDeclName dname = new AbsDeclName(name);
+						dname.setBeg(name,nameleft,nameright);
+						dname.setEnd(name,nameleft,nameright);
+						AbsTypeDecl r = new AbsTypeDecl(dname,type);
+						r.setBeg(name,nameleft,nameright);
+						r.setEnd(type);
+						RESULT = r;
+					:}
 		;
 
 
@@ -236,17 +473,43 @@ single_parameter_discription ::=
 
 
 input_parameters ::= 
-				LPARENTHESIS RPARENTHESIS 
-		|		LPARENTHESIS parameter_list RPARENTHESIS
+				LPARENTHESIS:lp RPARENTHESIS :rp
+					{:
+						AbsValExprs r = new AbsValExprs();
+						r.setBeg(lp,lpleft,lpright);
+						r.setEnd(rp,rpleft,rpright);
+						RESULT = r;
+					:}
+		|		LPARENTHESIS:lpal parameter_list:list RPARENTHESIS:rpal
+					{:
+						list.setBeg(lpal,lpalleft,lpalright);
+						list.setEnd(rpal,rpalleft,rpalright);
+						RESULT = list;
+					:}
 		;
 
 parameter_list ::= 
-				single_parameter
-		|		parameter_list COMMA single_parameter
+				single_parameter:singleExpr
+					{:
+						AbsValExprs list = new AbsValExprs();
+						list.exprs.add(singleExpr);
+						list.setBeg(singleExpr);
+						list.setEnd(singleExpr);
+						RESULT = list;
+					:}
+		|		parameter_list:list COMMA single_parameter:singleExpr
+					{:
+						list.exprs.add(singleExpr);
+						list.setEnd(singleExpr);
+						RESULT = list;
+					:}
 		;
 
 single_parameter ::= 
-				value_expression
+				value_expression:v
+					{:
+						RESULT = v;
+					:}
 		;
 
 
@@ -255,44 +518,118 @@ single_parameter ::=
 ////////////////////////////////////
 
 type_description ::=
-				primitive_type
-		|		reference_type
-		|		IDENTIFIER
-		|		LPARENTHESIS type_description RPARENTHESIS
+				primitive_type:type
+					{:
+						RESULT = type;
+					:}
+		|		reference_type:type
+					{:
+						RESULT = type;
+					:}
+		|		IDENTIFIER:name
+					{:
+						AbsTypeName r = new AbsTypeName(name);
+						r.setBeg(name,nameleft,nameright);
+						r.setEnd(name,nameleft,nameright);
+						RESULT = r;
+					:}
+		|		LPARENTHESIS type_description:type RPARENTHESIS
+					{:
+						RESULT = type;
+					:}
 		;
 
 primitive_type ::= 
-				CHAR
-		|		BOOL
-		|		INT
+				CHAR:t
+					{:
+						AbsAtomType r = new AbsAtomType(AbsAtomType.CHAR);
+						r.setBeg(t,tleft,tright);
+						r.setEnd(t,tleft,tright);
+						RESULT = r;
+					:}
+		|		BOOL:t
+					{:
+						AbsAtomType r = new AbsAtomType(AbsAtomType.BOOL);
+						r.setBeg(t,tleft,tright);
+						r.setEnd(t,tleft,tright);
+						RESULT = r;
+					:}
+		|		INT:t
+					{:
+						AbsAtomType r = new AbsAtomType(AbsAtomType.INT);
+						r.setBeg(t,tleft,tright);
+						r.setEnd(t,tleft,tright);
+						RESULT = r;
+					:}
 		;
 
 reference_type ::= 
-				type_array
-		|		type_record
-		|		type_pointer
+				type_array:type
+					{:
+						RESULT = type;
+					:}
+		|		type_record:type
+					{:
+						RESULT = type;
+					:}
+		|		type_pointer:type
+					{:
+						RESULT = type;
+					:}
 		;
 
 
 type_array ::= 	
-				ARRAY LBRACKET value_expression DOTS value_expression RBRACKET OF type_description
+				ARRAY:a LBRACKET value_expression:valFrom DOTS value_expression:valTo RBRACKET OF type_description:typeDes
+					{:
+						// AbsArrayType(AbsTypeExpr type, AbsValExpr loBound, AbsValExpr hiBound) {
+						AbsArrayType r = new AbsArrayType(typeDes,valFrom,valTo);
+						r.setBeg(a,aleft,aright);
+						r.setEnd(typeDes);
+						RESULT = r;
+					:}
 		;
 
 type_record ::=  
-				RECORD record_components END
+				RECORD:b record_components:records END:e
+					{:
+						AbsRecordType r = new AbsRecordType(records);
+						r.setBeg(b,bleft,bright);
+						r.setEnd(e,eleft,eright);
+						RESULT = r;
+					:}
 		;
 
 record_components ::= 
-				single_record_component
-		|		record_components SEMIC single_record_component
+				single_record_component:singleDecl
+					{:
+						AbsDecls r = new AbsDecls();
+						r.decls.add(singleDecl);
+						r.setBeg(singleDecl);
+						r.setEnd(singleDecl);
+						RESULT = r;
+					:}
+		|		record_components:list SEMIC single_record_component:singleDecl
+					{:
+						list.decls.add(singleDecl);
+						list.setEnd(singleDecl);
+						RESULT = list;
+					:}
 		;
 
 single_record_component ::= 
-				IDENTIFIER COLON type_description
+				single_parameter_discription:type
+					{:
+						RESULT = type;
+					:}
 		;
 
 type_pointer ::= 
-				PTR type_description
+				PTR:p type_description:type
+					{:
+						type.setBeg(p,pleft,pright);
+						RESULT = type;
+					:}
 		;
 
 
@@ -303,48 +640,156 @@ type_pointer ::=
 
 
 value_expression ::= 
-				or_expression
+				or_expression:nextExpr
+					{:
+						RESULT = nextExpr;
+					:}
 		;
 
 or_expression ::=
-				and_expression
-		|		or_expression OR and_expression
+				and_expression:nextExpr
+					{:
+						RESULT = nextExpr;
+					:}
+		|		or_expression:curExpr OR and_expression:nextExpr
+					{:
+						// AbsBinExpr(int oper, AbsValExpr fstExpr, AbsValExpr sndExpr) {
+						AbsBinExpr r = new AbsBinExpr(AbsBinExpr.OR,curExpr,nextExpr);
+						r.setBeg(curExpr);
+						r.setEnd(nextExpr);
+						RESULT = r;
+					:}
 		;
 
 and_expression ::=
-				relation_expression
-		|		and_expression AND relation_expression
+				relation_expression:nextExpr
+					{:
+						RESULT = nextExpr;
+					:}
+		|		and_expression:curExpr AND relation_expression:nextExpr
+					{:
+						// AbsBinExpr(int oper, AbsValExpr fstExpr, AbsValExpr sndExpr) {
+						AbsBinExpr r = new AbsBinExpr(AbsBinExpr.AND,curExpr,nextExpr);
+						r.setBeg(curExpr);
+						r.setEnd(nextExpr);
+						RESULT = r;
+					:}
 		;
 
 relation_expression ::=
-				add_sub_expression
-		|		relation_expression EQU add_sub_expression
-		|		relation_expression NEQ add_sub_expression
-		|		relation_expression GTH add_sub_expression
-		|		relation_expression LTH add_sub_expression
-		|		relation_expression LEQ add_sub_expression
-		|		relation_expression GEQ add_sub_expression
+				add_sub_expression:nextExpr
+					{:
+						RESULT = nextExpr;
+					:}
+		|		relation_expression:curExpr EQU add_sub_expression:nextExpr
+					{:
+						// AbsBinExpr(int oper, AbsValExpr fstExpr, AbsValExpr sndExpr) {
+						AbsBinExpr r = new AbsBinExpr(AbsBinExpr.EQU,curExpr,nextExpr);
+						r.setBeg(curExpr);
+						r.setEnd(nextExpr);
+						RESULT = r;
+					:}
+		|		relation_expression:curExpr NEQ add_sub_expression:nextExpr
+					{:
+						// AbsBinExpr(int oper, AbsValExpr fstExpr, AbsValExpr sndExpr) {
+						AbsBinExpr r = new AbsBinExpr(AbsBinExpr.NEQ,curExpr,nextExpr);
+						r.setBeg(curExpr);
+						r.setEnd(nextExpr);
+						RESULT = r;
+					:}
+		|		relation_expression:curExpr GTH add_sub_expression:nextExpr
+					{:
+						// AbsBinExpr(int oper, AbsValExpr fstExpr, AbsValExpr sndExpr) {
+						AbsBinExpr r = new AbsBinExpr(AbsBinExpr.GTH,curExpr,nextExpr);
+						r.setBeg(curExpr);
+						r.setEnd(nextExpr);
+						RESULT = r;
+					:}
+		|		relation_expression:curExpr LTH add_sub_expression:nextExpr
+					{:
+						// AbsBinExpr(int oper, AbsValExpr fstExpr, AbsValExpr sndExpr) {
+						AbsBinExpr r = new AbsBinExpr(AbsBinExpr.LTH,curExpr,nextExpr);
+						r.setBeg(curExpr);
+						r.setEnd(nextExpr);
+						RESULT = r;
+					:}
+		|		relation_expression:curExpr LEQ add_sub_expression:nextExpr
+					{:
+						// AbsBinExpr(int oper, AbsValExpr fstExpr, AbsValExpr sndExpr) {
+						AbsBinExpr r = new AbsBinExpr(AbsBinExpr.LEQ,curExpr,nextExpr);
+						r.setBeg(curExpr);
+						r.setEnd(nextExpr);
+						RESULT = r;
+					:}
+		|		relation_expression:curExpr GEQ add_sub_expression:nextExpr
+					{:
+						// AbsBinExpr(int oper, AbsValExpr fstExpr, AbsValExpr sndExpr) {
+						AbsBinExpr r = new AbsBinExpr(AbsBinExpr.GEQ,curExpr,nextExpr);
+						r.setBeg(curExpr);
+						r.setEnd(nextExpr);
+						RESULT = r;
+					:}
 		;
 
 add_sub_expression ::= 
-				mul_div_expression
-		|		add_sub_expression ADD mul_div_expression
-		|		add_sub_expression SUB mul_div_expression
+				mul_div_expression:nextExpr
+				{:
+					RESULT = nextExpr;
+				:}
+		|		add_sub_expression:curExpr ADD mul_div_expression:nextExpr
+					{:
+						// AbsBinExpr(int oper, AbsValExpr fstExpr, AbsValExpr sndExpr) {
+						AbsBinExpr r = new AbsBinExpr(AbsBinExpr.ADD,curExpr,nextExpr);
+						r.setBeg(curExpr);
+						r.setEnd(nextExpr);
+						RESULT = r;
+					:}
+		|		add_sub_expression:curExpr SUB mul_div_expression:nextExpr
+					{:
+						// AbsBinExpr(int oper, AbsValExpr fstExpr, AbsValExpr sndExpr) {
+						AbsBinExpr r = new AbsBinExpr(AbsBinExpr.SUB,curExpr,nextExpr);
+						r.setBeg(curExpr);
+						r.setEnd(nextExpr);
+						RESULT = r;
+					:}
 		;
 
 mul_div_expression ::= 
-				not_expression
-		|		mul_div_expression MUL not_expression
-		|		mul_div_expression DIV not_expression
+				not_expression:nextExpr
+				{:
+					RESULT = nextExpr;
+				:}
+		|		mul_div_expression:curExpr MUL not_expression:nextExpr
+					{:
+						// AbsBinExpr(int oper, AbsValExpr fstExpr, AbsValExpr sndExpr) {
+						AbsBinExpr r = new AbsBinExpr(AbsBinExpr.MUL,curExpr,nextExpr);
+						r.setBeg(curExpr);
+						r.setEnd(nextExpr);
+						RESULT = r;
+					:}
+		|		mul_div_expression:curExpr DIV not_expression:nextExpr
+					{:
+						// AbsBinExpr(int oper, AbsValExpr fstExpr, AbsValExpr sndExpr) {
+						AbsBinExpr r = new AbsBinExpr(AbsBinExpr.DIV,curExpr,nextExpr);
+						r.setBeg(curExpr);
+						r.setEnd(nextExpr);
+						RESULT = r;
+					:}
 		;
 
 not_expression ::=
-				values
+				values:nextExpr
+				{:
+					RESULT = nextExpr;
+				:}
 		|		NOT not_expression
 		;
 		
 values ::= 
-				const_values
+				const_values:constValues
+					{:
+						RESULT = constValues;
+					:}
 		|		IDENTIFIER
 		|		IDENTIFIER input_parameters
 		|		SUB values
@@ -358,10 +803,31 @@ values ::=
 		;
 
 const_values ::= 
-				BOOL_CONST
-		| 		CHAR_CONST
-		|		INT_CONST
-		|		NIL
+				BOOL_CONST:atomConst
+					{:
+						AbsAtomConst r = new AbsAtomConst(atomConst,AbsAtomConst.BOOL);
+						r.setBeg(atomConst,atomConstleft,atomConstright);
+						r.setEnd(atomConst,atomConstleft,atomConstright);
+						RESULT = r;
+					:}
+		| 		CHAR_CONST:atomConst
+					{:
+						AbsAtomConst r = new AbsAtomConst(atomConst,AbsAtomConst.CHAR);
+						r.setBeg(atomConst,atomConstleft,atomConstright);
+						r.setEnd(atomConst,atomConstleft,atomConstright);
+						RESULT = r;
+					:}
+		|		INT_CONST:atomConst
+					{:
+						AbsAtomConst r = new AbsAtomConst(atomConst,AbsAtomConst.INT);
+						r.setBeg(atomConst,atomConstleft,atomConstright);
+						r.setEnd(atomConst,atomConstleft,atomConstright);
+						RESULT = r;
+					:}
+		|		NIL:atomConst
+					{:
+						RESULT = new AbsNilConst();
+					:}
 		;
 
 
@@ -371,8 +837,20 @@ const_values ::=
 ////////////////////////////////
 
 statement_block ::= 
-				BEGIN END
-		|		BEGIN statement_list END
+				BEGIN:b END:e
+				{:
+					AbsBlockStmt r = new AbsBlockStmt(new AbsStmts());
+					r.setBeg(b,bleft,bright);
+					r.setEnd(e,eleft,eright);
+					RESULT = r;
+				:}
+		|		BEGIN:b statement_list END:e
+				{:
+					AbsBlockStmt r = new AbsBlockStmt(new AbsStmts());
+					r.setBeg(b,bleft,bright);
+					r.setEnd(e,eleft,eright);
+					RESULT = r;
+				:}
 		;
 
 statement_list ::= 
