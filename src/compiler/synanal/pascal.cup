@@ -24,7 +24,7 @@ terminal String IDENTIFIER;
 
 terminal String BOOL, CHAR, INT;
 terminal String COLON, COMMA, DOT, DOTS, LBRACKET, LPARENTHESIS, RBRACKET, RPARENTHESIS, SEMIC;
-terminal String ADD, AND, DIV, EQU, GEQ, GTH, LEQ, LTH, MUL, NEQ, NOT, OR, PTR, SUB ;
+terminal String ADD, AND, DIV, EQU, GEQ, GTH, LEQ, LTH, MUL, NEQ, NOT, OR, PTR, SUB, MEM, UADD, USUB, VAL;
 terminal String ARRAY, ASSIGN, BEGIN, CONST, DO, ELSE, END, FOR, FUNCTION, IF, OF, PROCEDURE, PROGRAM, RECORD, THEN, TO, TYPE, VAR, WHILE;
 
 
@@ -74,21 +74,22 @@ non terminal AbsValExpr				not_expression;
 non terminal AbsValExpr				values;
 
 non terminal AbsBlockStmt		statement_block;
-non terminal			statement_list;
-non terminal				statement;
-non terminal					if_statement;
-non terminal						unmatched_if_statement;
-non terminal						full_matched_if_statement;
-non terminal							matched_if_statement;
-non terminal								no_if_statement;
-non terminal								matched_if_while_statement;
-non terminal								matched_if_for_statement;
-non terminal					while_statement;
-non terminal					for_statement;
-non terminal					final_statement;
+non terminal AbsStmts				statement_list;
+non terminal AbsStmt					statement;
+non terminal AbsStmt					if_statement;
+non terminal AbsStmt						unmatched_if_statement;
+non terminal AbsStmt						full_matched_if_statement;
+non terminal AbsStmt							matched_if_statement;
+non terminal AbsStmt								no_if_statement;
+non terminal AbsStmt								matched_if_while_statement;
+non terminal AbsStmt								matched_if_for_statement;
+non terminal AbsStmt					while_statement;
+non terminal AbsStmt					for_statement;
+non terminal AbsStmt					final_statement;
 				
-precedence left PTR,ADD,SUB;
-precedence left DOT;
+precedence nonassoc VAL;
+precedence nonassoc MEM,UADD,USUB;
+precedence left DOT, LBRACKET, LBRACKET;
 
 start with source;
 
@@ -753,7 +754,7 @@ add_sub_expression ::=
 						RESULT = r;
 					:}
 		;
-
+ 
 mul_div_expression ::= 
 				not_expression:nextExpr
 				{:
@@ -779,10 +780,17 @@ mul_div_expression ::=
 
 not_expression ::=
 				values:nextExpr
-				{:
-					RESULT = nextExpr;
-				:}
-		|		NOT not_expression
+					{:
+						RESULT = nextExpr;
+					:}
+		|		NOT:n not_expression:nextExpr
+					{:
+						// AbsBinExpr(int oper, AbsValExpr fstExpr, AbsValExpr sndExpr) {
+						AbsUnExpr r = new AbsUnExpr(AbsUnExpr.NOT,nextExpr);
+						r.setBeg(n,nleft,nright);
+						r.setEnd(nextExpr);
+						RESULT = r;
+					:}
 		;
 		
 values ::= 
@@ -790,16 +798,87 @@ values ::=
 					{:
 						RESULT = constValues;
 					:}
-		|		IDENTIFIER
-		|		IDENTIFIER input_parameters
-		|		SUB values
-		|		ADD values
-		|		PTR values
-		|		values PTR
-		|		values DOT IDENTIFIER
-		|		LPARENTHESIS value_expression RPARENTHESIS
-		|		values LBRACKET value_expression RBRACKET
-		|		LBRACKET type_description RBRACKET
+		|		IDENTIFIER:name 
+				{:
+					AbsValName r = new AbsValName(name);
+					r.setBeg(name,nameleft,nameright);
+					r.setEnd(name,nameleft,nameright);
+					RESULT = r;
+				:}
+		|		IDENTIFIER:name input_parameters:params
+					{:
+						AbsValName n = new AbsValName(name);
+						n.setBeg(name,nameleft,nameright);
+						n.setEnd(name,nameleft,nameright);
+						AbsCallExpr r = new AbsCallExpr(n,params);
+						r.setBeg(n);
+						r.setEnd(params);
+						RESULT = r;
+					:}
+		|		SUB:n values:nextExpr
+					{:
+						// AbsBinExpr(int oper, AbsValExpr fstExpr, AbsValExpr sndExpr) {
+						AbsUnExpr r = new AbsUnExpr(AbsUnExpr.SUB,nextExpr);
+						r.setBeg(n,nleft,nright);
+						r.setEnd(nextExpr);
+						RESULT = r;
+					:} %prec USUB
+		|		ADD:n values:nextExpr
+					{:
+						// AbsBinExpr(int oper, AbsValExpr fstExpr, AbsValExpr sndExpr) {
+						AbsUnExpr r = new AbsUnExpr(AbsUnExpr.ADD,nextExpr);
+						r.setBeg(n,nleft,nright);
+						r.setEnd(nextExpr);
+						RESULT = r;
+					:} %prec UADD
+		|		PTR:n values:nextExpr
+					{:
+						// AbsBinExpr(int oper, AbsValExpr fstExpr, AbsValExpr sndExpr) {
+						AbsUnExpr r = new AbsUnExpr(AbsUnExpr.MEM,nextExpr);
+						r.setBeg(n,nleft,nright);
+						r.setEnd(nextExpr);
+						RESULT = r;
+					:} %prec MEM
+		|		values:nextExpr PTR:n
+					{:
+						// AbsBinExpr(int oper, AbsValExpr fstExpr, AbsValExpr sndExpr) {
+						AbsUnExpr r = new AbsUnExpr(AbsUnExpr.VAL,nextExpr);
+						r.setEnd(n,nleft,nright);
+						r.setBeg(nextExpr);
+						RESULT = r;
+					:} %prec VAL
+					
+		|		values:fst DOT IDENTIFIER:snd
+					{:
+						// AbsBinExpr(int oper, AbsValExpr fstExpr, AbsValExpr sndExpr) {
+						AbsValName n = new AbsValName(snd);
+						n.setBeg(snd,sndleft,sndright);
+						n.setEnd(snd,sndleft,sndright);
+						AbsBinExpr r = new AbsBinExpr(AbsBinExpr.RECACCESS,fst,n);
+						r.setBeg(fst);
+						r.setEnd(n);
+						RESULT = r;
+					:}
+		|		LPARENTHESIS:lp value_expression:val RPARENTHESIS:rp
+					{:
+						val.setBeg(lp,lpleft,lpright);
+						val.setEnd(rp,rpleft,rpright);
+						RESULT = val;
+					:}
+		|		values:name LBRACKET value_expression:value RBRACKET:rb
+					{:
+						AbsBinExpr r = new AbsBinExpr(AbsBinExpr.ARRACCESS,name,value);
+						r.setBeg(name);
+						r.setEnd(rb,rbleft,rbright);
+						RESULT = r;
+					:}
+		|		LBRACKET:lb type_description:type RBRACKET:rb
+					{:
+						AbsAlloc r = new AbsAlloc(type);
+						r.setBeg(lb,lbleft,lbright);
+						r.setEnd(rb,rbleft,rbright);
+						RESULT = r;
+					:}
 		;
 
 const_values ::= 
@@ -826,7 +905,10 @@ const_values ::=
 					:}
 		|		NIL:atomConst
 					{:
-						RESULT = new AbsNilConst();
+						AbsNilConst r = new AbsNilConst();
+						r.setBeg(atomConst,atomConstleft,atomConstright);
+						r.setEnd(atomConst,atomConstleft,atomConstright);
+						RESULT = r;
 					:}
 		;
 
@@ -844,9 +926,9 @@ statement_block ::=
 					r.setEnd(e,eleft,eright);
 					RESULT = r;
 				:}
-		|		BEGIN:b statement_list END:e
+		|		BEGIN:b statement_list:list END:e
 				{:
-					AbsBlockStmt r = new AbsBlockStmt(new AbsStmts());
+					AbsBlockStmt r = new AbsBlockStmt(list);
 					r.setBeg(b,bleft,bright);
 					r.setEnd(e,eleft,eright);
 					RESULT = r;
@@ -854,29 +936,89 @@ statement_block ::=
 		;
 
 statement_list ::= 
-				statement
-		|		statement_list SEMIC statement
+				statement:st
+					{:
+						AbsStmts r = new AbsStmts();
+						r.stmts.add(st);
+						r.setBeg(st);
+						r.setEnd(st);
+						RESULT = r;
+					:}
+		|		statement_list:list SEMIC statement:st
+					{:
+						list.stmts.add(st);
+						list.setEnd(st);
+						RESULT = list;
+					:}
 		;
 
 statement ::= 
-				if_statement
-		|		while_statement
-		|		for_statement
-		|		final_statement
+				if_statement:st
+					{:
+						RESULT = st;
+					:}
+		|		while_statement:st
+					{:
+						RESULT = st;
+					:}
+		|		for_statement:st
+					{:
+						RESULT = st;
+					:}
+		|		final_statement:st
+					{:
+						RESULT = st;
+					:}
+		|		error:err
+					{:
+						RESULT = (AbsStmt) err;
+						RESULT.error = true;
+					:}
 		;
 
 final_statement ::=
-				value_expression
-		|		value_expression ASSIGN value_expression
-		|		statement_block
+				value_expression:val
+				{:
+					AbsExprStmt st = new AbsExprStmt(val);
+					st.setBeg(val);
+					st.setEnd(val);
+					RESULT = st;
+				:}
+		|		value_expression:name ASSIGN value_expression:val
+					{:
+						AbsAssignStmt st = new AbsAssignStmt(name,val);
+						st.setBeg(name);
+						st.setEnd(val);
+						RESULT = st;
+					:}
+		|		statement_block:val
+					{:
+						RESULT = val;
+					:}
 		;
 
 while_statement ::= 
-				WHILE value_expression DO statement
+				WHILE:w value_expression:cond DO statement:stmt
+					{:
+						AbsWhileStmt st = new AbsWhileStmt(cond,stmt);
+						st.setBeg(w,wleft,wright);
+						st.setEnd(stmt);
+						RESULT = st;
+					:}
 		;
 
 for_statement ::= 
-				FOR IDENTIFIER ASSIGN value_expression TO value_expression DO statement
+				FOR:f IDENTIFIER:name ASSIGN value_expression:lobound TO value_expression:hibound DO statement:stmt
+				{:
+					// AbsForStmt(AbsValName name, AbsValExpr loBound, AbsValExpr hiBound, AbsStmt stmt) {
+					AbsValName n = new AbsValName(name);
+					n.setBeg(name,nameleft,nameright);
+					n.setEnd(name,nameleft,nameright);
+					AbsForStmt st = new AbsForStmt(n,lobound,hibound,stmt);
+					st.setBeg(f,fleft,fright);
+					st.setEnd(stmt);
+					RESULT = st;
+				:}
 		;
 
 
@@ -884,37 +1026,108 @@ for_statement ::=
 //////////// if else stavek ////////////
 
 if_statement ::= 
-				full_matched_if_statement
-		|		unmatched_if_statement
+				full_matched_if_statement:stmt
+					{:
+						RESULT = stmt;
+					:}
+		|		unmatched_if_statement:stmt
+					{:
+						RESULT = stmt;
+					:}
 		;
 
 full_matched_if_statement ::= 
-				IF value_expression THEN matched_if_statement ELSE matched_if_statement
+				IF:i value_expression:cond THEN matched_if_statement:thenstmt ELSE matched_if_statement:elsestmt
+					{:
+						AbsIfStmt r = new AbsIfStmt(cond,thenstmt,elsestmt);
+						r.setBeg(i,ileft,iright);
+						r.setEnd(elsestmt);
+						RESULT = r;
+					:}
 		;
 
 matched_if_statement ::= 
-				no_if_statement
-		|		IF value_expression THEN matched_if_statement ELSE matched_if_statement
+				no_if_statement:stmt
+					{:
+						RESULT = stmt;
+					:}
+		|		IF:i value_expression:cond THEN matched_if_statement:thenstmt ELSE matched_if_statement:elsestmt
+					{:
+						AbsIfStmt r = new AbsIfStmt(cond,thenstmt,elsestmt);
+						r.setBeg(i,ileft,iright);
+						r.setEnd(elsestmt);
+						RESULT = r;
+					:}
 		;
 
 unmatched_if_statement ::= 
-				IF value_expression THEN statement
-		|		IF value_expression THEN matched_if_statement ELSE unmatched_if_statement
+				IF:i value_expression:cond THEN statement:thenstmt
+				{:
+					AbsBlockStmt elsestmt = new AbsBlockStmt(new AbsStmts());
+					AbsIfStmt r = new AbsIfStmt(cond,thenstmt,elsestmt);
+					r.setBeg(i,ileft,iright);
+					r.setEnd(elsestmt);
+					RESULT = r;
+				:}
+		|		IF:i value_expression:cond THEN matched_if_statement:thenstmt ELSE unmatched_if_statement:elsestmt
+					{:
+						AbsIfStmt r = new AbsIfStmt(cond,thenstmt,elsestmt);
+						r.setBeg(i,ileft,iright);
+						r.setEnd(elsestmt);
+						RESULT = r;
+					:}
 		;
 
 no_if_statement ::= 
-				value_expression
-		|		value_expression ASSIGN value_expression
-		|		statement_block
-		|		matched_if_while_statement
-		|		matched_if_for_statement
+				value_expression:val
+					{:
+						AbsExprStmt st = new AbsExprStmt(val);
+						st.setBeg(val);
+						st.setEnd(val);
+						RESULT = st;
+					:}
+		|		value_expression:name ASSIGN value_expression:val
+					{:
+						AbsAssignStmt st = new AbsAssignStmt(name,val);
+						st.setBeg(name);
+						st.setEnd(val);
+						RESULT = st;
+					:}
+		|		statement_block:val
+					{:
+						RESULT = val;
+					:}
+		|		matched_if_while_statement:val
+					{:
+						RESULT = val;
+					:}
+		|		matched_if_for_statement:val
+					{:
+						RESULT = val;
+					:}
 		;
 
 matched_if_while_statement ::= 
-				WHILE value_expression DO matched_if_statement
+				WHILE:w value_expression:cond DO matched_if_statement:stmt
+				{:
+					AbsWhileStmt st = new AbsWhileStmt(cond,stmt);
+					st.setBeg(w,wleft,wright);
+					st.setEnd(stmt);
+					RESULT = st;
+				:}
 		;
 
 matched_if_for_statement ::=
-				FOR IDENTIFIER ASSIGN value_expression TO value_expression DO matched_if_statement
+				FOR:f IDENTIFIER:name ASSIGN value_expression:lobound TO value_expression:hibound DO matched_if_statement:stmt
+				{:
+					// AbsForStmt(AbsValName name, AbsValExpr loBound, AbsValExpr hiBound, AbsStmt stmt) {
+					AbsValName n = new AbsValName(name);
+					n.setBeg(name,nameleft,nameright);
+					n.setEnd(name,nameleft,nameright);
+					AbsForStmt st = new AbsForStmt(n,lobound,hibound,stmt);
+					st.setBeg(f,fleft,fright);
+					st.setEnd(stmt);
+					RESULT = st;
+				:}
 		;
 
