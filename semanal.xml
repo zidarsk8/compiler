@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml-stylesheet type="text/xsl" href="xsl/semanal.xsl"?>
+<semanal>
+<absnode pos="(1:1-19:4)" kind="Program">
+<absnode pos="(1:1-1:15)" kind="DeclName" value="testaa">
+</absnode>
+<absnode pos="(2:2-15:5)" kind="Decls">
+<absnode pos="(3:3-3:10)" kind="ConstDecl">
+<seminfo kind="DECL" value="1048575489"/>
+<seminfo kind="SCOPE" value="0"/>
+<seminfo kind="VALUE" value="null"/>
+<absnode pos="(3:3-3:5)" kind="DeclName" value="abc">
+</absnode>
+<absnode pos="(3:9-3:9)" kind="AtomExpr(INT)" value="3">
+<seminfo kind="VALUE" value="null"/>
+</absnode>
+</absnode>
+<absnode pos="(5:3-5:14)" kind="VarDecl">
+<seminfo kind="DECL" value="1157436341"/>
+<seminfo kind="SCOPE" value="0"/>
+<absnode pos="(5:3-5:3)" kind="DeclName" value="a">
+</absnode>
+<absnode pos="(5:7-5:13)" kind="AtomType(INT)">
+</absnode>
+</absnode>
+<absnode pos="(7:2-15:5)" kind="ProcDecl">
+<seminfo kind="DECL" value="1343445037"/>
+<seminfo kind="SCOPE" value="null"/>
+<absnode pos="(7:12-7:12)" kind="DeclName" value="x">
+</absnode>
+<absnode pos="(7:13-7:14)" kind="Decls">
+</absnode>
+<absnode pos="(8:3-12:13)" kind="Decls">
+<absnode pos="(9:4-9:11)" kind="ConstDecl">
+<seminfo kind="DECL" value="454535357"/>
+<seminfo kind="SCOPE" value="1"/>
+<seminfo kind="VALUE" value="null"/>
+<absnode pos="(9:4-9:4)" kind="DeclName" value="a">
+</absnode>
+<absnode pos="(9:8-9:10)" kind="AtomExpr(CHAR)" value="'2'">
+<seminfo kind="VALUE" value="null"/>
+</absnode>
+</absnode>
+<absnode pos="(10:4-10:11)" kind="ConstDecl">
+<seminfo kind="DECL" value="776412720"/>
+<seminfo kind="SCOPE" value="null"/>
+<seminfo kind="VALUE" value="null"/>
+<absnode pos="(10:4-10:4)" kind="DeclName" value="a">
+</absnode>
+<absnode pos="(10:8-10:10)" kind="AtomExpr(CHAR)" value="'2'">
+<seminfo kind="VALUE" value="null"/>
+</absnode>
+</absnode>
+<absnode pos="(12:4-12:13)" kind="VarDecl">
+<seminfo kind="DECL" value="1057945868"/>
+<seminfo kind="SCOPE" value="1"/>
+<absnode pos="(12:4-12:5)" kind="DeclName" value="xx">
+</absnode>
+<absnode pos="(12:9-12:12)" kind="AtomType(CHAR)">
+</absnode>
+</absnode>
+</absnode>
+<absnode pos="(13:2-15:4)" kind="BlockStmt">
+<absnode pos="(0:0-0:0)" kind="Stmts">
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+<absnode pos="(17:1-19:3)" kind="BlockStmt">
+<absnode pos="(18:2-18:8)" kind="Stmts">
+<absnode pos="(18:2-18:8)" kind="ExprStmt">
+<absnode pos="(18:2-18:8)" kind="BinExpr" value="EQU">
+<seminfo kind="VALUE" value="null"/>
+<absnode pos="(18:2-18:2)" kind="ValName" value="a">
+</absnode>
+<absnode pos="(18:6-18:8)" kind="ValName" value="abc">
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+</semanal>

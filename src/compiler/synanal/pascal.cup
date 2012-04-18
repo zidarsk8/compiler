@@ -165,12 +165,14 @@ declarations ::=
 //////////// deklaracije konstant ////////////
 
 declarations_const ::= 
-				CONST const_list:constList
+				CONST:c const_list:constList
 					{:
+						constList.setBeg(c,cleft,cright);
 						RESULT = constList;
 					:}
-		|		CONST const_list:constList declarations_type:typeDecl
+		|		CONST:c const_list:constList declarations_type:typeDecl
 					{:
+						constList.setBeg(c,cleft,cright);
 						constList.decls.addAll(typeDecl.decls);
 						constList.setEnd(typeDecl);
 						RESULT = constList;
