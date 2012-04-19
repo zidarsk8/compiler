@@ -1,8 +1,6 @@
 package compiler.semanal;
 
-import java.util.LinkedList;
-
-import compiler.abstree.*;
+import compiler.abstree.AbsVisitor;
 import compiler.abstree.tree.AbsAlloc;
 import compiler.abstree.tree.AbsArrayType;
 import compiler.abstree.tree.AbsAssignStmt;
@@ -24,10 +22,12 @@ import compiler.abstree.tree.AbsPointerType;
 import compiler.abstree.tree.AbsProcDecl;
 import compiler.abstree.tree.AbsProgram;
 import compiler.abstree.tree.AbsRecordType;
+import compiler.abstree.tree.AbsStmt;
 import compiler.abstree.tree.AbsStmts;
 import compiler.abstree.tree.AbsTypeDecl;
 import compiler.abstree.tree.AbsTypeName;
 import compiler.abstree.tree.AbsUnExpr;
+import compiler.abstree.tree.AbsValExpr;
 import compiler.abstree.tree.AbsValExprs;
 import compiler.abstree.tree.AbsValName;
 import compiler.abstree.tree.AbsVarDecl;
@@ -39,32 +39,30 @@ public class SemNameResolver implements AbsVisitor{
 
 	@Override
 	public void visit(AbsAlloc acceptor) {
-		// TODO Auto-generated method stub
-
+		acceptor.type.accept(this);
 	}
 
 	@Override
 	public void visit(AbsArrayType acceptor) {
-		// TODO Auto-generated method stub
-
+		acceptor.type.accept(this);
+		acceptor.loBound.accept(this);
+		acceptor.hiBound.accept(this);
 	}
 
 	@Override
 	public void visit(AbsAssignStmt acceptor) {
-		// TODO Auto-generated method stub
-
+		acceptor.dstExpr.accept(this);
+		acceptor.srcExpr.accept(this);
 	}
 
 	@Override
 	public void visit(AbsAtomConst acceptor) {
-		// TODO Auto-generated method stub
-
+		// nothing to do here,
 	}
 
 	@Override
 	public void visit(AbsAtomType acceptor) {
-		// TODO Auto-generated method stub
-
+		// nothing to do here,
 	}
 
 	@Override
@@ -75,39 +73,28 @@ public class SemNameResolver implements AbsVisitor{
 
 	@Override
 	public void visit(AbsBlockStmt acceptor) {
-		// TODO Auto-generated method stub
-
+		acceptor.stmts.accept(this);
 	}
 
 	@Override
 	public void visit(AbsCallExpr acceptor) {
-		// TODO Auto-generated method stub
-
+		notDeclaredError(acceptor.name.name, acceptor.begLine, acceptor.begColumn);
+		acceptor.args.accept(this);
 	}
 
 	@Override
 	public void visit(AbsConstDecl acceptor) {
-		acceptor.value.accept(this);
-		if (SemTable.fnd(acceptor.name.name) !=null &&
-				SemDesc.getScope(SemTable.fnd(acceptor.name.name)) == SemDesc.getScope(acceptor)){
-
-			System.out.println(String.format("const %s is redefined at (%d,%d)",
-					acceptor.name.name, 
-					acceptor.begLine,
-					acceptor.begColumn));
-		}else{
-			try {
-				SemTable.ins(acceptor.name.name, acceptor);
-			} catch (SemIllegalInsertException e) {
-				e.printStackTrace();
-			}
+		try {
+			SemTable.ins(acceptor.name.name, acceptor);
+		} catch (SemIllegalInsertException e) {
+			isDeclaredError(acceptor.name.name, acceptor.begLine, acceptor.begColumn);
 		}
+		acceptor.value.accept(this);
 	}
 
 	@Override
 	public void visit(AbsDeclName acceptor) {
-		// TODO Auto-generated method stub
-
+		System.out.println("you should not see thise... public void visit(AbsDeclName acceptor)");
 	}
 
 	@Override
@@ -119,29 +106,31 @@ public class SemNameResolver implements AbsVisitor{
 
 	@Override
 	public void visit(AbsExprStmt acceptor) {
-		// TODO Auto-generated method stub
+		acceptor.expr.accept(this);
 	}
 
 	@Override
 	public void visit(AbsForStmt acceptor) {
-		// TODO Auto-generated method stub
-		if (SemTable.fnd(acceptor.name.name) != null) {
-		}else{
-			System.out.println(String.format("var %s is undefined at (%d,%d)",
-					acceptor.name.name, 
-					acceptor.begLine,
-					acceptor.begColumn));
-		}
+		notDeclaredError(acceptor.name.name, acceptor.begLine, acceptor.begColumn);
+		acceptor.loBound.accept(this);
+		acceptor.hiBound.accept(this);
+		acceptor.stmt.accept(this);
 	}
 
 	@Override
 	public void visit(AbsFunDecl acceptor) {
 		try {
-			SemTable.ins(acceptor.name.name, acceptor.name);
+			SemTable.ins(acceptor.name.name, acceptor);
 		} catch (SemIllegalInsertException e) {
-			e.printStackTrace();
+			isDeclaredError(acceptor.name.name, acceptor.begLine, acceptor.begColumn);
 		}
 		SemTable.newScope();
+		try {
+			SemTable.ins(acceptor.name.name, acceptor);
+		} catch (SemIllegalInsertException e) {
+			isDeclaredError(acceptor.name.name, acceptor.begLine, acceptor.begColumn);
+		}
+
 		acceptor.decls.accept(this);
 		acceptor.type.accept(this);
 		acceptor.pars.accept(this);
@@ -151,30 +140,35 @@ public class SemNameResolver implements AbsVisitor{
 
 	@Override
 	public void visit(AbsIfStmt acceptor) {
-		// TODO Auto-generated method stub
-
+		acceptor.cond.accept(this);
+		acceptor.thenStmt.accept(this);
+		acceptor.elseStmt.accept(this);
 	}
 
 	@Override
 	public void visit(AbsNilConst acceptor) {
-		// TODO Auto-generated method stub
-
+		// should not do anything
 	}
 
 	@Override
 	public void visit(AbsPointerType acceptor) {
-		// TODO Auto-generated method stub
-
+		acceptor.type.accept(this);
 	}
 
 	@Override
 	public void visit(AbsProcDecl acceptor) {
 		try {
-			SemTable.ins(acceptor.name.name, acceptor.name);
+			SemTable.ins(acceptor.name.name, acceptor);
 		} catch (SemIllegalInsertException e) {
-			e.printStackTrace();
+			isDeclaredError(acceptor.name.name, acceptor.begLine, acceptor.begColumn);
 		}
 		SemTable.newScope();
+		try {
+			SemTable.ins(acceptor.name.name, acceptor);
+		} catch (SemIllegalInsertException e) {
+			isDeclaredError(acceptor.name.name, acceptor.begLine, acceptor.begColumn);
+		}
+
 		acceptor.decls.accept(this);
 		acceptor.pars.accept(this);
 		acceptor.stmt.accept(this);
@@ -189,79 +183,75 @@ public class SemNameResolver implements AbsVisitor{
 
 	@Override
 	public void visit(AbsRecordType acceptor) {
-		// TODO Auto-generated method stub
-
+		SemTable.newScope();
+		acceptor.fields.accept(this);
+		SemTable.oldScope();
 	}
 
 	@Override
 	public void visit(AbsStmts acceptor) {
-		// TODO Auto-generated method stub
-
+		for (AbsStmt stmt: acceptor.stmts){
+			stmt.accept(this);
+		}
 	}
 
 	@Override
 	public void visit(AbsTypeDecl acceptor) {
-		acceptor.type.accept(this);
-		if (SemTable.fnd(acceptor.name.name) !=null ){
-			System.out.println(String.format("var %s is redefined at (%d,%d)",
-					acceptor.name.name, 
-					acceptor.begLine,
-					acceptor.begColumn));
-		}else{
-			try {
-				SemTable.ins(acceptor.name.name, acceptor);
-			} catch (SemIllegalInsertException e) {
-				e.printStackTrace();
-			}
+		try {
+			SemTable.ins(acceptor.name.name, acceptor);
+		} catch (SemIllegalInsertException e) {
+			isDeclaredError(acceptor.name.name, acceptor.begLine, acceptor.begColumn);
 		}
+		acceptor.type.accept(this);
 	}
 
 	@Override
 	public void visit(AbsTypeName acceptor) {
-		// TODO Auto-generated method stub
-
+		isDeclaredError(acceptor.name, acceptor.begLine, acceptor.begColumn);
 	}
 
 	@Override
 	public void visit(AbsUnExpr acceptor) {
-		// TODO Auto-generated method stub
-
+		acceptor.expr.accept(this);
 	}
 
 	@Override
 	public void visit(AbsValExprs acceptor) {
-		// TODO Auto-generated method stub
-
+		// seznami spremenljivk v klicih procedur in funkcij
+		for (AbsValExpr expr: acceptor.exprs){
+			expr.accept(this);
+		}
 	}
 
 	@Override
 	public void visit(AbsValName acceptor) {
-		// TODO Auto-generated method stub
-
+		notDeclaredError(acceptor.name, acceptor.begLine, acceptor.begColumn);
 	}
 
 	@Override
 	public void visit(AbsVarDecl acceptor) {
-		acceptor.type.accept(this);
-		if (SemTable.fnd(acceptor.name.name) !=null ){
-			System.out.println(String.format("var %s is redefined at (%d,%d)",
-					acceptor.name.name, 
-					acceptor.begLine,
-					acceptor.begColumn));
-		}else{
-			try {
-				SemTable.ins(acceptor.name.name, acceptor);
-			} catch (SemIllegalInsertException e) {
-				e.printStackTrace();
-			}
+		try {
+			SemTable.ins(acceptor.name.name, acceptor);
+		} catch (SemIllegalInsertException e) {
+			isDeclaredError(acceptor.name.name, acceptor.begLine, acceptor.begColumn);
 		}
+		acceptor.type.accept(this);
 	}
-
 
 	@Override
 	public void visit(AbsWhileStmt acceptor) {
-		// TODO Auto-generated method stub
+		acceptor.cond.accept(this);
+		acceptor.stmt.accept(this);
+	}
 
+	private void isDeclaredError(String name, int line, int col){
+		System.out.println(String.format("var %s is redefined at (%d,%d)", name, line, col));
+	}
+
+	private void notDeclaredError(String name, int line, int col){
+		if (SemTable.fnd(name)==null){
+			System.out.println(String.format("var %s is undefined at (%d,%d)", name, line, col));
+		}
 	}
 
 }
