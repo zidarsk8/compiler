@@ -207,7 +207,7 @@ public class SemNameResolver implements AbsVisitor{
 
 	@Override
 	public void visit(AbsTypeName acceptor) {
-		isDeclaredError(acceptor.name, acceptor.begLine, acceptor.begColumn);
+		notDeclaredError(acceptor.name, acceptor.begLine, acceptor.begColumn);
 	}
 
 	@Override
