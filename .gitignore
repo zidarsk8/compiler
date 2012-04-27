@@ -13,3 +13,4 @@ PascalLex.java
 PascalSyn.java
 PascalTok.java
 *.pascal
+*~
