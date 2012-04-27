@@ -36,6 +36,7 @@ import compiler.abstree.tree.AbsWhileStmt;
 public class SemNameResolver implements AbsVisitor{
 
 	public boolean error = false;
+	private int isRecord = 0;
 
 	@Override
 	public void visit(AbsAlloc acceptor) {
@@ -84,16 +85,20 @@ public class SemNameResolver implements AbsVisitor{
 
 	@Override
 	public void visit(AbsConstDecl acceptor) {
-		try {
-			SemTable.ins(acceptor.name.name, acceptor);
-		} catch (SemIllegalInsertException e) {
-			isDeclaredError(acceptor.name.name, acceptor.begLine, acceptor.begColumn);
+		if (isRecord == 0){
+			try {
+				SemTable.ins(acceptor.name.name, acceptor);
+			} catch (SemIllegalInsertException e) {
+				isDeclaredError(acceptor.name.name, acceptor.begLine, acceptor.begColumn);
+			}
 		}
 		acceptor.value.accept(this);
 	}
 
 	@Override
 	public void visit(AbsDeclName acceptor) {
+		
+		
 		System.out.println("you should not see thise... public void visit(AbsDeclName acceptor)");
 	}
 
@@ -183,9 +188,9 @@ public class SemNameResolver implements AbsVisitor{
 
 	@Override
 	public void visit(AbsRecordType acceptor) {
-		SemTable.newScope();
+		isRecord++;
 		acceptor.fields.accept(this);
-		SemTable.oldScope();
+		isRecord--;
 	}
 
 	@Override
@@ -197,17 +202,25 @@ public class SemNameResolver implements AbsVisitor{
 
 	@Override
 	public void visit(AbsTypeDecl acceptor) {
-		try {
-			SemTable.ins(acceptor.name.name, acceptor);
-		} catch (SemIllegalInsertException e) {
-			isDeclaredError(acceptor.name.name, acceptor.begLine, acceptor.begColumn);
+		if (isRecord == 0){
+			try {
+				SemTable.ins(acceptor.name.name, acceptor);
+			} catch (SemIllegalInsertException e) {
+				isDeclaredError(acceptor.name.name, acceptor.begLine, acceptor.begColumn);
+			}
 		}
 		acceptor.type.accept(this);
+		SemDesc.setNameDecl(acceptor.name, acceptor);
 	}
 
 	@Override
 	public void visit(AbsTypeName acceptor) {
-		notDeclaredError(acceptor.name, acceptor.begLine, acceptor.begColumn);
+		AbsDecl decl = SemTable.fnd(acceptor.name);
+		if (decl==null) {
+			
+		}else{
+			SemDesc.setNameDecl(acceptor, decl);
+		}
 	}
 
 	@Override
@@ -225,15 +238,22 @@ public class SemNameResolver implements AbsVisitor{
 
 	@Override
 	public void visit(AbsValName acceptor) {
-		notDeclaredError(acceptor.name, acceptor.begLine, acceptor.begColumn);
+		AbsDecl decl = SemTable.fnd(acceptor.name);
+		if (decl == null){
+			notDeclaredError(acceptor.name, acceptor.begLine, acceptor.begColumn);
+		}else{
+			SemDesc.setNameDecl(acceptor, decl);
+		}
 	}
 
 	@Override
 	public void visit(AbsVarDecl acceptor) {
-		try {
-			SemTable.ins(acceptor.name.name, acceptor);
-		} catch (SemIllegalInsertException e) {
-			isDeclaredError(acceptor.name.name, acceptor.begLine, acceptor.begColumn);
+		if (isRecord == 0){
+			try {
+				SemTable.ins(acceptor.name.name, acceptor);
+			} catch (SemIllegalInsertException e) {
+				isDeclaredError(acceptor.name.name, acceptor.begLine, acceptor.begColumn);
+			}
 		}
 		acceptor.type.accept(this);
 	}
@@ -246,12 +266,12 @@ public class SemNameResolver implements AbsVisitor{
 
 	private void isDeclaredError(String name, int line, int col){
 		System.out.println(String.format("var %s is redefined at (%d,%d)", name, line, col));
+		error = true;
 	}
 
 	private void notDeclaredError(String name, int line, int col){
-		if (SemTable.fnd(name)==null){
-			System.out.println(String.format("var %s is undefined at (%d,%d)", name, line, col));
-		}
+		System.out.println(String.format("var %s is undefined at (%d,%d)", name, line, col));
+		error = true;
 	}
 
 }

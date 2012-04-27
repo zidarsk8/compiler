@@ -1,175 +1,53 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <?xml-stylesheet type="text/xsl" href="xsl/semanal.xsl"?>
 <semanal>
-<absnode pos="(2:1-36:4)" kind="Program">
-<absnode pos="(2:1-2:16)" kind="DeclName" value="kr_neki">
+<absnode pos="(1:1-8:4)" kind="Program">
+<absnode pos="(1:1-1:15)" kind="DeclName" value="primer">
 </absnode>
-<absnode pos="(3:2-32:6)" kind="Decls">
-<absnode pos="(4:3-4:8)" kind="ConstDecl">
+<absnode pos="(2:7-4:8)" kind="Decls">
+<absnode pos="(2:7-2:18)" kind="TypeDecl">
+<seminfo kind="DECL" value="1048575489"/>
+<seminfo kind="SCOPE" value="0"/>
+<absnode pos="(2:7-2:7)" kind="DeclName" value="x">
+<seminfo kind="DECL" value="1048575489"/>
+<seminfo kind="SCOPE" value="0"/>
+</absnode>
+<absnode pos="(2:11-2:17)" kind="AtomType(INT)">
+</absnode>
+</absnode>
+<absnode pos="(3:6-3:17)" kind="VarDecl">
+<seminfo kind="DECL" value="1125708661"/>
+<seminfo kind="SCOPE" value="0"/>
+<absnode pos="(3:6-3:6)" kind="DeclName" value="a">
+</absnode>
+<absnode pos="(3:10-3:16)" kind="AtomType(INT)">
+</absnode>
+</absnode>
+<absnode pos="(4:3-4:8)" kind="VarDecl">
 <seminfo kind="DECL" value="454535357"/>
 <seminfo kind="SCOPE" value="0"/>
-<seminfo kind="VALUE" value="null"/>
-<absnode pos="(4:3-4:3)" kind="DeclName" value="a">
+<absnode pos="(4:3-4:3)" kind="DeclName" value="b">
 </absnode>
-<absnode pos="(4:7-4:7)" kind="AtomExpr(INT)" value="1">
-<seminfo kind="VALUE" value="null"/>
+<absnode pos="(4:7-4:7)" kind="TypeName" value="x">
 </absnode>
 </absnode>
-<absnode pos="(6:3-6:14)" kind="TypeDecl">
-<seminfo kind="DECL" value="776412720"/>
-<seminfo kind="SCOPE" value="0"/>
-<absnode pos="(6:3-6:3)" kind="DeclName" value="c">
 </absnode>
-<absnode pos="(6:7-6:13)" kind="AtomType(INT)">
+<absnode pos="(5:1-8:3)" kind="BlockStmt">
+<absnode pos="(6:3-7:8)" kind="Stmts">
+<absnode pos="(6:3-6:8)" kind="AssignStmt">
+<absnode pos="(6:3-6:3)" kind="ValName" value="b">
+<seminfo kind="DECL" value="454535357"/>
 </absnode>
-</absnode>
-<absnode pos="(7:3-7:8)" kind="TypeDecl">
-<seminfo kind="DECL" value="1730638671"/>
-<seminfo kind="SCOPE" value="null"/>
-<absnode pos="(7:3-7:3)" kind="DeclName" value="c">
-</absnode>
-<absnode pos="(7:7-7:7)" kind="TypeName" value="c">
-</absnode>
-</absnode>
-<absnode pos="(8:2-32:6)" kind="ProcDecl">
-<seminfo kind="DECL" value="329949514"/>
-<seminfo kind="SCOPE" value="1"/>
-<absnode pos="(8:12-8:12)" kind="DeclName" value="b">
-</absnode>
-<absnode pos="(8:13-8:14)" kind="Decls">
-</absnode>
-<absnode pos="(9:3-29:7)" kind="Decls">
-<absnode pos="(10:4-10:9)" kind="ConstDecl">
-<seminfo kind="DECL" value="658705244"/>
-<seminfo kind="SCOPE" value="1"/>
-<seminfo kind="VALUE" value="null"/>
-<absnode pos="(10:4-10:4)" kind="DeclName" value="a">
-</absnode>
-<absnode pos="(10:8-10:8)" kind="AtomExpr(INT)" value="2">
+<absnode pos="(6:8-6:8)" kind="AtomExpr(INT)" value="2">
 <seminfo kind="VALUE" value="null"/>
 </absnode>
 </absnode>
-<absnode pos="(11:4-11:9)" kind="ConstDecl">
-<seminfo kind="DECL" value="494109467"/>
-<seminfo kind="SCOPE" value="null"/>
-<seminfo kind="VALUE" value="null"/>
-<absnode pos="(11:4-11:4)" kind="DeclName" value="b">
+<absnode pos="(7:3-7:8)" kind="AssignStmt">
+<absnode pos="(7:3-7:3)" kind="ValName" value="a">
+<seminfo kind="DECL" value="1125708661"/>
 </absnode>
-<absnode pos="(11:8-11:8)" kind="AtomExpr(INT)" value="2">
-<seminfo kind="VALUE" value="null"/>
-</absnode>
-</absnode>
-<absnode pos="(13:4-19:7)" kind="TypeDecl">
-<seminfo kind="DECL" value="580835623"/>
-<seminfo kind="SCOPE" value="1"/>
-<absnode pos="(13:4-13:4)" kind="DeclName" value="c">
-</absnode>
-<absnode pos="(13:8-19:6)" kind="RecordType">
-<absnode pos="(14:5-18:8)" kind="Decls">
-<absnode pos="(14:5-14:15)" kind="TypeDecl">
-<seminfo kind="DECL" value="1791140146"/>
-<seminfo kind="SCOPE" value="2"/>
-<absnode pos="(14:5-14:5)" kind="DeclName" value="a">
-</absnode>
-<absnode pos="(14:9-14:15)" kind="AtomType(INT)">
-</absnode>
-</absnode>
-<absnode pos="(15:5-18:8)" kind="TypeDecl">
-<seminfo kind="DECL" value="266670176"/>
-<seminfo kind="SCOPE" value="2"/>
-<absnode pos="(15:5-15:5)" kind="DeclName" value="b">
-</absnode>
-<absnode pos="(15:9-18:8)" kind="ArrayType">
-<absnode pos="(15:15-15:15)" kind="ValName" value="c">
-</absnode>
-<absnode pos="(15:18-15:25)" kind="ValName" value="nedefLol">
-</absnode>
-<absnode pos="(15:31-18:8)" kind="RecordType">
-<absnode pos="(16:6-17:13)" kind="Decls">
-<absnode pos="(16:6-16:16)" kind="TypeDecl">
-<seminfo kind="DECL" value="127276743"/>
-<seminfo kind="SCOPE" value="3"/>
-<absnode pos="(16:6-16:6)" kind="DeclName" value="a">
-</absnode>
-<absnode pos="(16:10-16:16)" kind="AtomType(INT)">
-</absnode>
-</absnode>
-<absnode pos="(17:6-17:13)" kind="TypeDecl">
-<seminfo kind="DECL" value="246507189"/>
-<seminfo kind="SCOPE" value="3"/>
-<absnode pos="(17:6-17:6)" kind="DeclName" value="b">
-</absnode>
-<absnode pos="(17:10-17:13)" kind="AtomType(CHAR)">
-</absnode>
-</absnode>
-</absnode>
-</absnode>
-</absnode>
-</absnode>
-</absnode>
-</absnode>
-</absnode>
-<absnode pos="(21:3-29:7)" kind="ProcDecl">
-<seminfo kind="DECL" value="2078199276"/>
-<seminfo kind="SCOPE" value="2"/>
-<absnode pos="(21:13-21:13)" kind="DeclName" value="c">
-</absnode>
-<absnode pos="(21:14-21:15)" kind="Decls">
-</absnode>
-<absnode pos="(22:4-27:16)" kind="Decls">
-<absnode pos="(23:5-23:10)" kind="ConstDecl">
-<seminfo kind="DECL" value="1621196924"/>
-<seminfo kind="SCOPE" value="2"/>
-<seminfo kind="VALUE" value="null"/>
-<absnode pos="(23:5-23:5)" kind="DeclName" value="a">
-</absnode>
-<absnode pos="(23:9-23:9)" kind="AtomExpr(INT)" value="2">
-<seminfo kind="VALUE" value="null"/>
-</absnode>
-</absnode>
-<absnode pos="(24:5-24:10)" kind="ConstDecl">
-<seminfo kind="DECL" value="184188532"/>
-<seminfo kind="SCOPE" value="2"/>
-<seminfo kind="VALUE" value="null"/>
-<absnode pos="(24:5-24:5)" kind="DeclName" value="b">
-</absnode>
-<absnode pos="(24:9-24:9)" kind="AtomExpr(INT)" value="2">
-<seminfo kind="VALUE" value="null"/>
-</absnode>
-</absnode>
-<absnode pos="(27:5-27:16)" kind="VarDecl">
-<seminfo kind="DECL" value="685740017"/>
-<seminfo kind="SCOPE" value="null"/>
-<absnode pos="(27:5-27:5)" kind="DeclName" value="a">
-</absnode>
-<absnode pos="(27:9-27:15)" kind="AtomType(INT)">
-</absnode>
-</absnode>
-</absnode>
-<absnode pos="(28:4-29:6)" kind="BlockStmt">
-<absnode pos="(0:0-0:0)" kind="Stmts">
-</absnode>
-</absnode>
-</absnode>
-</absnode>
-<absnode pos="(31:3-32:5)" kind="BlockStmt">
-<absnode pos="(0:0-0:0)" kind="Stmts">
-</absnode>
-</absnode>
-</absnode>
-</absnode>
-<absnode pos="(33:1-36:3)" kind="BlockStmt">
-<absnode pos="(34:2-35:8)" kind="Stmts">
-<absnode pos="(34:2-34:7)" kind="AssignStmt">
-<absnode pos="(34:2-34:2)" kind="ValName" value="c">
-</absnode>
-<absnode pos="(34:7-34:7)" kind="ValName" value="a">
-</absnode>
-</absnode>
-<absnode pos="(35:2-35:8)" kind="AssignStmt">
-<absnode pos="(35:2-35:2)" kind="ValName" value="c">
-</absnode>
-<absnode pos="(35:7-35:8)" kind="ValName" value="dd">
+<absnode pos="(7:8-7:8)" kind="ValName" value="b">
+<seminfo kind="DECL" value="454535357"/>
 </absnode>
 </absnode>
 </absnode>
