@@ -10,6 +10,7 @@ import compiler.abstree.tree.AbsBinExpr;
 import compiler.abstree.tree.AbsBlockStmt;
 import compiler.abstree.tree.AbsCallExpr;
 import compiler.abstree.tree.AbsConstDecl;
+import compiler.abstree.tree.AbsDecl;
 import compiler.abstree.tree.AbsDeclName;
 import compiler.abstree.tree.AbsDecls;
 import compiler.abstree.tree.AbsExprStmt;
@@ -21,185 +22,382 @@ import compiler.abstree.tree.AbsPointerType;
 import compiler.abstree.tree.AbsProcDecl;
 import compiler.abstree.tree.AbsProgram;
 import compiler.abstree.tree.AbsRecordType;
+import compiler.abstree.tree.AbsStmt;
 import compiler.abstree.tree.AbsStmts;
 import compiler.abstree.tree.AbsTypeDecl;
 import compiler.abstree.tree.AbsTypeName;
 import compiler.abstree.tree.AbsUnExpr;
+import compiler.abstree.tree.AbsValExpr;
 import compiler.abstree.tree.AbsValExprs;
 import compiler.abstree.tree.AbsValName;
 import compiler.abstree.tree.AbsVarDecl;
 import compiler.abstree.tree.AbsWhileStmt;
+import compiler.semanal.type.SemArrayType;
+import compiler.semanal.type.SemAtomType;
+import compiler.semanal.type.SemPointerType;
+import compiler.semanal.type.SemRecordType;
+import compiler.semanal.type.SemSubprogramType;
+import compiler.semanal.type.SemType;
 
 public class SemTypeChecker implements AbsVisitor{
 
 	public boolean error = false;
-	
+
 	@Override
 	public void visit(AbsAlloc acceptor) {
-		// TODO Auto-generated method stub
-		
+		SemAtomType type = new SemAtomType(SemAtomType.INT);
+		SemDesc.setActualType(acceptor, type);
 	}
 
 	@Override
 	public void visit(AbsArrayType acceptor) {
-		// TODO Auto-generated method stub
-		
+		acceptor.loBound.accept(this); //tega naceloma ne rabmo k vemo da je notr int
+		acceptor.hiBound.accept(this);
+		acceptor.type.accept(this);
+		SemType type = SemDesc.getActualType(acceptor.type);
+		Integer loBound = SemDesc.getActualConst(acceptor.loBound);
+		Integer hiBound = SemDesc.getActualConst(acceptor.hiBound);
+		if (type != null){
+			SemDesc.setActualType(acceptor, new SemArrayType(type, loBound, hiBound));
+		}else{
+			noTypeError(acceptor.type.begLine, acceptor.type.begColumn);
+		}
 	}
 
 	@Override
 	public void visit(AbsAssignStmt acceptor) {
-		// TODO Auto-generated method stub
-		
+		acceptor.dstExpr.accept(this);
+		acceptor.srcExpr.accept(this);
+		SemType ftype = SemDesc.getActualType(acceptor.dstExpr);
+		SemType stype = SemDesc.getActualType(acceptor.srcExpr);
+		if (ftype != null && stype != null){
+			if (ftype.coercesTo(stype)){
+				if (ftype instanceof SemAtomType || ftype instanceof SemPointerType){
+					SemDesc.setActualType(acceptor, ftype);
+				}else{
+					integerPointerTypeError(acceptor.begLine,acceptor.begColumn);
+				}
+			}else{
+				missmatchTypeError(acceptor.begLine,acceptor.begColumn);
+			}
+		}else{
+			noTypeError(acceptor.begLine,acceptor.begColumn);
+		}
 	}
 
 	@Override
 	public void visit(AbsAtomConst acceptor) {
-		// TODO Auto-generated method stub
-		
+		SemAtomType type = new SemAtomType(acceptor.type);
+		SemDesc.setActualType(acceptor, type);
 	}
 
 	@Override
 	public void visit(AbsAtomType acceptor) {
-		// TODO Auto-generated method stub
-		
+		SemAtomType type = new SemAtomType(acceptor.type);
+		SemDesc.setActualType(acceptor, type);
 	}
 
 	@Override
 	public void visit(AbsBinExpr acceptor) {
-		// TODO Auto-generated method stub
-		
+		acceptor.fstExpr.accept(this);
+		acceptor.sndExpr.accept(this);
+		SemType ftype = SemDesc.getActualType(acceptor.fstExpr);
+		SemType stype = SemDesc.getActualType(acceptor.sndExpr);
+		if (ftype != null && stype != null){
+			switch (acceptor.oper) {
+			case AbsBinExpr.ADD:
+			case AbsBinExpr.SUB:
+			case AbsBinExpr.MUL:
+			case AbsBinExpr.DIV:
+				SemAtomType integer = new SemAtomType(AbsAtomType.INT);
+				if (ftype.coercesTo(stype)){
+					if (ftype.coercesTo(integer)){
+						SemDesc.setActualType(acceptor, ftype);
+					}else{
+						integerTypeError(acceptor.begLine,acceptor.begColumn);
+					}
+				}else{
+					missmatchTypeError(acceptor.begLine,acceptor.begColumn);
+				}
+				break;
+			case AbsBinExpr.EQU:
+			case AbsBinExpr.NEQ:
+			case AbsBinExpr.LTH:
+			case AbsBinExpr.GTH:
+			case AbsBinExpr.LEQ:
+			case AbsBinExpr.GEQ:
+				if (ftype.coercesTo(stype)){
+					if (ftype instanceof SemAtomType || ftype instanceof SemPointerType){
+						SemDesc.setActualType(acceptor, new SemAtomType(SemAtomType.BOOL));
+					}else{
+						integerPointerTypeError(acceptor.begLine,acceptor.begColumn);
+					}
+				}else{
+					missmatchTypeError(acceptor.begLine,acceptor.begColumn);
+				}
+				break;
+			case AbsBinExpr.AND:
+			case AbsBinExpr.OR:
+				SemAtomType bool = new SemAtomType(AbsAtomType.BOOL);
+				if (ftype.coercesTo(stype)){
+					if (ftype.coercesTo(bool)){
+						SemDesc.setActualType(acceptor, ftype);
+					}else{
+						booleanTypeError(acceptor.begLine,acceptor.begColumn);
+					}
+				}else{
+					missmatchTypeError(acceptor.begLine,acceptor.begColumn);
+				}
+				break;
+			case AbsBinExpr.ARRACCESS:
+				if (ftype instanceof SemArrayType){
+					if (stype.coercesTo(new SemAtomType(SemAtomType.INT))){
+						SemDesc.setActualType(acceptor, ((SemArrayType) ftype).type);
+					}else{
+						integerTypeError(acceptor.sndExpr.begLine, acceptor.sndExpr.begColumn);
+					}
+				}else{
+					arrayTypeError(acceptor.begLine,acceptor.begColumn);
+				}
+				break;
+			case AbsBinExpr.RECACCESS:
+				if (ftype instanceof SemRecordType){
+					SemDesc.setActualType(acceptor, stype);
+				}else{
+					recordTypeError(acceptor.begLine,acceptor.begColumn);
+				}
+				break;
+			}
+		}else{
+			noTypeError(acceptor.begLine,acceptor.begColumn);
+		}
 	}
+
 
 	@Override
 	public void visit(AbsBlockStmt acceptor) {
-		// TODO Auto-generated method stub
-		
+		acceptor.stmts.accept(this);
 	}
 
 	@Override
 	public void visit(AbsCallExpr acceptor) {
-		// TODO Auto-generated method stub
-		
+		acceptor.args.accept(this);
+		AbsDecl decl = SemTable.fnd(acceptor.name.name);
+		SemType type = SemDesc.getActualType(decl);
+		if (type instanceof SemSubprogramType){
+			SemSubprogramType thisType = new SemSubprogramType(((SemSubprogramType) type).getResultType());
+			for (AbsValExpr args: acceptor.args.exprs){
+				SemType argType = SemDesc.getActualType(args);
+				if (argType != null){
+					thisType.addParType(argType);
+				}else{
+					noTypeError(acceptor.begLine, acceptor.begColumn);
+				}
+			}
+			if (type.coercesTo(thisType)){
+				SemSubprogramType sub = (SemSubprogramType) type;
+				SemDesc.setActualType(acceptor, sub.getResultType());
+			}else{
+				argumentsTypeError(acceptor.begLine, acceptor.begColumn);
+			}
+		}else{
+			functionTypeError(acceptor.begLine, acceptor.begColumn);
+		}
 	}
 
 	@Override
 	public void visit(AbsConstDecl acceptor) {
-		// TODO Auto-generated method stub
-		
+		acceptor.value.accept(this);
+		SemType type = SemDesc.getActualType(acceptor.value);
+		if (type != null){
+			SemDesc.setActualType(acceptor, type);
+		}
 	}
 
 	@Override
 	public void visit(AbsDeclName acceptor) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void visit(AbsDecls acceptor) {
-		// TODO Auto-generated method stub
-		
+		for (AbsDecl decl : acceptor.decls) {
+			decl.accept(this);
+		}
 	}
 
 	@Override
 	public void visit(AbsExprStmt acceptor) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void visit(AbsForStmt acceptor) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void visit(AbsFunDecl acceptor) {
-		// TODO Auto-generated method stub
-		
+		acceptor.type.accept(this);
+		acceptor.pars.accept(this);
+
+		SemType resultType = SemDesc.getActualType(acceptor.type);
+		SemSubprogramType type = new SemSubprogramType(resultType);
+
+		for (AbsDecl decl: acceptor.pars.decls){
+			SemType paramType = SemDesc.getActualType(decl);
+			if (paramType != null){
+				type.addParType(paramType);
+			}else{
+				noTypeError(decl.begLine, decl.begColumn);
+			}
+		}
+
+		SemDesc.setActualType(acceptor, type);
+		acceptor.decls.accept(this);
+		acceptor.stmt.accept(this);
 	}
 
 	@Override
 	public void visit(AbsIfStmt acceptor) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void visit(AbsNilConst acceptor) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void visit(AbsPointerType acceptor) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void visit(AbsProcDecl acceptor) {
-		// TODO Auto-generated method stub
-		
+		acceptor.decls.accept(this);
+		acceptor.pars.accept(this);
+		acceptor.stmt.accept(this);
 	}
 
 	@Override
 	public void visit(AbsProgram acceptor) {
-		// TODO Auto-generated method stub
-		
+		acceptor.decls.accept(this);
+		acceptor.stmt.accept(this);
 	}
 
 	@Override
 	public void visit(AbsRecordType acceptor) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void visit(AbsStmts acceptor) {
-		// TODO Auto-generated method stub
-		
+		for (AbsStmt stmt: acceptor.stmts){
+			stmt.accept(this);
+		}
 	}
 
 	@Override
 	public void visit(AbsTypeDecl acceptor) {
-		// TODO Auto-generated method stub
-		
+		acceptor.type.accept(this);
+		SemType type = SemDesc.getActualType(acceptor.type);
+		if (type != null){
+			SemDesc.setActualType(acceptor, type);
+		}else{
+			noTypeError(acceptor.begLine, acceptor.begColumn);
+		}
+
 	}
 
 	@Override
 	public void visit(AbsTypeName acceptor) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void visit(AbsUnExpr acceptor) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void visit(AbsValExprs acceptor) {
-		// TODO Auto-generated method stub
-		
+		for (AbsValExpr expr: acceptor.exprs){
+			expr.accept(this);
+		}
 	}
 
 	@Override
 	public void visit(AbsValName acceptor) {
-		// TODO Auto-generated method stub
-		
+		AbsDecl decl = SemTable.fnd(acceptor.name);
+		SemType type = SemDesc.getActualType(decl);
+		if (type != null){
+			SemDesc.setActualType(acceptor, type);
+		}
 	}
 
 	@Override
 	public void visit(AbsVarDecl acceptor) {
-		// TODO Auto-generated method stub
-		
+		acceptor.type.accept(this);
+		SemType type = SemDesc.getActualType(acceptor.type);
+		if (type != null){
+			SemDesc.setActualType(acceptor, type);
+		}else{
+			noTypeError(acceptor.begLine, acceptor.begColumn);
+		}
 	}
 
 	@Override
 	public void visit(AbsWhileStmt acceptor) {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+
+	private void argumentsTypeError(int begLine, int begColumn) {
+		error = true;
+		System.out.println(String.format("type error: arguments don't match declaration (%d,%d)", begLine, begColumn));
+	}
+	private void functionTypeError(int begLine, int begColumn) {
+		error = true;
+		System.out.println(String.format("type error: expected subprogram (%d,%d)", begLine, begColumn));
+	}
+	private void integerTypeError(int begLine, int begColumn) {
+		error = true;
+		System.out.println(String.format("type error: expected integer (%d,%d)", begLine, begColumn));
+	}
+	private void integerPointerTypeError(int begLine, int begColumn) {
+		error = true;
+		System.out.println(String.format("type error: expected integer or pointer (%d,%d)", begLine, begColumn));
+	}
+	private void booleanTypeError(int begLine, int begColumn) {
+		error = true;
+		System.out.println(String.format("type error: expected boolean (%d,%d)", begLine, begColumn));
+	}
+	private void arrayTypeError(int begLine, int begColumn) {
+		error = true;
+		System.out.println(String.format("type error: expected array (%d,%d)", begLine, begColumn));
+	}
+	private void recordTypeError(int begLine, int begColumn) {
+		error = true;
+		System.out.println(String.format("type error: expected record (%d,%d)", begLine, begColumn));
+	}
+	private void missmatchTypeError(int begLine, int begColumn) {
+		error = true;
+		System.out.println(String.format("type error: missmatch at (%d,%d)", begLine, begColumn));
+	}
+	private void noTypeError(int begLine, int begColumn) {
+		error = true;
+		System.out.println(String.format("can not resolve type at (%d,%d)", begLine, begColumn));
 	}
 
 }

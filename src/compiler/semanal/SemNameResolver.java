@@ -45,9 +45,19 @@ public class SemNameResolver implements AbsVisitor{
 
 	@Override
 	public void visit(AbsArrayType acceptor) {
-		acceptor.type.accept(this);
 		acceptor.loBound.accept(this);
 		acceptor.hiBound.accept(this);
+		
+		Integer lval = SemDesc.getActualConst(acceptor.loBound);
+		Integer hval = SemDesc.getActualConst(acceptor.hiBound);
+		
+		if (lval == null){
+			notAValueError("loBound", acceptor.loBound.begLine, acceptor.loBound.begColumn);
+		}
+		if (hval == null){
+			notAValueError("hiBound", acceptor.hiBound.begLine, acceptor.hiBound.begColumn);
+		}
+		acceptor.type.accept(this);
 	}
 
 	@Override
@@ -58,7 +68,13 @@ public class SemNameResolver implements AbsVisitor{
 
 	@Override
 	public void visit(AbsAtomConst acceptor) {
-		// nothing to do here,
+		if (acceptor.type == AbsAtomConst.INT){
+			try {
+				SemDesc.setActualConst(acceptor, Integer.parseInt(acceptor.value));
+			} catch (Exception e) {
+				System.out.println(String.format("error parsing int value at (%d,%d)", acceptor.begLine, acceptor.endLine));
+			}
+		}
 	}
 
 	@Override
@@ -70,6 +86,26 @@ public class SemNameResolver implements AbsVisitor{
 	public void visit(AbsBinExpr acceptor) {
 		acceptor.fstExpr.accept(this);
 		acceptor.sndExpr.accept(this);
+		Integer fval = SemDesc.getActualConst(acceptor.fstExpr);
+		Integer sval = SemDesc.getActualConst(acceptor.sndExpr);
+		if (fval != null && sval != null){
+			switch (acceptor.oper) {
+			case AbsBinExpr.ADD:
+					SemDesc.setActualConst(acceptor, fval + sval);
+				break;
+			case AbsBinExpr.SUB:
+				SemDesc.setActualConst(acceptor, fval - sval);
+				break;
+			case AbsBinExpr.MUL:
+				SemDesc.setActualConst(acceptor, fval * sval);
+				break;
+			case AbsBinExpr.DIV:
+				if (sval != 0){
+					SemDesc.setActualConst(acceptor, fval / sval);
+				}
+				break;
+			}
+		}
 	}
 
 	@Override
@@ -79,8 +115,11 @@ public class SemNameResolver implements AbsVisitor{
 
 	@Override
 	public void visit(AbsCallExpr acceptor) {
-		notDeclaredError(acceptor.name.name, acceptor.begLine, acceptor.begColumn);
 		acceptor.args.accept(this);
+		AbsDecl decl = SemTable.fnd(acceptor.name.name);
+		if (decl == null){
+			notDeclaredError(acceptor.name.name, acceptor.begLine, acceptor.begColumn);
+		}
 	}
 
 	@Override
@@ -92,7 +131,15 @@ public class SemNameResolver implements AbsVisitor{
 				isDeclaredError(acceptor.name.name, acceptor.begLine, acceptor.begColumn);
 			}
 		}
+		
 		acceptor.value.accept(this);
+		
+		Integer val = SemDesc.getActualConst(acceptor.value);
+		if (val != null){
+			SemDesc.setActualConst(acceptor, val);
+		}else{
+			//notAValueError(acceptor.name.name, acceptor.begLine, acceptor.begColumn);
+		}
 	}
 
 	@Override
@@ -124,23 +171,22 @@ public class SemNameResolver implements AbsVisitor{
 
 	@Override
 	public void visit(AbsFunDecl acceptor) {
-		try {
-			SemTable.ins(acceptor.name.name, acceptor);
-		} catch (SemIllegalInsertException e) {
-			isDeclaredError(acceptor.name.name, acceptor.begLine, acceptor.begColumn);
-		}
 		SemTable.newScope();
 		try {
 			SemTable.ins(acceptor.name.name, acceptor);
 		} catch (SemIllegalInsertException e) {
 			isDeclaredError(acceptor.name.name, acceptor.begLine, acceptor.begColumn);
 		}
-
 		acceptor.decls.accept(this);
 		acceptor.type.accept(this);
 		acceptor.pars.accept(this);
 		acceptor.stmt.accept(this);
 		SemTable.oldScope();
+		try {
+			SemTable.ins(acceptor.name.name, acceptor);
+		} catch (SemIllegalInsertException e) {
+			isDeclaredError(acceptor.name.name, acceptor.begLine, acceptor.begColumn);
+		}
 	}
 
 	@Override
@@ -162,22 +208,21 @@ public class SemNameResolver implements AbsVisitor{
 
 	@Override
 	public void visit(AbsProcDecl acceptor) {
-		try {
-			SemTable.ins(acceptor.name.name, acceptor);
-		} catch (SemIllegalInsertException e) {
-			isDeclaredError(acceptor.name.name, acceptor.begLine, acceptor.begColumn);
-		}
 		SemTable.newScope();
 		try {
 			SemTable.ins(acceptor.name.name, acceptor);
 		} catch (SemIllegalInsertException e) {
 			isDeclaredError(acceptor.name.name, acceptor.begLine, acceptor.begColumn);
 		}
-
 		acceptor.decls.accept(this);
 		acceptor.pars.accept(this);
 		acceptor.stmt.accept(this);
 		SemTable.oldScope();
+		try {
+			SemTable.ins(acceptor.name.name, acceptor);
+		} catch (SemIllegalInsertException e) {
+			isDeclaredError(acceptor.name.name, acceptor.begLine, acceptor.begColumn);
+		}
 	}
 
 	@Override
@@ -230,7 +275,6 @@ public class SemNameResolver implements AbsVisitor{
 
 	@Override
 	public void visit(AbsValExprs acceptor) {
-		// seznami spremenljivk v klicih procedur in funkcij
 		for (AbsValExpr expr: acceptor.exprs){
 			expr.accept(this);
 		}
@@ -243,6 +287,10 @@ public class SemNameResolver implements AbsVisitor{
 			notDeclaredError(acceptor.name, acceptor.begLine, acceptor.begColumn);
 		}else{
 			SemDesc.setNameDecl(acceptor, decl);
+			Integer val = SemDesc.getActualConst(decl);
+			if (val != null){
+				SemDesc.setActualConst(acceptor, val);
+			}
 		}
 	}
 
@@ -266,6 +314,11 @@ public class SemNameResolver implements AbsVisitor{
 
 	private void isDeclaredError(String name, int line, int col){
 		System.out.println(String.format("var %s is redefined at (%d,%d)", name, line, col));
+		error = true;
+	}
+	
+	private void notAValueError(String name, int line, int col){
+		System.out.println(String.format("const %s can not be evalueted at (%d,%d)", name, line, col));
 		error = true;
 	}
 
