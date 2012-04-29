@@ -119,6 +119,8 @@ public class SemNameResolver implements AbsVisitor{
 		AbsDecl decl = SemTable.fnd(acceptor.name.name);
 		if (decl == null){
 			notDeclaredError(acceptor.name.name, acceptor.begLine, acceptor.begColumn);
+		}else{
+			SemDesc.setNameDecl(acceptor.name, decl);
 		}
 	}
 
@@ -177,9 +179,9 @@ public class SemNameResolver implements AbsVisitor{
 		} catch (SemIllegalInsertException e) {
 			isDeclaredError(acceptor.name.name, acceptor.begLine, acceptor.begColumn);
 		}
+		acceptor.pars.accept(this);
 		acceptor.decls.accept(this);
 		acceptor.type.accept(this);
-		acceptor.pars.accept(this);
 		acceptor.stmt.accept(this);
 		SemTable.oldScope();
 		try {
@@ -283,6 +285,7 @@ public class SemNameResolver implements AbsVisitor{
 	@Override
 	public void visit(AbsValName acceptor) {
 		AbsDecl decl = SemTable.fnd(acceptor.name);
+		System.out.println(acceptor.begLine+" name resolve: "+acceptor.name+" scope: "+SemDesc.getScope(decl));
 		if (decl == null){
 			notDeclaredError(acceptor.name, acceptor.begLine, acceptor.begColumn);
 		}else{

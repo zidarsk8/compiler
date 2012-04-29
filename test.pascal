@@ -1,17 +1,14 @@
 program kr_neki;
+	const
+		f = 3;
+		t = f*3;
+	type
+		int = integer; 
+		ar = array[f..t] of int;
+		p = ^integer;
 	var 
-		x : integer;
-		
-	function a(x:integer):integer;
-	begin
-		x := a(0)
-	end;
-	function b(x:integer):integer;
-	begin
-	end;
-	procedure c(a:array[1..2] of integer);
-	begin
-	end;
+		x : ar;
+		v : int;
 begin
-	x := a(3)*4
+	
 end.

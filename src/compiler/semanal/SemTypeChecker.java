@@ -42,11 +42,14 @@ import compiler.semanal.type.SemType;
 public class SemTypeChecker implements AbsVisitor{
 
 	public boolean error = false;
+	private SemType typeInt = new SemAtomType(SemAtomType.INT);
+	private SemType typeBool = new SemAtomType(SemAtomType.BOOL);
+	//private SemType typeChar = new SemAtomType(SemAtomType.CHAR);
+	private SemType typeVoid = new SemAtomType(SemAtomType.VOID);
 
 	@Override
 	public void visit(AbsAlloc acceptor) {
-		SemAtomType type = new SemAtomType(SemAtomType.INT);
-		SemDesc.setActualType(acceptor, type);
+		SemDesc.setActualType(acceptor, typeInt);
 	}
 
 	@Override
@@ -128,7 +131,7 @@ public class SemTypeChecker implements AbsVisitor{
 			case AbsBinExpr.GEQ:
 				if (ftype.coercesTo(stype)){
 					if (ftype instanceof SemAtomType || ftype instanceof SemPointerType){
-						SemDesc.setActualType(acceptor, new SemAtomType(SemAtomType.BOOL));
+						SemDesc.setActualType(acceptor, typeBool);
 					}else{
 						integerPointerTypeError(acceptor.begLine,acceptor.begColumn);
 					}
@@ -151,7 +154,7 @@ public class SemTypeChecker implements AbsVisitor{
 				break;
 			case AbsBinExpr.ARRACCESS:
 				if (ftype instanceof SemArrayType){
-					if (stype.coercesTo(new SemAtomType(SemAtomType.INT))){
+					if (stype.coercesTo(typeInt)){
 						SemDesc.setActualType(acceptor, ((SemArrayType) ftype).type);
 					}else{
 						integerTypeError(acceptor.sndExpr.begLine, acceptor.sndExpr.begColumn);
@@ -182,7 +185,7 @@ public class SemTypeChecker implements AbsVisitor{
 	@Override
 	public void visit(AbsCallExpr acceptor) {
 		acceptor.args.accept(this);
-		AbsDecl decl = SemTable.fnd(acceptor.name.name);
+		AbsDecl decl = SemDesc.getNameDecl(acceptor.name);
 		SemType type = SemDesc.getActualType(decl);
 		if (type instanceof SemSubprogramType){
 			SemSubprogramType thisType = new SemSubprogramType(((SemSubprogramType) type).getResultType());
@@ -216,8 +219,7 @@ public class SemTypeChecker implements AbsVisitor{
 
 	@Override
 	public void visit(AbsDeclName acceptor) {
-		// TODO Auto-generated method stub
-
+		System.out.println("Gandalf: the force is strong with you hairy!");
 	}
 
 	@Override
@@ -229,20 +231,42 @@ public class SemTypeChecker implements AbsVisitor{
 
 	@Override
 	public void visit(AbsExprStmt acceptor) {
-		// TODO Auto-generated method stub
-
+		acceptor.expr.accept(this);
+		SemType type = SemDesc.getActualType(acceptor.expr);
+		if (type != null){
+			SemDesc.setActualType(acceptor, type);
+		}else{
+			noTypeError(acceptor.expr.begLine, acceptor.expr.begColumn);
+		}
 	}
 
 	@Override
 	public void visit(AbsForStmt acceptor) {
-		// TODO Auto-generated method stub
+		AbsDecl var = SemDesc.getNameDecl(acceptor.name);
+		SemType varType = SemDesc.getActualType(var);
+		
+		acceptor.loBound.accept(this);
+		acceptor.hiBound.accept(this);
 
+		SemType lo = SemDesc.getActualType(acceptor.loBound);
+		SemType hi = SemDesc.getActualType(acceptor.hiBound);
+		if (!varType.coercesTo(typeInt)){
+			integerTypeError(acceptor.name.begLine, acceptor.name.begColumn);
+		}
+		if (!lo.coercesTo(typeInt)){
+			integerTypeError(acceptor.loBound.begLine, acceptor.loBound.begColumn);
+		}
+		if (!hi.coercesTo(typeInt)){
+			integerTypeError(acceptor.hiBound.begLine, acceptor.hiBound.begColumn);
+		}
+		
+		acceptor.stmt.accept(this);
 	}
 
 	@Override
 	public void visit(AbsFunDecl acceptor) {
-		acceptor.type.accept(this);
 		acceptor.pars.accept(this);
+		acceptor.type.accept(this);
 
 		SemType resultType = SemDesc.getActualType(acceptor.type);
 		SemSubprogramType type = new SemSubprogramType(resultType);
@@ -263,20 +287,32 @@ public class SemTypeChecker implements AbsVisitor{
 
 	@Override
 	public void visit(AbsIfStmt acceptor) {
-		// TODO Auto-generated method stub
-
+		acceptor.cond.accept(this);
+		acceptor.thenStmt.accept(this);
+		acceptor.elseStmt.accept(this);
+		SemType condType = SemDesc.getActualType(acceptor.cond);
+		if (condType == null){
+			noTypeError(acceptor.begLine, acceptor.begColumn);
+		}else if (!(condType instanceof SemAtomType) || 
+				((SemAtomType)condType).type != SemAtomType.BOOL){
+			booleanTypeError(acceptor.begLine, acceptor.begColumn);
+		}
 	}
 
 	@Override
 	public void visit(AbsNilConst acceptor) {
-		// TODO Auto-generated method stub
-
+		SemDesc.setActualType(acceptor, typeVoid);
 	}
 
 	@Override
 	public void visit(AbsPointerType acceptor) {
-		// TODO Auto-generated method stub
-
+		acceptor.type.accept(this);
+		SemType type = SemDesc.getActualType(acceptor.type);
+		if (type != null){
+			SemDesc.setActualType(acceptor, new SemPointerType(type));
+		}else{
+			noTypeError(acceptor.begLine, acceptor.begColumn);
+		}
 	}
 
 	@Override
@@ -319,14 +355,62 @@ public class SemTypeChecker implements AbsVisitor{
 
 	@Override
 	public void visit(AbsTypeName acceptor) {
-		// TODO Auto-generated method stub
-
+		AbsDecl decl = SemDesc.getNameDecl(acceptor);
+		if (decl instanceof AbsTypeDecl){
+			SemType type = SemDesc.getActualType(decl);
+			if (type != null){
+				SemDesc.setActualType(acceptor, type);
+			}else{
+				noTypeError(acceptor.begLine, acceptor.begColumn);
+			}
+		}else{
+			noTypeError(acceptor.begLine, acceptor.begColumn);
+		}
 	}
 
 	@Override
 	public void visit(AbsUnExpr acceptor) {
-		// TODO Auto-generated method stub
-
+		acceptor.expr.accept(this);
+		SemType type = SemDesc.getActualType(acceptor.expr);
+		switch (acceptor.oper) {
+		case AbsUnExpr.ADD:
+		case AbsUnExpr.SUB:
+			if (type instanceof SemAtomType && ((SemAtomType) type).type == SemAtomType.INT){
+				SemDesc.setActualType(acceptor, type);
+			}else{
+				integerTypeError(acceptor.expr.begLine, acceptor.expr.begColumn);
+			}
+			break;
+		case AbsUnExpr.NOT:
+			if (type instanceof SemAtomType && ((SemAtomType) type).type == SemAtomType.BOOL){
+				SemDesc.setActualType(acceptor, type);
+			}else{
+				booleanTypeError(acceptor.expr.begLine, acceptor.expr.begColumn);
+			}
+			break;
+		case AbsUnExpr.MEM:
+			if (type != null){
+				SemPointerType ptr = new SemPointerType(type);
+				SemDesc.setActualType(acceptor, ptr);
+			}else{
+				noTypeError(acceptor.expr.begLine, acceptor.expr.begColumn);
+			}
+			break;
+		case AbsUnExpr.VAL:
+			if (type != null){
+				if (type instanceof SemPointerType){
+					SemDesc.setActualType(acceptor, type);
+				}else{
+					pointerTypeError(acceptor.expr.begLine, acceptor.expr.begColumn);
+				}
+			}else{
+				noTypeError(acceptor.expr.begLine, acceptor.expr.begColumn);
+			}
+			break;
+		default:
+			System.out.println("something weird going on in visit(AbsUnExpr)");
+			break;
+		}
 	}
 
 	@Override
@@ -338,7 +422,8 @@ public class SemTypeChecker implements AbsVisitor{
 
 	@Override
 	public void visit(AbsValName acceptor) {
-		AbsDecl decl = SemTable.fnd(acceptor.name);
+		AbsDecl decl = SemDesc.getNameDecl(acceptor);
+		System.out.println(acceptor.begLine+" type resolve: "+acceptor.name+" scope: "+SemDesc.getScope(decl));
 		SemType type = SemDesc.getActualType(decl);
 		if (type != null){
 			SemDesc.setActualType(acceptor, type);
@@ -358,10 +443,14 @@ public class SemTypeChecker implements AbsVisitor{
 
 	@Override
 	public void visit(AbsWhileStmt acceptor) {
-		// TODO Auto-generated method stub
-
+		SemType cond = SemDesc.getActualType(acceptor.cond);
+		
+		if (!cond.coercesTo(typeInt)){
+			integerTypeError(acceptor.cond.begLine, acceptor.cond.begColumn);
+		}
+		
+		acceptor.stmt.accept(this);
 	}
-
 
 	private void argumentsTypeError(int begLine, int begColumn) {
 		error = true;
@@ -378,6 +467,10 @@ public class SemTypeChecker implements AbsVisitor{
 	private void integerPointerTypeError(int begLine, int begColumn) {
 		error = true;
 		System.out.println(String.format("type error: expected integer or pointer (%d,%d)", begLine, begColumn));
+	}
+	private void pointerTypeError(int begLine, int begColumn) {
+		error = true;
+		System.out.println(String.format("type error: expected pointer (%d,%d)", begLine, begColumn));
 	}
 	private void booleanTypeError(int begLine, int begColumn) {
 		error = true;
