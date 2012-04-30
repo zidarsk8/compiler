@@ -1,18 +1,14 @@
 program kr_neki;
-	const
-		f = 3;
-		t = f*3;
 	type
-		int = integer; 
-		ar = array[f..t] of int;
-		p = ^integer;
-		aar = ^ar;
+		int = record
+			a:integer;
+			b:integer;
+			c : record
+				a:integer
+			end
+		end; 
 	var 
-		x : ar;
-		v : int;
-	function fun(x:integer):^ar;
-	begin
-	end;
+		a : int;
 begin
-	^x := fun(3)
+	a.b := 3
 end.

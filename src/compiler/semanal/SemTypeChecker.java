@@ -330,8 +330,26 @@ public class SemTypeChecker implements AbsVisitor{
 
 	@Override
 	public void visit(AbsRecordType acceptor) {
+		acceptor.fields.accept(this);
 		
-		SemDesc.setActualType(acceptor, typeInt);
+		SemRecordType type = new SemRecordType();
+		
+		for (AbsDecl d : acceptor.fields.decls) {
+			if (d instanceof AbsTypeDecl){
+				AbsTypeDecl decl = (AbsTypeDecl) d;
+				SemType declType = SemDesc.getActualType(decl);
+				if (declType != null){
+					type.addField(decl.name, declType);
+				}else{
+					noTypeError(d.begLine, d.begColumn);
+				}
+			}else{
+				noTypeError(d.begLine, d.begColumn);
+			}
+		}
+		
+		SemDesc.setActualType(acceptor, type);
+		
 	}
 
 	@Override
