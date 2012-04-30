@@ -169,7 +169,7 @@ public class SemTypeChecker implements AbsVisitor{
 			case AbsBinExpr.RECACCESS:
 				if (ftype instanceof SemRecordType){
 					SemRecordType record = (SemRecordType) ftype;
-					
+
 					if (acceptor.sndExpr instanceof AbsValName){
 						AbsValName valname = (AbsValName) acceptor.sndExpr;
 						int i = 0;
@@ -221,7 +221,7 @@ public class SemTypeChecker implements AbsVisitor{
 				argumentsTypeError(acceptor.begLine, acceptor.begColumn);
 			}
 		}else{
-			functionTypeError(acceptor.begLine, acceptor.begColumn);
+			subprogramTypeError(acceptor.begLine, acceptor.begColumn);
 		}
 	}
 
@@ -248,12 +248,22 @@ public class SemTypeChecker implements AbsVisitor{
 
 	@Override
 	public void visit(AbsExprStmt acceptor) {
-		acceptor.expr.accept(this);
-		SemType type = SemDesc.getActualType(acceptor.expr);
-		if (type != null){
-			SemDesc.setActualType(acceptor, type);
+		if (acceptor.expr instanceof AbsCallExpr){
+			AbsCallExpr call = (AbsCallExpr) acceptor.expr;
+			AbsDecl proc = SemDesc.getNameDecl(call.name);
+			if (proc instanceof AbsProcDecl){
+				acceptor.expr.accept(this);
+				SemType type = SemDesc.getActualType(acceptor.expr);
+				if (type != null){
+					SemDesc.setActualType(acceptor, type);
+				}else{
+					noTypeError(acceptor.expr.begLine, acceptor.expr.begColumn);
+				}
+			}else{
+				procedureTypeError(acceptor.expr.begLine, acceptor.expr.begColumn);
+			}
 		}else{
-			noTypeError(acceptor.expr.begLine, acceptor.expr.begColumn);
+			subprogramTypeError(acceptor.expr.begLine, acceptor.expr.begColumn);
 		}
 	}
 
@@ -261,7 +271,7 @@ public class SemTypeChecker implements AbsVisitor{
 	public void visit(AbsForStmt acceptor) {
 		AbsDecl var = SemDesc.getNameDecl(acceptor.name);
 		SemType varType = SemDesc.getActualType(var);
-		
+
 		acceptor.loBound.accept(this);
 		acceptor.hiBound.accept(this);
 
@@ -282,7 +292,7 @@ public class SemTypeChecker implements AbsVisitor{
 		}else if (!hi.coercesTo(typeInt)){
 			integerTypeError(acceptor.hiBound.begLine, acceptor.hiBound.begColumn);
 		}
-		
+
 		acceptor.stmt.accept(this);
 	}
 
@@ -353,8 +363,8 @@ public class SemTypeChecker implements AbsVisitor{
 		}
 		SemDesc.setActualType(acceptor, type);
 
-		acceptor.stmt.accept(this);
 		acceptor.decls.accept(this);
+		acceptor.stmt.accept(this);
 	}
 
 	@Override
@@ -366,7 +376,7 @@ public class SemTypeChecker implements AbsVisitor{
 	@Override
 	public void visit(AbsRecordType acceptor) {
 		acceptor.fields.accept(this);
-		
+
 		SemRecordType type = new SemRecordType();
 		TreeSet<String> usedNames = new TreeSet<String>();
 		for (AbsDecl d : acceptor.fields.decls) {
@@ -380,7 +390,7 @@ public class SemTypeChecker implements AbsVisitor{
 					}else{
 						recordNameError(decl.name.name, d.begLine, d.begColumn);
 					}
-					
+
 				}else{
 					noTypeError(d.begLine, d.begColumn);
 				}
@@ -388,9 +398,9 @@ public class SemTypeChecker implements AbsVisitor{
 				noTypeError(d.begLine, d.begColumn);
 			}
 		}
-		
+
 		SemDesc.setActualType(acceptor, type);
-		
+
 	}
 
 	@Override
@@ -502,13 +512,13 @@ public class SemTypeChecker implements AbsVisitor{
 	@Override
 	public void visit(AbsWhileStmt acceptor) {
 		SemType cond = SemDesc.getActualType(acceptor.cond);
-		
+
 		if (cond == null){
 			noTypeError(acceptor.cond.begLine, acceptor.cond.begColumn);
 		}else if (!cond.coercesTo(typeInt)){
 			integerTypeError(acceptor.cond.begLine, acceptor.cond.begColumn);
 		}
-		
+
 		acceptor.stmt.accept(this);
 	}
 
@@ -516,7 +526,11 @@ public class SemTypeChecker implements AbsVisitor{
 		error = true;
 		System.out.println(String.format("type error: arguments don't match declaration (%d,%d)", begLine, begColumn));
 	}
-	private void functionTypeError(int begLine, int begColumn) {
+	private void subprogramTypeError(int begLine, int begColumn) {
+		error = true;
+		System.out.println(String.format("type error: expected subprogram (%d,%d)", begLine, begColumn));
+	}
+	private void procedureTypeError(int begLine, int begColumn) {
 		error = true;
 		System.out.println(String.format("type error: expected subprogram (%d,%d)", begLine, begColumn));
 	}
