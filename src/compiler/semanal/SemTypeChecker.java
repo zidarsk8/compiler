@@ -330,8 +330,8 @@ public class SemTypeChecker implements AbsVisitor{
 
 	@Override
 	public void visit(AbsRecordType acceptor) {
-		// TODO Auto-generated method stub
-
+		
+		SemDesc.setActualType(acceptor, typeInt);
 	}
 
 	@Override
