@@ -1,5 +1,8 @@
 package compiler.semanal;
 
+import java.util.HashMap;
+import java.util.TreeSet;
+
 import compiler.abstree.AbsVisitor;
 import compiler.abstree.tree.AbsAlloc;
 import compiler.abstree.tree.AbsArrayType;
@@ -106,7 +109,7 @@ public class SemTypeChecker implements AbsVisitor{
 		acceptor.sndExpr.accept(this);
 		SemType ftype = SemDesc.getActualType(acceptor.fstExpr);
 		SemType stype = SemDesc.getActualType(acceptor.sndExpr);
-		if (ftype != null && stype != null){
+		if (ftype != null && (stype != null || acceptor.oper == AbsBinExpr.RECACCESS)){
 			switch (acceptor.oper) {
 			case AbsBinExpr.ADD:
 			case AbsBinExpr.SUB:
@@ -165,7 +168,21 @@ public class SemTypeChecker implements AbsVisitor{
 				break;
 			case AbsBinExpr.RECACCESS:
 				if (ftype instanceof SemRecordType){
-					SemDesc.setActualType(acceptor, stype);
+					SemRecordType record = (SemRecordType) ftype;
+					
+					if (acceptor.sndExpr instanceof AbsValName){
+						AbsValName valname = (AbsValName) acceptor.sndExpr;
+						int i = 0;
+						AbsDeclName fn;
+						while((fn = record.getFieldName(i++))!= null){
+							if (fn.name.equals(valname.name)){
+								SemDesc.setActualType(acceptor, record.getFieldType(--i));
+								break;
+							}
+						}
+					}else{
+						System.out.println("some weird record errrorr");
+					}
 				}else{
 					recordTypeError(acceptor.begLine,acceptor.begColumn);
 				}
@@ -333,13 +350,19 @@ public class SemTypeChecker implements AbsVisitor{
 		acceptor.fields.accept(this);
 		
 		SemRecordType type = new SemRecordType();
-		
+		TreeSet<String> usedNames = new TreeSet<String>();
 		for (AbsDecl d : acceptor.fields.decls) {
 			if (d instanceof AbsTypeDecl){
 				AbsTypeDecl decl = (AbsTypeDecl) d;
 				SemType declType = SemDesc.getActualType(decl);
 				if (declType != null){
-					type.addField(decl.name, declType);
+					if (!usedNames.contains(decl.name.name)){
+						type.addField(decl.name, declType);
+						usedNames.add(decl.name.name);
+					}else{
+						recordNameError(decl.name.name, d.begLine, d.begColumn);
+					}
+					
 				}else{
 					noTypeError(d.begLine, d.begColumn);
 				}
@@ -508,6 +531,10 @@ public class SemTypeChecker implements AbsVisitor{
 	private void noTypeError(int begLine, int begColumn) {
 		error = true;
 		System.out.println(String.format("can not resolve type at (%d,%d)", begLine, begColumn));
+	}
+	private void recordNameError(String name, int begLine, int begColumn) {
+		error = true;
+		System.out.println(String.format("record element '%s' already exists (%d,%d)",name, begLine, begColumn));
 	}
 
 }

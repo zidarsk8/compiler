@@ -85,6 +85,9 @@ public class SemNameResolver implements AbsVisitor{
 	@Override
 	public void visit(AbsBinExpr acceptor) {
 		acceptor.fstExpr.accept(this);
+		if (acceptor.oper == AbsBinExpr.RECACCESS){
+			return;
+		}
 		acceptor.sndExpr.accept(this);
 		Integer fval = SemDesc.getActualConst(acceptor.fstExpr);
 		Integer sval = SemDesc.getActualConst(acceptor.sndExpr);

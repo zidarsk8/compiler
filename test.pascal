@@ -1,14 +1,20 @@
 program kr_neki;
+	const 
+		f = 2;
+		t = f*5;
 	type
-		int = record
+		int = integer;
+		arr = array[t..t+f] of int;
+		r = record
 			a:integer;
-			b:integer;
+			bb:integer;
 			c : record
-				a:integer
+				a:arr
 			end
 		end; 
 	var 
-		a : int;
+		a : r;
+		b : integer;
 begin
-	a.b := 3
+	^a.c.a[f] := ^b
 end.
