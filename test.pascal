@@ -23,22 +23,23 @@ program kr_neki;
 	
 	function loll(e:integer) : ^array [f-2..t+2] of r;
 		procedure taPaResNicNeDela(a:int;rr:r);
+			begin
+				rr.a :=a;
+				
+				what[33] := ^wh;
+				what[0]^[0] := 'a'
+			end;
 		begin
-			rr.a :=a;
-			what[33] := ^wh;
-			what[0]^[0] := 'a'
+			taPaResNicNeDela(3+2,a);
+			e := 2;
+			d := nil;
+			for e := 1 to 100*e do
+				begin
+					while e < 33 do
+						e := e-1
+				end
 		end;
-	begin
-		taPaResNicNeDela(3+2,a);
-		e := 2;
-		d := nil
-	end;
-	procedure lolll(x:int);
-	begin
-	end;
 begin
-
-	lolll(33);
 	a.c.a := b;
 	e := nil;
 	if d <> nil then

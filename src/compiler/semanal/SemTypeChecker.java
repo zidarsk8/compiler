@@ -1,6 +1,5 @@
 package compiler.semanal;
 
-import java.util.HashMap;
 import java.util.TreeSet;
 
 import compiler.abstree.AbsVisitor;
@@ -511,11 +510,11 @@ public class SemTypeChecker implements AbsVisitor{
 
 	@Override
 	public void visit(AbsWhileStmt acceptor) {
+		acceptor.cond.accept(this);
 		SemType cond = SemDesc.getActualType(acceptor.cond);
-
 		if (cond == null){
 			noTypeError(acceptor.cond.begLine, acceptor.cond.begColumn);
-		}else if (!cond.coercesTo(typeInt)){
+		}else if (!cond.coercesTo(typeBool)){
 			integerTypeError(acceptor.cond.begLine, acceptor.cond.begColumn);
 		}
 
