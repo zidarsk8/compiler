@@ -9,6 +9,8 @@ bin/**
 # Custom
 synanal.xml
 lexanal.xml
+abstree.xml
+semanal.xml
 PascalLex.java
 PascalSyn.java
 PascalTok.java

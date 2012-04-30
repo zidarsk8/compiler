@@ -267,13 +267,19 @@ public class SemTypeChecker implements AbsVisitor{
 
 		SemType lo = SemDesc.getActualType(acceptor.loBound);
 		SemType hi = SemDesc.getActualType(acceptor.hiBound);
-		if (!varType.coercesTo(typeInt)){
+		if (varType == null){
+			noTypeError(acceptor.name.begLine, acceptor.name.begColumn);
+		}else if (!varType.coercesTo(typeInt)){
 			integerTypeError(acceptor.name.begLine, acceptor.name.begColumn);
 		}
-		if (!lo.coercesTo(typeInt)){
+		if (lo== null){
+			noTypeError(acceptor.loBound.begLine, acceptor.loBound.begColumn);
+		}else if (!lo.coercesTo(typeInt)){
 			integerTypeError(acceptor.loBound.begLine, acceptor.loBound.begColumn);
 		}
-		if (!hi.coercesTo(typeInt)){
+		if (hi == null){
+			noTypeError(acceptor.hiBound.begLine, acceptor.hiBound.begColumn);
+		}else if (!hi.coercesTo(typeInt)){
 			integerTypeError(acceptor.hiBound.begLine, acceptor.hiBound.begColumn);
 		}
 		
@@ -485,7 +491,9 @@ public class SemTypeChecker implements AbsVisitor{
 	public void visit(AbsWhileStmt acceptor) {
 		SemType cond = SemDesc.getActualType(acceptor.cond);
 		
-		if (!cond.coercesTo(typeInt)){
+		if (cond == null){
+			noTypeError(acceptor.cond.begLine, acceptor.cond.begColumn);
+		}else if (!cond.coercesTo(typeInt)){
 			integerTypeError(acceptor.cond.begLine, acceptor.cond.begColumn);
 		}
 		
