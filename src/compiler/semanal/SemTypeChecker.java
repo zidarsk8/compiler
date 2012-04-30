@@ -77,6 +77,10 @@ public class SemTypeChecker implements AbsVisitor{
 		SemType ftype = SemDesc.getActualType(acceptor.dstExpr);
 		SemType stype = SemDesc.getActualType(acceptor.srcExpr);
 		if (ftype != null && stype != null){
+
+			System.out.println(ftype instanceof SemPointerType);
+			System.out.println(ftype.coercesTo(new SemAtomType(SemAtomType.VOID)));
+			
 			if (ftype.coercesTo(stype)){
 				if (ftype instanceof SemAtomType || ftype instanceof SemPointerType){
 					SemDesc.setActualType(acceptor, ftype);
