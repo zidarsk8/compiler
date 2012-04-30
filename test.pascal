@@ -31,6 +31,8 @@ program kr_neki;
 		end;
 	begin
 		taPaResNicNeDela(3+2,a);
+		4;
+		43+3;
 		e := 2;
 		d := nil
 	end;
