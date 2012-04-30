@@ -340,9 +340,21 @@ public class SemTypeChecker implements AbsVisitor{
 
 	@Override
 	public void visit(AbsProcDecl acceptor) {
-		acceptor.decls.accept(this);
 		acceptor.pars.accept(this);
+		SemSubprogramType type = new SemSubprogramType(typeVoid);
+
+		for (AbsDecl decl: acceptor.pars.decls){
+			SemType paramType = SemDesc.getActualType(decl);
+			if (paramType != null){
+				type.addParType(paramType);
+			}else{
+				noTypeError(decl.begLine, decl.begColumn);
+			}
+		}
+		SemDesc.setActualType(acceptor, type);
+
 		acceptor.stmt.accept(this);
+		acceptor.decls.accept(this);
 	}
 
 	@Override

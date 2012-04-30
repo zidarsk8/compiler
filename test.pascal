@@ -30,6 +30,7 @@ program kr_neki;
 			what[0]^[0] := 'a'
 		end;
 	begin
+		taPaResNicNeDela(3+2,a);
 		e := 2;
 		d := nil
 	end;
