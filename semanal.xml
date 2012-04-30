@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <?xml-stylesheet type="text/xsl" href="xsl/semanal.xsl"?>
 <semanal>
-<absnode pos="(1:1-14:4)" kind="Program">
+<absnode pos="(1:1-18:4)" kind="Program">
 <absnode pos="(1:1-1:16)" kind="DeclName" value="kr_neki">
 </absnode>
-<absnode pos="(2:2-11:10)" kind="Decls">
+<absnode pos="(2:2-15:5)" kind="Decls">
 <absnode pos="(3:3-3:8)" kind="ConstDecl">
 <seminfo kind="DECL" value="304573170"/>
 <seminfo kind="SCOPE" value="0"/>
@@ -80,44 +80,156 @@
 <absnode pos="(8:3-8:15)" kind="TypeDecl">
 <seminfo kind="DECL" value="637672301"/>
 <seminfo kind="SCOPE" value="0"/>
+<semtype kind="POINTER">
 <semtype kind="INT"/>
+</semtype>
 <absnode pos="(8:3-8:3)" kind="DeclName" value="p">
 <seminfo kind="DECL" value="637672301"/>
 <seminfo kind="SCOPE" value="0"/>
 </absnode>
+<absnode pos="(0:0-0:0)" kind="PointerType">
+<semtype kind="POINTER">
+<semtype kind="INT"/>
+</semtype>
 <absnode pos="(8:7-8:14)" kind="AtomType(INT)">
 <semtype kind="INT"/>
 </absnode>
 </absnode>
-<absnode pos="(10:3-10:9)" kind="VarDecl">
+</absnode>
+<absnode pos="(9:3-9:12)" kind="TypeDecl">
 <seminfo kind="DECL" value="72377361"/>
 <seminfo kind="SCOPE" value="0"/>
+<semtype kind="POINTER">
 <semtype kind="ARRAY" value="(3,9)">
 <semtype kind="INT"/>
 </semtype>
-<absnode pos="(10:3-10:3)" kind="DeclName" value="x">
+</semtype>
+<absnode pos="(9:3-9:5)" kind="DeclName" value="aar">
+<seminfo kind="DECL" value="72377361"/>
+<seminfo kind="SCOPE" value="0"/>
 </absnode>
-<absnode pos="(10:7-10:8)" kind="TypeName" value="ar">
+<absnode pos="(0:0-0:0)" kind="PointerType">
+<semtype kind="POINTER">
+<semtype kind="ARRAY" value="(3,9)">
+<semtype kind="INT"/>
+</semtype>
+</semtype>
+<absnode pos="(9:9-9:11)" kind="TypeName" value="ar">
 <seminfo kind="DECL" value="1493066937"/>
 <semtype kind="ARRAY" value="(3,9)">
 <semtype kind="INT"/>
 </semtype>
 </absnode>
 </absnode>
-<absnode pos="(11:3-11:10)" kind="VarDecl">
-<seminfo kind="DECL" value="2099335910"/>
+</absnode>
+<absnode pos="(11:3-11:9)" kind="VarDecl">
+<seminfo kind="DECL" value="382319160"/>
+<seminfo kind="SCOPE" value="0"/>
+<semtype kind="ARRAY" value="(3,9)">
+<semtype kind="INT"/>
+</semtype>
+<absnode pos="(11:3-11:3)" kind="DeclName" value="x">
+</absnode>
+<absnode pos="(11:7-11:8)" kind="TypeName" value="ar">
+<seminfo kind="DECL" value="1493066937"/>
+<semtype kind="ARRAY" value="(3,9)">
+<semtype kind="INT"/>
+</semtype>
+</absnode>
+</absnode>
+<absnode pos="(12:3-12:10)" kind="VarDecl">
+<seminfo kind="DECL" value="1441290688"/>
 <seminfo kind="SCOPE" value="0"/>
 <semtype kind="INT"/>
-<absnode pos="(11:3-11:3)" kind="DeclName" value="v">
+<absnode pos="(12:3-12:3)" kind="DeclName" value="v">
 </absnode>
-<absnode pos="(11:7-11:9)" kind="TypeName" value="int">
+<absnode pos="(12:7-12:9)" kind="TypeName" value="int">
 <seminfo kind="DECL" value="1915296511"/>
 <semtype kind="INT"/>
 </absnode>
 </absnode>
+<absnode pos="(13:2-15:5)" kind="FunDecl">
+<seminfo kind="DECL" value="366924029"/>
+<seminfo kind="SCOPE" value="0"/>
+<semtype kind="SUBPROGRAM">
+<semtype kind="INT"/>
+<semtype kind="POINTER">
+<semtype kind="ARRAY" value="(3,9)">
+<semtype kind="INT"/>
+</semtype>
+</semtype>
+</semtype>
+<absnode pos="(13:11-13:13)" kind="DeclName" value="fun">
 </absnode>
-<absnode pos="(12:1-14:3)" kind="BlockStmt">
+<absnode pos="(13:14-13:24)" kind="Decls">
+<absnode pos="(13:15-13:23)" kind="TypeDecl">
+<seminfo kind="DECL" value="1466604866"/>
+<seminfo kind="SCOPE" value="1"/>
+<semtype kind="INT"/>
+<absnode pos="(13:15-13:15)" kind="DeclName" value="x">
+<seminfo kind="DECL" value="1466604866"/>
+<seminfo kind="SCOPE" value="1"/>
+</absnode>
+<absnode pos="(13:17-13:23)" kind="AtomType(INT)">
+<semtype kind="INT"/>
+</absnode>
+</absnode>
+</absnode>
+<absnode pos="(0:0-0:0)" kind="PointerType">
+<semtype kind="POINTER">
+<semtype kind="ARRAY" value="(3,9)">
+<semtype kind="INT"/>
+</semtype>
+</semtype>
+<absnode pos="(13:26-13:28)" kind="TypeName" value="ar">
+<seminfo kind="DECL" value="1493066937"/>
+<semtype kind="ARRAY" value="(3,9)">
+<semtype kind="INT"/>
+</semtype>
+</absnode>
+</absnode>
+<absnode pos="(0:0-0:0)" kind="Decls">
+</absnode>
+<absnode pos="(14:2-15:4)" kind="BlockStmt">
 <absnode pos="(0:0-0:0)" kind="Stmts">
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+<absnode pos="(16:1-18:3)" kind="BlockStmt">
+<absnode pos="(17:2-17:13)" kind="Stmts">
+<absnode pos="(17:2-17:13)" kind="AssignStmt">
+<absnode pos="(17:2-17:3)" kind="UnExpr" value="MEM">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="POINTER">
+<semtype kind="ARRAY" value="(3,9)">
+<semtype kind="INT"/>
+</semtype>
+</semtype>
+<absnode pos="(17:3-17:3)" kind="ValName" value="x">
+<seminfo kind="DECL" value="382319160"/>
+<semtype kind="ARRAY" value="(3,9)">
+<semtype kind="INT"/>
+</semtype>
+</absnode>
+</absnode>
+<absnode pos="(17:8-17:13)" kind="CallExpr">
+<semtype kind="POINTER">
+<semtype kind="ARRAY" value="(3,9)">
+<semtype kind="INT"/>
+</semtype>
+</semtype>
+<absnode pos="(17:8-17:10)" kind="ValName" value="fun">
+<seminfo kind="DECL" value="366924029"/>
+</absnode>
+<absnode pos="(17:11-17:13)" kind="ValExprs">
+<absnode pos="(17:12-17:12)" kind="AtomExpr(INT)" value="3">
+<seminfo kind="VALUE" value="3"/>
+<semtype kind="INT"/>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
 </absnode>
 </absnode>
 </absnode>

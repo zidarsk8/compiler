@@ -6,6 +6,7 @@ program kr_neki;
 		int = integer; 
 		ar = array[f..t] of int;
 		p = ^integer;
+		aar = ^ar;
 	var 
 		x : ar;
 		v : int;
@@ -13,5 +14,5 @@ program kr_neki;
 	begin
 	end;
 begin
-	^x := ^fun(3)
+	^x := fun(3)
 end.

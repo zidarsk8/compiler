@@ -631,7 +631,7 @@ type_pointer ::=
 				PTR:p type_description:type
 					{:
 						type.setBeg(p,pleft,pright);
-						RESULT = type;
+						RESULT = new AbsPointerType(type);
 					:}
 		;
 
