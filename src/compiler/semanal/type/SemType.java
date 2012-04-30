@@ -7,7 +7,7 @@ import compiler.report.*;
  * 
  * @see SemAtomType 
  * @see SemArrayType
- * @see SemRecortType
+ * @see SemRecordType
  * @see SemPointerType
  */
 public abstract class SemType implements XMLable {
