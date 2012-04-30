@@ -423,7 +423,6 @@ public class SemTypeChecker implements AbsVisitor{
 	@Override
 	public void visit(AbsValName acceptor) {
 		AbsDecl decl = SemDesc.getNameDecl(acceptor);
-		System.out.println(acceptor.begLine+" type resolve: "+acceptor.name+" scope: "+SemDesc.getScope(decl));
 		SemType type = SemDesc.getActualType(decl);
 		if (type != null){
 			SemDesc.setActualType(acceptor, type);

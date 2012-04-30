@@ -9,6 +9,9 @@ program kr_neki;
 	var 
 		x : ar;
 		v : int;
+	function fun(x:integer):^ar;
+	begin
+	end;
 begin
-	
+	^x := ^fun(3)
 end.

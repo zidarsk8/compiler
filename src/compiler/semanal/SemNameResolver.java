@@ -285,7 +285,6 @@ public class SemNameResolver implements AbsVisitor{
 	@Override
 	public void visit(AbsValName acceptor) {
 		AbsDecl decl = SemTable.fnd(acceptor.name);
-		System.out.println(acceptor.begLine+" name resolve: "+acceptor.name+" scope: "+SemDesc.getScope(decl));
 		if (decl == null){
 			notDeclaredError(acceptor.name, acceptor.begLine, acceptor.begColumn);
 		}else{
