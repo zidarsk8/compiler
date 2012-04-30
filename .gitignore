@@ -5,8 +5,11 @@ bin/**
 
 # External tool builders
 .externalToolBuilders/
+.settings
+
 
 # Custom
+lib/**
 synanal.xml
 lexanal.xml
 abstree.xml
