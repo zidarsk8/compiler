@@ -149,8 +149,6 @@ public class SemNameResolver implements AbsVisitor{
 
 	@Override
 	public void visit(AbsDeclName acceptor) {
-		
-		
 		System.out.println("you should not see thise... public void visit(AbsDeclName acceptor)");
 	}
 
