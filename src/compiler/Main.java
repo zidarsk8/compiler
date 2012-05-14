@@ -28,6 +28,7 @@ public class Main {
 
 		/* Dolocimo zadnjo fazo prevajanja. */
 		String phase = args.length < 2 ? "" : args[1];
+		//phase = "abstree";
 		/* Opravimo izbrano fazo prevajanja (in vse predhodne faze). */
 		if (phase.equals("lexanal"))
 			compiler.lexanal.Main.exec();
@@ -37,8 +38,10 @@ public class Main {
 			compiler.abstree.Main.exec();
 		else if (phase.equals("semanal"))
 			compiler.semanal.Main.exec();
+		else if (phase.equals("frames"))
+			compiler.frames.Main.exec();
 		else
-			compiler.semanal.Main.exec();
+			compiler.frames.Main.exec();
 
 		System.out.print(":-) Done.\n");
 		System.exit(0);

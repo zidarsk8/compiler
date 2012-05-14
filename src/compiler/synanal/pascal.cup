@@ -49,7 +49,6 @@ non terminal AbsFunDecl					subrutine_function;
 non terminal AbsFunDecl						function_name;
 non terminal AbsDecls					parameter_declaration;
 non terminal AbsDecls						parameter_discription_list;
-non terminal AbsTypeDecl						single_parameter_discription;
 non terminal AbsValExprs				input_parameters;
 non terminal AbsValExprs					parameter_list;
 non terminal AbsValExpr							single_parameter;
@@ -293,34 +292,31 @@ declarations_var ::=
 		;
 
 var_list ::= 
-				single_var :singleDecl
+				single_var :singleDecl SEMIC:s
 					{:
 						AbsDecls list = new AbsDecls();
 						list.decls.add(singleDecl);
 						list.setBeg(singleDecl);
-						list.setEnd(singleDecl);
+						list.setEnd(s,sleft,sright);
 						RESULT = list;
 					:}
-		|		var_list:list single_var:singleDecl
+		|		var_list:list single_var:singleDecl SEMIC:s
 					{:
 						list.decls.add(singleDecl);
-						list.setEnd(singleDecl);
+						list.setEnd(s,sleft,sright);
 						RESULT = list;
 					:}
 		;
 
 single_var ::= 
-				IDENTIFIER:name COLON type_description:type SEMIC:s
+				IDENTIFIER:name COLON type_description:type 
 					{:
 						AbsDeclName dname = new AbsDeclName(name);
 						dname.setBeg(name,nameleft,nameright);
 						dname.setEnd(name,nameleft,nameright);
-						AbsVarDecl r = new AbsVarDecl(
-								dname,
-								type
-						);
+						AbsVarDecl r = new AbsVarDecl(dname,type);
 						r.setBeg(name,nameleft,nameright);
-						r.setEnd(s,sleft,sright);
+						r.setEnd(type);
 						RESULT = r;
 					:}
 		;
@@ -439,7 +435,7 @@ parameter_declaration ::=
 		;
 
 parameter_discription_list ::= 
-				single_parameter_discription:singleDecl
+				single_var:singleDecl
 					{:
 						AbsDecls list = new AbsDecls();
 						list.decls.add(singleDecl);
@@ -447,7 +443,7 @@ parameter_discription_list ::=
 						list.setEnd(singleDecl);
 						RESULT = list;
 					:}
-		|		parameter_discription_list:list SEMIC single_parameter_discription:singleDecl
+		|		parameter_discription_list:list SEMIC single_var:singleDecl
 					{:
 						list.decls.add(singleDecl);
 						list.setEnd(singleDecl);
@@ -455,18 +451,6 @@ parameter_discription_list ::=
 					:}
 		;
 
-single_parameter_discription ::= 
-				IDENTIFIER:name COLON type_description:type
-					{:
-						AbsDeclName dname = new AbsDeclName(name);
-						dname.setBeg(name,nameleft,nameright);
-						dname.setEnd(name,nameleft,nameright);
-						AbsTypeDecl r = new AbsTypeDecl(dname,type);
-						r.setBeg(name,nameleft,nameright);
-						r.setEnd(type);
-						RESULT = r;
-					:}
-		;
 
 
 
@@ -621,9 +605,15 @@ record_components ::=
 		;
 
 single_record_component ::= 
-				single_parameter_discription:type
+				IDENTIFIER:name COLON type_description:type
 					{:
-						RESULT = type;
+						AbsDeclName dname = new AbsDeclName(name);
+						dname.setBeg(name,nameleft,nameright);
+						dname.setEnd(name,nameleft,nameright);
+						AbsTypeDecl r = new AbsTypeDecl(dname,type);
+						r.setBeg(name,nameleft,nameright);
+						r.setEnd(type);
+						RESULT = r;
 					:}
 		;
 

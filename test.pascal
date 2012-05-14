@@ -1,13 +1,16 @@
 program kr_neki;
-	var lol : integer;
-	
-	function loll(e:integer) : integer;
-	begin
-		loll := e
-	end;
-	
+	type 
+		rec = record
+			a : integer;
+			b : array[0..7] of integer;
+			c : record
+				a:integer
+			end
+		end;
+		xx = integer;
+
+	var lol : xx;
+		ad: integer;
 begin
-
-	lol := loll(33)
-
+	lol := 44
 end.
