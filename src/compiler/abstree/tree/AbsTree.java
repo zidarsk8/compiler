@@ -1,5 +1,6 @@
 package compiler.abstree.tree;
 
+import compiler.abstree.AbsCallVisitor;
 import compiler.abstree.AbsVisitor;
 
 /**
@@ -92,7 +93,9 @@ public abstract class AbsTree {
 		setBeg(tree);
 		setEnd(tree);
 	}
-	
+
 	public abstract void accept(AbsVisitor visitor);
+
+	public abstract int callVisit(AbsCallVisitor visitor);
 
 }

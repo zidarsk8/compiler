@@ -1,10 +1,41 @@
 package compiler.frames;
 
-import compiler.abstree.*;
-import compiler.abstree.tree.*;
-import compiler.semanal.*;
+import compiler.abstree.AbsCallVisitor;
+import compiler.abstree.AbsEmptyVisitor;
+import compiler.abstree.tree.AbsAlloc;
+import compiler.abstree.tree.AbsArrayType;
+import compiler.abstree.tree.AbsAssignStmt;
+import compiler.abstree.tree.AbsAtomConst;
+import compiler.abstree.tree.AbsAtomType;
+import compiler.abstree.tree.AbsBinExpr;
+import compiler.abstree.tree.AbsBlockStmt;
+import compiler.abstree.tree.AbsCallExpr;
+import compiler.abstree.tree.AbsConstDecl;
+import compiler.abstree.tree.AbsDecl;
+import compiler.abstree.tree.AbsDeclName;
+import compiler.abstree.tree.AbsDecls;
+import compiler.abstree.tree.AbsExprStmt;
+import compiler.abstree.tree.AbsForStmt;
+import compiler.abstree.tree.AbsFunDecl;
+import compiler.abstree.tree.AbsIfStmt;
+import compiler.abstree.tree.AbsNilConst;
+import compiler.abstree.tree.AbsPointerType;
+import compiler.abstree.tree.AbsProcDecl;
+import compiler.abstree.tree.AbsProgram;
+import compiler.abstree.tree.AbsRecordType;
+import compiler.abstree.tree.AbsStmt;
+import compiler.abstree.tree.AbsStmts;
+import compiler.abstree.tree.AbsTypeDecl;
+import compiler.abstree.tree.AbsTypeName;
+import compiler.abstree.tree.AbsUnExpr;
+import compiler.abstree.tree.AbsValExpr;
+import compiler.abstree.tree.AbsValExprs;
+import compiler.abstree.tree.AbsValName;
+import compiler.abstree.tree.AbsVarDecl;
+import compiler.abstree.tree.AbsWhileStmt;
+import compiler.semanal.SemDesc;
 
-public class FrmEvaluator extends AbsEmptyVisitor {
+public class FrmEvaluator extends AbsEmptyVisitor implements AbsCallVisitor{
 
 	public void visit(AbsAtomType acceptor) {
 	}
@@ -30,8 +61,8 @@ public class FrmEvaluator extends AbsEmptyVisitor {
 			}
 			decl.accept(this);
 		}
-		acceptor.stmt.accept(this);
-			
+		frame.sizeArgs = acceptor.stmt.callVisit(this);
+		System.out.println("size args: "+frame.sizeArgs);
 		FrmDesc.setFrame(acceptor, frame);
 	}
 
@@ -93,4 +124,207 @@ public class FrmEvaluator extends AbsEmptyVisitor {
 		}
 	}
 
+	
+	
+	
+	
+	@Override
+	public int callVisit(AbsAlloc acceptor) {
+		//Thread.dumpStack();
+		return 0; 
+	}
+
+	@Override
+	public int callVisit(AbsArrayType acceptor) {
+		//Thread.dumpStack();
+		return 0; 
+	}
+
+	@Override
+	public int callVisit(AbsAssignStmt acceptor) {
+		return acceptor.srcExpr.callVisit(this);
+	}
+
+	@Override
+	public int callVisit(AbsAtomConst acceptor) {
+		//Thread.dumpStack();
+		return 0; 
+	}
+
+	@Override
+	public int callVisit(AbsAtomType acceptor) {
+		//Thread.dumpStack();
+		return 0; 
+	}
+
+	@Override
+	public int callVisit(AbsBinExpr acceptor) {
+		return Math.max(acceptor.fstExpr.callVisit(this), acceptor.sndExpr.callVisit(this));
+	}
+
+	@Override
+	public int callVisit(AbsBlockStmt acceptor) {
+		return acceptor.stmts.callVisit(this);
+	}
+
+	@Override
+	public int callVisit(AbsCallExpr acceptor) {
+		System.out.println("call abscallexpr");
+		int parsize = 4;
+		int typesize = 0;
+		AbsDecl decl = SemDesc.getNameDecl(acceptor.name);
+		if (decl instanceof AbsProcDecl){
+			System.out.println("call SemSubprogramType");
+			AbsProcDecl sub = (AbsProcDecl) decl;
+			for (AbsDecl d: sub.pars.decls) {
+				parsize += SemDesc.getActualType(d).size();
+			}
+		}
+		if (decl instanceof AbsFunDecl){
+			AbsFunDecl sub = (AbsFunDecl) decl;
+			System.out.println("parsize: "+parsize);
+			for (AbsDecl d: sub.pars.decls) {
+				parsize += SemDesc.getActualType(d).size();
+				System.out.println("parsize: "+parsize);
+			}
+			typesize = SemDesc.getActualType(sub.type).size();
+		}
+		return Math.max(parsize,typesize); 
+	}
+
+	@Override
+	public int callVisit(AbsConstDecl acceptor) {
+		//Thread.dumpStack();
+		return 0; 
+	}
+
+	@Override
+	public int callVisit(AbsDeclName acceptor) {
+		//Thread.dumpStack();
+		return 0; 
+	}
+
+	@Override
+	public int callVisit(AbsDecls acceptor) {
+		//Thread.dumpStack();
+		return 0; 
+	}
+
+	@Override
+	public int callVisit(AbsExprStmt acceptor) {
+		return acceptor.expr.callVisit(this);
+	}
+
+	@Override
+	public int callVisit(AbsForStmt acceptor) {
+		int res = 0;
+		res = Math.max(res, acceptor.loBound.callVisit(this));
+		res = Math.max(res, acceptor.hiBound.callVisit(this));
+		res = Math.max(res, acceptor.stmt.callVisit(this));
+		return res;
+	}
+
+	@Override
+	public int callVisit(AbsFunDecl acceptor) {
+		// TODO Auto-generated method stub
+		//Thread.dumpStack();
+		return 0; 
+	}
+
+	@Override
+	public int callVisit(AbsIfStmt acceptor) {
+		int res = 0;
+		res = Math.max(res, acceptor.cond.callVisit(this));
+		res = Math.max(res, acceptor.thenStmt.callVisit(this));
+		res = Math.max(res, acceptor.elseStmt.callVisit(this));
+		return res;
+	}
+
+	@Override
+	public int callVisit(AbsNilConst acceptor) {
+		//Thread.dumpStack();
+		return 0; 
+	}
+
+	@Override
+	public int callVisit(AbsPointerType acceptor) {
+		//Thread.dumpStack();
+		return 0; 
+	}
+
+	@Override
+	public int callVisit(AbsProcDecl acceptor) {
+		// TODO Auto-generated method stub
+		//Thread.dumpStack();
+		return 0; 
+	}
+
+	@Override
+	public int callVisit(AbsProgram acceptor) {
+		//Thread.dumpStack();
+		return 0; 
+	}
+
+	@Override
+	public int callVisit(AbsRecordType acceptor) {
+		// TODO Auto-generated method stub
+		//Thread.dumpStack();
+		return 0; 
+	}
+
+	@Override
+	public int callVisit(AbsStmts acceptor) {
+		int res = 0;
+		for (AbsStmt stmt: acceptor.stmts){
+			res = Math.max(res, stmt.callVisit(this));
+		}
+		return res; 
+	}
+
+	@Override
+	public int callVisit(AbsTypeDecl acceptor) {
+		// TODO Auto-generated method stub
+		//Thread.dumpStack();
+		return 0; 
+	}
+
+	@Override
+	public int callVisit(AbsTypeName acceptor) {
+		// TODO Auto-generated method stub
+		//Thread.dumpStack();
+		return 0; 
+	}
+
+	@Override
+	public int callVisit(AbsUnExpr acceptor) {
+		return acceptor.expr.callVisit(this); 
+	}
+
+	@Override
+	public int callVisit(AbsValExprs acceptor) {
+		int res = 0;
+		for (AbsValExpr stmt: acceptor.exprs){
+			res = Math.max(res, stmt.callVisit(this));
+		}
+		return res; 
+	}
+
+	@Override
+	public int callVisit(AbsValName acceptor) {
+		// TODO Auto-generated method stub
+		//Thread.dumpStack();
+		return 0; 
+	}
+
+	@Override
+	public int callVisit(AbsVarDecl acceptor) {
+		return acceptor.callVisit(this);
+	}
+
+	@Override
+	public int callVisit(AbsWhileStmt acceptor) {
+		// TODO Auto-generated method stub
+		//Thread.dumpStack();
+		return 0; 
+	}
 }

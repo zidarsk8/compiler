@@ -1,5 +1,6 @@
 package compiler.abstree.tree;
 
+import compiler.abstree.AbsCallVisitor;
 import compiler.abstree.AbsVisitor;
 
 /** Stavek for.
@@ -29,4 +30,8 @@ public class AbsForStmt extends AbsStmt {
 		visitor.visit(this);
 	}
 
+	@Override
+	public int callVisit(AbsCallVisitor visitor) {
+		return visitor.callVisit(this);
+	}
 }

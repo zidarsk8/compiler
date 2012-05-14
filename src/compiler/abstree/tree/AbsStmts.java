@@ -2,6 +2,7 @@ package compiler.abstree.tree;
 
 import java.util.*;
 
+import compiler.abstree.AbsCallVisitor;
 import compiler.abstree.AbsVisitor;
 
 /**
@@ -20,4 +21,8 @@ public class AbsStmts extends AbsTree {
 		visitor.visit(this);
 	}
 
+	@Override
+	public int callVisit(AbsCallVisitor visitor) {
+		return visitor.callVisit(this);
+	}
 }

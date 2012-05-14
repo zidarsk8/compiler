@@ -1,5 +1,6 @@
 package compiler.abstree.tree;
 
+import compiler.abstree.AbsCallVisitor;
 import compiler.abstree.AbsVisitor;
 
 /**
@@ -26,4 +27,8 @@ public class AbsProgram extends AbsTree {
 		visitor.visit(this);
 	}
 
+	@Override
+	public int callVisit(AbsCallVisitor visitor) {
+		return visitor.callVisit(this);
+	}
 }
