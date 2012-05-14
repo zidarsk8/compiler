@@ -22,7 +22,7 @@ program kr_neki;
 	function f(x:rec):integer;
 		var n : integer;
 	begin
-		lol := b(aa)
+		lol := b(aa) {b sprejeme arr ... arr vsebuje 2 integerja (array 2h elementov) torej 8 +4 v klicih argumentov}
 	end;
 begin
 	lol := 44
