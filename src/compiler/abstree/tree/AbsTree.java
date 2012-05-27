@@ -1,7 +1,9 @@
 package compiler.abstree.tree;
 
 import compiler.abstree.AbsCallVisitor;
+import compiler.abstree.AbsCodeVisitor;
 import compiler.abstree.AbsVisitor;
+import compiler.imcode.ImcCode;
 
 /**
  * Abstraktno sintaksno drevo.
@@ -97,5 +99,7 @@ public abstract class AbsTree {
 	public abstract void accept(AbsVisitor visitor);
 
 	public abstract int callVisit(AbsCallVisitor visitor);
+	
+	public abstract ImcCode codeVisit(AbsCodeVisitor visitor);
 
 }

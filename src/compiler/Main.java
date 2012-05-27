@@ -41,6 +41,8 @@ public class Main {
 			compiler.frames.Main.exec();
 		else if (phase.equals("imcode"))
 			compiler.imcode.Main.exec();
+		else if (phase.equals("lincode"))
+			compiler.lincode.Main.exec();
 		else
 			compiler.imcode.Main.exec();
 			
