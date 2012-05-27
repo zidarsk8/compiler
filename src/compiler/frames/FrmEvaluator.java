@@ -62,11 +62,11 @@ public class FrmEvaluator extends AbsEmptyVisitor implements AbsCallVisitor{
 			decl.accept(this);
 		}
 		frame.sizeArgs = acceptor.stmt.callVisit(this);
-		System.out.println("size args: "+frame.sizeArgs);
 		FrmDesc.setFrame(acceptor, frame);
 	}
 
 	public void visit(AbsProgram acceptor) {
+		FrmFrame frame = new FrmFrame(acceptor, -1);
 		for (AbsDecl decl : acceptor.decls.decls) {
 			if (decl instanceof AbsVarDecl) {
 				AbsVarDecl varDecl = (AbsVarDecl)decl;
@@ -75,6 +75,8 @@ public class FrmEvaluator extends AbsEmptyVisitor implements AbsCallVisitor{
 			}
 			decl.accept(this);
 		}
+		frame.sizeArgs = acceptor.stmt.callVisit(this);
+		FrmDesc.setFrame(acceptor, frame);
 	}
 
 	public void visit(AbsProcDecl acceptor) {
@@ -98,7 +100,6 @@ public class FrmEvaluator extends AbsEmptyVisitor implements AbsCallVisitor{
 	}
 
 	public void visit(AbsRecordType acceptor) {
-		System.out.println("loll record type lol ! ahaha loll ! ha ... haha lol haha");
 		int offset = 0;
 		for (AbsDecl decl : acceptor.fields.decls){
 			if (decl instanceof AbsVarDecl) {
@@ -169,27 +170,15 @@ public class FrmEvaluator extends AbsEmptyVisitor implements AbsCallVisitor{
 
 	@Override
 	public int callVisit(AbsCallExpr acceptor) {
-		System.out.println("call abscallexpr");
 		int parsize = 4;
-		int typesize = 0;
 		AbsDecl decl = SemDesc.getNameDecl(acceptor.name);
 		if (decl instanceof AbsProcDecl){
-			System.out.println("call SemSubprogramType");
-			AbsProcDecl sub = (AbsProcDecl) decl;
-			for (AbsDecl d: sub.pars.decls) {
-				parsize += SemDesc.getActualType(d).size();
-			}
+			parsize = ((AbsProcDecl) decl).pars.decls.size()*4;
 		}
 		if (decl instanceof AbsFunDecl){
-			AbsFunDecl sub = (AbsFunDecl) decl;
-			System.out.println("parsize: "+parsize);
-			for (AbsDecl d: sub.pars.decls) {
-				parsize += SemDesc.getActualType(d).size();
-				System.out.println("parsize: "+parsize);
-			}
-			typesize = SemDesc.getActualType(sub.type).size();
+			parsize = ((AbsFunDecl) decl).pars.decls.size()*4;
 		}
-		return Math.max(parsize,typesize); 
+		return parsize; //Math.max(parsize,typesize); 
 	}
 
 	@Override
