@@ -58,7 +58,7 @@ public class Main {
 		/* Izracunamo kose programa. */
 		PrintStream xml = XML.open("lincode");
 		IMCodeGenerator code = new IMCodeGenerator();
-		program.accept(code);
+		program.codeVisit(code);
 		chunks = code.chunks;
 		for (ImcChunk chunk : chunks) {
 			if (chunk instanceof ImcCodeChunk) {

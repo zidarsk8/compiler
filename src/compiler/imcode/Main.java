@@ -57,7 +57,7 @@ public class Main {
 		/* Izracunamo kose programa. */
 		PrintStream xml = XML.open("imcode");
 		IMCodeGenerator code = new IMCodeGenerator();
-		program.accept(code);
+		program.codeVisit(code);
 		chunks = code.chunks;
 		for (ImcChunk chunk : chunks) {
 			chunk.toXML(xml);
