@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <?xml-stylesheet type="text/xsl" href="xsl/imcode.xsl"?>
 <imcode>
+<codechunk value="L0">
+<frmnode>
+<frm kind="level" value="0"/>
+<frm kind="label" value="L0"/>
+<frm kind="size" value="8"/>
+<frm kind="FP" value="T1"/>
+<frm kind="RV" value="T2"/>
+</frmnode>
+<imcnode kind="SEQ">
+<imcnode kind="MOVE">
+<imcnode kind="MEM">
+<imcnode kind="TEMP" value="T2"/>
+</imcnode>
+<imcnode kind="MEM">
+<imcnode kind="BINOP" value="+">
+<imcnode kind="TEMP" value="T1"/>
+<imcnode kind="CONST" value="4"/>
+</imcnode>
+</imcnode>
+</imcnode>
+</imcnode>
+</codechunk>
 <codechunk value="_main">
 <frmnode>
 <frm kind="level" value="-1"/>
