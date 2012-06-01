@@ -78,6 +78,10 @@ public class Interpreter {
 			System.out.print(LD(SP + 4));
 			return 0;
 		}
+		if (label.equals("_putnl")) {
+			System.out.println();
+			return 0;
+		}
 		if (label.equals("_ord")) {
 			return (LD(SP + 4));
 		}

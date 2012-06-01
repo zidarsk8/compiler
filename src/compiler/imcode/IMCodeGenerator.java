@@ -42,6 +42,7 @@ import compiler.frames.FrmLabel;
 import compiler.frames.FrmLocAccess;
 import compiler.frames.FrmVarAccess;
 import compiler.semanal.SemDesc;
+import compiler.semanal.SistemskeFunkcije;
 import compiler.semanal.type.SemArrayType;
 import compiler.semanal.type.SemRecordType;
 import compiler.semanal.type.SemType;
@@ -52,7 +53,12 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 	
 	@Override
 	public ImcCode codeVisit(AbsAlloc acceptor) {
+		SemType t = SemDesc.getActualType(acceptor.type);
 		ImcCALL call = new ImcCALL(FrmLabel.newLabel("malloc"));
+		call.args.add(new ImcCONST(SistemskeFunkcije.FAKE_FP));
+		call.size.add(4);
+		call.args.add(new ImcCONST(t.size()));
+		call.size.add(4);
 		//TODO: finish it
 		return call;
 	}
@@ -108,7 +114,7 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 		}else{
 			ImcExpr fexp = (ImcExpr) acceptor.fstExpr.codeVisit(this);
 			ImcExpr sexp = (ImcExpr) acceptor.sndExpr.codeVisit(this);
-			return new ImcMEM(new ImcBINOP(acceptor.oper, fexp, sexp));
+			return new ImcBINOP(acceptor.oper, fexp, sexp);
 		}
 		return null;
 	}
@@ -118,10 +124,18 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 	}
 	@Override
 	public ImcCode codeVisit(AbsCallExpr acceptor) {
-		FrmFrame frame = FrmDesc.getFrame(SemDesc.getNameDecl(acceptor.name));
-		ImcCALL call = new ImcCALL(frame.label);
-		call.args.add(new ImcTEMP(frame.FP));
-		call.size.add(4);
+
+		ImcCALL call = null;
+		if(SistemskeFunkcije.isSys(acceptor.name.name)) {
+			call = new ImcCALL(FrmLabel.newLabel(acceptor.name.name));
+			call.args.add(new ImcCONST(SistemskeFunkcije.FAKE_FP));
+			call.size.add(4);
+		} else {
+			FrmFrame frame = FrmDesc.getFrame(SemDesc.getNameDecl(acceptor.name));
+			call = new ImcCALL(frame.label);
+			call.args.add(new ImcTEMP(frame.FP));
+			call.size.add(4);
+		}
 		for(AbsValExpr expression: acceptor.args.exprs) {
 			call.args.add((ImcExpr)expression.codeVisit(this));
 			call.size.add(SemDesc.getActualType(expression).size());
@@ -295,7 +309,7 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 			code = new ImcMEM(new ImcBINOP(ImcBINOP.ADD, new ImcTEMP(la.frame.FP), new ImcCONST(la.offset)));
 		}
 		if(decl instanceof AbsFunDecl) {
-			code = new ImcMEM(new ImcTEMP(frame.RV));
+			code = (new ImcTEMP(frame.RV));
 		}
 		if(decl instanceof AbsConstDecl) {
 			code = new ImcCONST(SemDesc.getActualConst(decl));

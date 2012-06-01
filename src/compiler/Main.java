@@ -28,6 +28,7 @@ public class Main {
 
 		/* Dolocimo zadnjo fazo prevajanja. */
 		String phase = args.length < 2 ? "" : args[1];
+		//phase = "imcode";
 		/* Opravimo izbrano fazo prevajanja (in vse predhodne faze). */
 		if (phase.equals("lexanal"))
 			compiler.lexanal.Main.exec();
@@ -44,8 +45,8 @@ public class Main {
 		else if (phase.equals("lincode"))
 			compiler.lincode.Main.exec();
 		else
-			compiler.imcode.Main.exec();
-			
+			compiler.lincode.Main.exec();
+
 		System.out.print(":-) Done.\n");
 		System.exit(0);
 	}

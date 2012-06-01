@@ -97,6 +97,7 @@ public class FrmEvaluator extends AbsEmptyVisitor implements AbsCallVisitor{
 			}
 			decl.accept(this);
 		}
+		frame.sizeArgs = acceptor.stmt.callVisit(this);
 		FrmDesc.setFrame(acceptor, frame);
 	}
 

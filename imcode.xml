@@ -11,13 +11,16 @@
 </frmnode>
 <imcnode kind="SEQ">
 <imcnode kind="MOVE">
-<imcnode kind="MEM">
 <imcnode kind="TEMP" value="T2"/>
-</imcnode>
+<imcnode kind="MEM">
+<imcnode kind="BINOP" value="+">
 <imcnode kind="MEM">
 <imcnode kind="BINOP" value="+">
 <imcnode kind="TEMP" value="T1"/>
 <imcnode kind="CONST" value="4"/>
+</imcnode>
+</imcnode>
+<imcnode kind="CONST" value="1"/>
 </imcnode>
 </imcnode>
 </imcnode>
@@ -27,25 +30,28 @@
 <frmnode>
 <frm kind="level" value="-1"/>
 <frm kind="label" value="_main"/>
-<frm kind="size" value="8"/>
+<frm kind="size" value="12"/>
 <frm kind="FP" value="T0"/>
 </frmnode>
 <imcnode kind="SEQ">
 <imcnode kind="MOVE">
 <imcnode kind="MEM">
-<imcnode kind="BINOP" value="+">
-<imcnode kind="BINOP" value="+">
-<imcnode kind="NAME" value="_v"/>
-<imcnode kind="CONST" value="4"/>
+<imcnode kind="NAME" value="_i"/>
 </imcnode>
-<imcnode kind="CONST" value="0"/>
+<imcnode kind="CONST" value="2"/>
+</imcnode>
+<imcnode kind="EXP">
+<imcnode kind="CALL" value="_putint">
+<imcnode kind="CONST" value="2011988"/>
+<imcnode kind="CALL" value="L0">
+<imcnode kind="TEMP" value="T1"/>
+<imcnode kind="MEM">
+<imcnode kind="NAME" value="_i"/>
 </imcnode>
 </imcnode>
-<imcnode kind="CONST" value="3"/>
+</imcnode>
 </imcnode>
 </imcnode>
 </codechunk>
-<datachunk label="_a" size="4"/>
-<datachunk label="_b" size="4"/>
-<datachunk label="_v" size="8"/>
+<datachunk label="_i" size="4"/>
 </imcode>

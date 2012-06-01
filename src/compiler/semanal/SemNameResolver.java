@@ -235,6 +235,7 @@ public class SemNameResolver implements AbsVisitor{
 
 	@Override
 	public void visit(AbsProgram acceptor) {
+		SistemskeFunkcije.fillData();
 		acceptor.decls.accept(this);
 		acceptor.stmt.accept(this);
 	}

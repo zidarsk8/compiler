@@ -1,17 +1,19 @@
 program kr_neki;
-var 
-	a : integer;
-	b : integer;
-	v : record
-		a : integer;
-		b : record
-			a:integer
-		end
-	end;
-	function f(i:integer):integer;
+	
+	var i:integer;
+	function plus(i:integer):integer;
 	begin
-		f := i
+		plus:=i+1
+	end;
+	procedure neki(a:integer; j:integer; k:integer);
+	begin
+		i:= a+j+k
 	end;
 begin
-	v.b.a := 3
+	i:= 3+2;
+	putint(plus(i));
+	putnl();
+	neki(1,1,1);
+	putint(plus(i));
+	putnl()
 end.
