@@ -96,8 +96,14 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 			int offset = 0;
 			for (int i = 0; i < srt.getNumFields(); i++) {
 				if (((AbsValName)acceptor.sndExpr).name.equals(srt.getFieldName(i).name)){
-					return new ImcMEM(new ImcBINOP(ImcBINOP.ADD, 
-							((ImcMEM)acceptor.fstExpr.codeVisit(this)).expr, new ImcCONST(offset)));
+					ImcExpr fexp = ((ImcMEM)acceptor.fstExpr.codeVisit(this)).expr;
+//					if (fexp instanceof ImcBINOP){
+//						ImcBINOP b = (ImcBINOP) fexp;
+//						if (b.limc instanceof ImcTEMP){
+//							fexp = new ImcMEM(fexp);
+//						}
+//					}
+					return new ImcMEM(new ImcBINOP(ImcBINOP.ADD, fexp , new ImcCONST(offset)));
 				}
 				offset += srt.getFieldType(i).size();
 			}
@@ -110,7 +116,7 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 			ImcBINOP ind = new ImcBINOP(ImcBINOP.SUB, sexp, new ImcCONST(arr.loBound));
 			ImcBINOP ofset = new ImcBINOP(ImcBINOP.MUL, ind, new ImcCONST(arr.type.size()));
 			
-			return new ImcMEM(new ImcBINOP(ImcBINOP.ADD, fexp, ofset));
+			return new ImcMEM(new ImcBINOP(ImcBINOP.ADD, fexp instanceof ImcMEM ? fexp : new ImcMEM(fexp), ofset));
 		}else{
 			ImcExpr fexp = (ImcExpr) acceptor.fstExpr.codeVisit(this);
 			ImcExpr sexp = (ImcExpr) acceptor.sndExpr.codeVisit(this);
@@ -180,7 +186,7 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 		seq.stmts.add(new ImcCJUMP(new ImcBINOP(ImcBINOP.LEQ, var, hiBound), tl.label, fl.label));
 		seq.stmts.add(tl);
 		seq.stmts.add((ImcStmt)acceptor.stmt.codeVisit(this));
-		seq.stmts.add(new ImcMOVE(new ImcBINOP(ImcBINOP.ADD, var, new ImcCONST(1)), var));
+		seq.stmts.add(new ImcMOVE(var, new ImcBINOP(ImcBINOP.ADD, var, new ImcCONST(1))));
 		seq.stmts.add(new ImcJUMP(sl.label));
 		seq.stmts.add(fl);
 		

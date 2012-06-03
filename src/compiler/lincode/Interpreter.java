@@ -65,7 +65,7 @@ public class Interpreter {
 			return 0;
 		}
 		if (label.equals("_getch")) {
-			return (new Scanner(System.in)).nextInt();
+			return (int)(new Scanner(System.in)).next().charAt(0);
 		}
 		if (label.equals("_getint")) {
 			return (new Scanner(System.in)).nextInt();
@@ -184,7 +184,7 @@ public class Interpreter {
 			case ImcBINOP.LEQ: return (lval <= rval ? 1 : 0);
 			case ImcBINOP.GEQ: return (lval >= rval ? 1 : 0);
 			case ImcBINOP.AND: return lval * rval;
-			case ImcBINOP.OR : return (lval + rval) % 2;
+			case ImcBINOP.OR : return (lval + rval > 0 ? 1 :0);
 			}
 		}
 		if (expr instanceof ImcCALL) {

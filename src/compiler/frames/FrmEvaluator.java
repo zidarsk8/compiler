@@ -127,7 +127,10 @@ public class FrmEvaluator extends AbsEmptyVisitor implements AbsCallVisitor{
 		}
 	}
 
-	
+
+	public void visit(AbsPointerType acceptor) {
+		
+	}
 	
 	
 	
