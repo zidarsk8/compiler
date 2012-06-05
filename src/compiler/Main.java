@@ -47,7 +47,7 @@ public class Main {
 		else
 			compiler.lincode.Main.exec();
 
-		System.out.print(":-) Done.\n");
+		System.out.println("\n:-) Done.");
 		System.exit(0);
 	}
 }

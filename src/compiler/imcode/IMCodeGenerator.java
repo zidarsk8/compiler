@@ -50,7 +50,9 @@ import compiler.semanal.type.SemType;
 public class IMCodeGenerator implements AbsCodeVisitor {
 
 	public LinkedList<ImcChunk> chunks = new LinkedList<ImcChunk>();
-	
+
+	private FrmFrame currentFrame;
+
 	@Override
 	public ImcCode codeVisit(AbsAlloc acceptor) {
 		SemType t = SemDesc.getActualType(acceptor.type);
@@ -97,12 +99,12 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 			for (int i = 0; i < srt.getNumFields(); i++) {
 				if (((AbsValName)acceptor.sndExpr).name.equals(srt.getFieldName(i).name)){
 					ImcExpr fexp = ((ImcMEM)acceptor.fstExpr.codeVisit(this)).expr;
-//					if (fexp instanceof ImcBINOP){
-//						ImcBINOP b = (ImcBINOP) fexp;
-//						if (b.limc instanceof ImcTEMP){
-//							fexp = new ImcMEM(fexp);
-//						}
-//					}
+					if (fexp instanceof ImcBINOP){
+						ImcBINOP b = (ImcBINOP) fexp;
+						if (b.limc instanceof ImcTEMP){
+							fexp = new ImcMEM(fexp);
+						}
+					}
 					return new ImcMEM(new ImcBINOP(ImcBINOP.ADD, fexp , new ImcCONST(offset)));
 				}
 				offset += srt.getFieldType(i).size();
@@ -110,12 +112,12 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 		}else if (acceptor.oper == AbsBinExpr.ARRACCESS){
 			ImcExpr fexp = (ImcExpr) ((ImcMEM)acceptor.fstExpr.codeVisit(this)).expr;
 			ImcExpr sexp = (ImcExpr) acceptor.sndExpr.codeVisit(this);
-			
+
 			SemArrayType arr = (SemArrayType) SemDesc.getActualType(acceptor.fstExpr);
-			
+
 			ImcBINOP ind = new ImcBINOP(ImcBINOP.SUB, sexp, new ImcCONST(arr.loBound));
 			ImcBINOP ofset = new ImcBINOP(ImcBINOP.MUL, ind, new ImcCONST(arr.type.size()));
-			
+
 			return new ImcMEM(new ImcBINOP(ImcBINOP.ADD, fexp instanceof ImcMEM ? fexp : new ImcMEM(fexp), ofset));
 		}else{
 			ImcExpr fexp = (ImcExpr) acceptor.fstExpr.codeVisit(this);
@@ -143,8 +145,15 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 			call.size.add(4);
 		}
 		for(AbsValExpr expression: acceptor.args.exprs) {
-			call.args.add((ImcExpr)expression.codeVisit(this));
-			call.size.add(SemDesc.getActualType(expression).size());
+			if (SemDesc.getActualType(expression) instanceof SemRecordType ||
+					SemDesc.getActualType(expression) instanceof SemArrayType){
+				call.args.add(((ImcMEM)expression.codeVisit(this)).expr);
+				//				call.size.add(SemDesc.getActualType(expression).size());
+				call.size.add(4);
+			}else{
+				call.args.add((ImcExpr)expression.codeVisit(this));
+				call.size.add(SemDesc.getActualType(expression).size());
+			}
 		}
 		return call;
 	}
@@ -172,15 +181,15 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 	@Override
 	public ImcCode codeVisit(AbsForStmt acceptor) {
 		ImcSEQ seq = new ImcSEQ();
-		
+
 		ImcExpr var = (ImcExpr)acceptor.name.codeVisit(this);
 		ImcExpr loBound = (ImcExpr)acceptor.loBound.codeVisit(this);
 		ImcExpr hiBound = (ImcExpr)acceptor.hiBound.codeVisit(this);
-		
+
 		ImcLABEL tl = new ImcLABEL(FrmLabel.newLabel());
 		ImcLABEL fl = new ImcLABEL(FrmLabel.newLabel());
 		ImcLABEL sl = new ImcLABEL(FrmLabel.newLabel());
-		
+
 		seq.stmts.add(new ImcMOVE(var, loBound));
 		seq.stmts.add(sl);
 		seq.stmts.add(new ImcCJUMP(new ImcBINOP(ImcBINOP.LEQ, var, hiBound), tl.label, fl.label));
@@ -189,26 +198,27 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 		seq.stmts.add(new ImcMOVE(var, new ImcBINOP(ImcBINOP.ADD, var, new ImcCONST(1))));
 		seq.stmts.add(new ImcJUMP(sl.label));
 		seq.stmts.add(fl);
-		
+
 		return seq;
 	}
 	@Override
 	public ImcCode codeVisit(AbsFunDecl acceptor) {
-		FrmFrame frame = FrmDesc.getFrame(acceptor);
-		chunks.add(new ImcCodeChunk(frame, (ImcStmt)acceptor.stmt.codeVisit(this)));
-		acceptor.decls.codeVisit(this);		
+		currentFrame = FrmDesc.getFrame(acceptor);
+		ImcStmt stmt = (ImcStmt)acceptor.stmt.codeVisit(this);
+		chunks.add(new ImcCodeChunk(currentFrame, stmt));
+		acceptor.decls.codeVisit(this);
 		return null;
 	}
 	@Override
 	public ImcCode codeVisit(AbsIfStmt acceptor) {
 		ImcSEQ statement = new ImcSEQ();
-		
+
 		ImcExpr cond = (ImcExpr)acceptor.cond.codeVisit(this);
-		
+
 		ImcLABEL trueLabel = new ImcLABEL(FrmLabel.newLabel());
 		ImcLABEL falseLabel = new ImcLABEL(FrmLabel.newLabel());
 		ImcLABEL finish = new ImcLABEL(FrmLabel.newLabel());
-		
+
 		statement.stmts.add(new ImcCJUMP(cond, trueLabel.label, falseLabel.label));
 		statement.stmts.add(trueLabel);
 		statement.stmts.add((ImcStmt)acceptor.thenStmt.codeVisit(this));
@@ -216,7 +226,7 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 		statement.stmts.add(falseLabel);
 		statement.stmts.add((ImcStmt)acceptor.elseStmt.codeVisit(this));
 		statement.stmts.add(finish);
-		
+
 		return statement;
 	}
 	@Override
@@ -229,8 +239,9 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 	}
 	@Override
 	public ImcCode codeVisit(AbsProcDecl acceptor) {
-		FrmFrame frame = FrmDesc.getFrame(acceptor);
-		chunks.add(new ImcCodeChunk(frame, (ImcStmt)acceptor.stmt.codeVisit(this)));
+		currentFrame = FrmDesc.getFrame(acceptor);
+		//level = frame.level;
+		chunks.add(new ImcCodeChunk(currentFrame, (ImcStmt)acceptor.stmt.codeVisit(this)));
 		acceptor.decls.codeVisit(this);
 		return null;
 	}
@@ -239,7 +250,7 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 		acceptor.decls.codeVisit(this);
 		ImcCode code = acceptor.stmt.codeVisit(this);
 		chunks.add(new ImcCodeChunk(FrmDesc.getFrame(acceptor), (ImcStmt)code));
-		
+
 		for (AbsDecl decl : acceptor.decls.decls) {
 			if (decl instanceof AbsVarDecl) {
 				AbsVarDecl varDecl = (AbsVarDecl)decl;
@@ -249,7 +260,7 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 				chunks.add(dataChunk);
 			} 
 		}
-		
+
 		return null;
 	}
 	@Override
@@ -307,8 +318,14 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 			code = new ImcMEM(new ImcNAME(va.label));
 		}
 		if(access instanceof FrmArgAccess) {
-			FrmArgAccess aa = (FrmArgAccess)access;
-			code = new ImcMEM(new ImcBINOP(ImcBINOP.ADD, new ImcTEMP(aa.frame.FP), new ImcCONST(aa.offset)));
+
+			FrmArgAccess argument = (FrmArgAccess)access;
+
+			ImcExpr t = new ImcTEMP(currentFrame.FP);
+			for (int i = argument.frame.level; i < currentFrame.level; i++) {
+				t = new ImcMEM(t);
+			}
+			code = new ImcMEM(new ImcBINOP(ImcBINOP.ADD, t, new ImcCONST(argument.offset)));
 		}
 		if(access instanceof FrmLocAccess) {
 			FrmLocAccess la = (FrmLocAccess)access;
@@ -329,20 +346,20 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 	@Override
 	public ImcCode codeVisit(AbsWhileStmt acceptor) {
 		ImcSEQ s = new ImcSEQ();
-		
+
 		ImcExpr cond = (ImcExpr)acceptor.cond.codeVisit(this);
-		
+
 		ImcLABEL loopBody = new ImcLABEL(FrmLabel.newLabel());
 		ImcLABEL finish = new ImcLABEL(FrmLabel.newLabel());
 		ImcLABEL startLabel = new ImcLABEL(FrmLabel.newLabel());
-		
+
 		s.stmts.add(startLabel);
 		s.stmts.add(new ImcCJUMP(cond, loopBody.label, finish.label));
 		s.stmts.add(loopBody);
 		s.stmts.add((ImcStmt)acceptor.stmt.codeVisit(this));
 		s.stmts.add(new ImcJUMP(startLabel.label));
 		s.stmts.add(finish);
-		
+
 		return s;
 	}
 

@@ -7,6 +7,7 @@
 <frm kind="label" value="L0"/>
 <frm kind="size" value="12"/>
 <frm kind="FP" value="T1"/>
+<frm kind="RV" value="T2"/>
 </frmnode>
 <imcnode kind="SEQ">
 <imcnode kind="EXP">
@@ -14,14 +15,38 @@
 <imcnode kind="CONST" value="2011988"/>
 <imcnode kind="MEM">
 <imcnode kind="BINOP" value="+">
-<imcnode kind="BINOP" value="+">
-<imcnode kind="MEM">
-<imcnode kind="BINOP" value="+">
 <imcnode kind="TEMP" value="T1"/>
 <imcnode kind="CONST" value="4"/>
 </imcnode>
 </imcnode>
-<imcnode kind="CONST" value="4"/>
+</imcnode>
+</imcnode>
+<imcnode kind="EXP">
+<imcnode kind="CALL" value="_f">
+<imcnode kind="TEMP" value="T3"/>
+</imcnode>
+</imcnode>
+<imcnode kind="MOVE">
+<imcnode kind="TEMP" value="T2"/>
+<imcnode kind="CONST" value="8"/>
+</imcnode>
+</imcnode>
+</codechunk>
+<codechunk value="_f">
+<frmnode>
+<frm kind="level" value="1"/>
+<frm kind="label" value="_f"/>
+<frm kind="size" value="12"/>
+<frm kind="FP" value="T3"/>
+</frmnode>
+<imcnode kind="SEQ">
+<imcnode kind="EXP">
+<imcnode kind="CALL" value="_putint">
+<imcnode kind="CONST" value="2011988"/>
+<imcnode kind="MEM">
+<imcnode kind="BINOP" value="+">
+<imcnode kind="MEM">
+<imcnode kind="TEMP" value="T3"/>
 </imcnode>
 <imcnode kind="CONST" value="4"/>
 </imcnode>
@@ -40,27 +65,20 @@
 <imcnode kind="SEQ">
 <imcnode kind="MOVE">
 <imcnode kind="MEM">
-<imcnode kind="BINOP" value="+">
-<imcnode kind="BINOP" value="+">
-<imcnode kind="MEM">
-<imcnode kind="NAME" value="_r"/>
+<imcnode kind="NAME" value="_i"/>
 </imcnode>
-<imcnode kind="CONST" value="4"/>
-</imcnode>
-<imcnode kind="CONST" value="4"/>
-</imcnode>
-</imcnode>
-<imcnode kind="CONST" value="33"/>
+<imcnode kind="CONST" value="5"/>
 </imcnode>
 <imcnode kind="EXP">
+<imcnode kind="CALL" value="_putint">
+<imcnode kind="CONST" value="2011988"/>
 <imcnode kind="CALL" value="L0">
 <imcnode kind="TEMP" value="T1"/>
-<imcnode kind="MEM">
-<imcnode kind="NAME" value="_r"/>
+<imcnode kind="CONST" value="3"/>
 </imcnode>
 </imcnode>
 </imcnode>
 </imcnode>
 </codechunk>
-<datachunk label="_r" size="4"/>
+<datachunk label="_i" size="4"/>
 </imcode>

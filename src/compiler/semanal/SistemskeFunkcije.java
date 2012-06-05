@@ -3,11 +3,9 @@ package compiler.semanal;
 import java.util.TreeSet;
 
 import compiler.abstree.tree.AbsAtomType;
-import compiler.abstree.tree.AbsBlockStmt;
 import compiler.abstree.tree.AbsDeclName;
 import compiler.abstree.tree.AbsDecls;
 import compiler.abstree.tree.AbsProcDecl;
-import compiler.abstree.tree.AbsStmts;
 import compiler.abstree.tree.AbsVarDecl;
 import compiler.semanal.type.SemAtomType;
 import compiler.semanal.type.SemSubprogramType;
@@ -20,10 +18,10 @@ public class SistemskeFunkcije {
 
 	public static void fillData() {
 		
-		genProcedure("free",SemAtomType.VOID);
-		genProcedure("putch",SemAtomType.CHAR);
-		genProcedure("putnl");
-		genProcedure("putint",SemAtomType.INT);
+		genFunction("free",SemAtomType.VOID);
+		genFunction("putch",SemAtomType.CHAR);
+		genFunction("putnl");
+		genFunction("putint",SemAtomType.INT);
 		genFunction(SemAtomType.CHAR,"getch");
 		genFunction(SemAtomType.INT,"getint");
 		genFunction(SemAtomType.INT,"ord",SemAtomType.CHAR);
@@ -31,7 +29,7 @@ public class SistemskeFunkcije {
 
 	}
 
-	private static void genProcedure(String name, Integer... pars){
+	private static void genFunction(String name, Integer... pars){
 		genFunction(SemAtomType.VOID, name, pars);
 	}
 
@@ -46,7 +44,7 @@ public class SistemskeFunkcije {
 				pardecls.decls.add(new AbsVarDecl(new AbsDeclName("var"+c++), new AbsAtomType(i)));
 				type.addParType(new SemAtomType(i));
 			}
-			AbsProcDecl acceptor = new AbsProcDecl(new AbsDeclName(name), pardecls, new AbsDecls(), new AbsBlockStmt(new AbsStmts()));
+			AbsProcDecl acceptor = new AbsProcDecl(new AbsDeclName(name), pardecls, null, null);
 			SemTable.ins(acceptor.name.name, acceptor);
 			SemDesc.setActualType(acceptor, type);
 		} catch (SemIllegalInsertException e) {
