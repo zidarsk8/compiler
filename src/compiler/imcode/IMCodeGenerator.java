@@ -99,10 +99,12 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 			for (int i = 0; i < srt.getNumFields(); i++) {
 				if (((AbsValName)acceptor.sndExpr).name.equals(srt.getFieldName(i).name)){
 					ImcExpr fexp = ((ImcMEM)acceptor.fstExpr.codeVisit(this)).expr;
-					if (fexp instanceof ImcBINOP){
-						ImcBINOP b = (ImcBINOP) fexp;
-						if (b.limc instanceof ImcTEMP){
-							fexp = new ImcMEM(fexp);
+					if (acceptor.fstExpr instanceof AbsValName){
+						AbsVarDecl varDecl = (AbsVarDecl)(SemDesc.getNameDecl(acceptor.fstExpr) 
+								instanceof AbsVarDecl ? SemDesc.getNameDecl(acceptor.fstExpr) : null);
+						FrmAccess access = FrmDesc.getAccess(varDecl);
+						if (access instanceof FrmArgAccess){
+							fexp = fexp instanceof ImcMEM ? fexp : new ImcMEM(fexp);
 						}
 					}
 					return new ImcMEM(new ImcBINOP(ImcBINOP.ADD, fexp , new ImcCONST(offset)));
@@ -153,8 +155,15 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 		} else {
 			FrmFrame frame = FrmDesc.getFrame(SemDesc.getNameDecl(acceptor.name));
 			call = new ImcCALL(frame.label);
-			call.args.add(new ImcTEMP(currentFrame.FP));
-			call.size.add(4);
+			System.out.println(String.format("frame: %s",frame));
+			System.out.println(String.format("frame: %s",currentFrame));
+			if (currentFrame.equals(frame)){
+				call.args.add(new ImcMEM(new ImcTEMP(currentFrame.FP)));
+				call.size.add(4);
+			}else{
+				call.args.add(new ImcTEMP(currentFrame.FP));
+				call.size.add(4);
+			}
 		}
 		for(AbsValExpr expression: acceptor.args.exprs) {
 			if (SemDesc.getActualType(expression) instanceof SemRecordType ||
