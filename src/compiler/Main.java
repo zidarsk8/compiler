@@ -23,8 +23,10 @@ public class Main {
 		/* Dolocimo ime programa, ki ga prevajamo. */
 		if (args.length < 1) {
 			Report.error("Source file is not specified.", 1);
-		} else
-			prgName = args[0];
+		} else{
+			prgName = args[0].replace(".pascal", "");
+		}
+	
 
 		/* Dolocimo zadnjo fazo prevajanja. */
 		String phase = args.length < 2 ? "" : args[1];
