@@ -119,14 +119,9 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 			ImcBINOP ofset = new ImcBINOP(ImcBINOP.MUL, ind, new ImcCONST(arr.type.size()));
 			
 			if (acceptor.fstExpr instanceof AbsValName){
-				System.out.println(String.format("valname: %s", acceptor.fstExpr));
-				
 				AbsVarDecl varDecl = (AbsVarDecl)(SemDesc.getNameDecl(acceptor.fstExpr) 
 						instanceof AbsVarDecl ? SemDesc.getNameDecl(acceptor.fstExpr) : null);
-				System.out.println(String.format("decl   : %s", varDecl));
-
 				FrmAccess access = FrmDesc.getAccess(varDecl);
-				System.out.println(String.format("decl   : %s", access));
 				if (access instanceof FrmArgAccess){
 					fexp = fexp instanceof ImcMEM ? fexp : new ImcMEM(fexp);
 				}
@@ -162,15 +157,14 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 			call.size.add(4);
 		}
 		for(AbsValExpr expression: acceptor.args.exprs) {
-//			if (SemDesc.getActualType(expression) instanceof SemRecordType ||
-//					SemDesc.getActualType(expression) instanceof SemArrayType){
-//				//call.args.add(((ImcMEM)expression.codeVisit(this)).expr);
-//				call.args.add(((ImcMEM)expression.codeVisit(this)));
-//				call.size.add(4);
-//			}else{
+			if (SemDesc.getActualType(expression) instanceof SemRecordType ||
+					SemDesc.getActualType(expression) instanceof SemArrayType){
+				call.args.add(((ImcMEM)expression.codeVisit(this)).expr);
+				call.size.add(4);
+			}else{	
 				call.args.add((ImcExpr)expression.codeVisit(this));
-				call.size.add(SemDesc.getActualType(expression).size());
-//			}
+				call.size.add(4);
+			}
 		}
 		return call;
 	}
