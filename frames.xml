@@ -1,262 +1,1465 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <?xml-stylesheet type="text/xsl" href="xsl/frames.xsl"?>
 <frames>
-<absnode pos="(1:1-20:4)" kind="Program">
+<absnode pos="(1:1-69:4)" kind="Program">
 <frmnode>
 <frm kind="level" value="-1"/>
 <frm kind="label" value="_main"/>
-<frm kind="size" value="12"/>
+<frm kind="size" value="8"/>
 <frm kind="FP" value="T0"/>
 </frmnode>
-<absnode pos="(1:1-1:24)" kind="DeclName" value="randomgenerator">
+<absnode pos="(1:1-1:15)" kind="DeclName" value="queens">
 </absnode>
-<absnode pos="(3:5-13:8)" kind="Decls">
-<absnode pos="(3:11-3:23)" kind="ConstDecl">
-<seminfo kind="DECL" value="1296549372"/>
+<absnode pos="(2:5-66:8)" kind="Decls">
+<absnode pos="(3:9-3:28)" kind="ConstDecl">
+<seminfo kind="DECL" value="588729095"/>
 <seminfo kind="SCOPE" value="0"/>
-<seminfo kind="VALUE" value="20"/>
+<seminfo kind="VALUE" value="8"/>
 <semtype kind="INT"/>
-<absnode pos="(3:11-3:17)" kind="DeclName" value="arrSize">
+<absnode pos="(3:9-3:23)" kind="DeclName" value="chessboard_size">
 </absnode>
-<absnode pos="(3:21-3:22)" kind="AtomExpr(INT)" value="20">
-<seminfo kind="VALUE" value="20"/>
-<semtype kind="INT"/>
-</absnode>
-</absnode>
-<absnode pos="(6:9-6:17)" kind="VarDecl">
-<seminfo kind="DECL" value="1312737936"/>
-<seminfo kind="SCOPE" value="0"/>
-<semtype kind="INT"/>
-<frmnode>
-<frm kind="label" value="_i"/>
-</frmnode>
-<absnode pos="(6:9-6:9)" kind="DeclName" value="i">
-</absnode>
-<absnode pos="(6:11-6:17)" kind="AtomType(INT)">
+<absnode pos="(3:27-3:27)" kind="AtomExpr(INT)" value="8">
+<seminfo kind="VALUE" value="8"/>
 <semtype kind="INT"/>
 </absnode>
 </absnode>
-<absnode pos="(7:9-0:0)" kind="VarDecl">
+<absnode pos="(5:9-9:16)" kind="TypeDecl">
 <seminfo kind="DECL" value="2086984721"/>
 <seminfo kind="SCOPE" value="0"/>
-<semtype kind="POINTER">
-<semtype kind="ARRAY" value="(1,20)">
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
 <semtype kind="INT"/>
 </semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
 </semtype>
-<frmnode>
-<frm kind="label" value="_a"/>
-</frmnode>
-<absnode pos="(7:9-7:9)" kind="DeclName" value="a">
+</semtype>
+<absnode pos="(5:9-5:18)" kind="DeclName" value="chessboard">
+<seminfo kind="DECL" value="2086984721"/>
+<seminfo kind="SCOPE" value="0"/>
 </absnode>
-<absnode pos="(0:0-0:0)" kind="PointerType">
-<semtype kind="POINTER">
-<semtype kind="ARRAY" value="(1,20)">
+<absnode pos="(5:22-9:15)" kind="RecordType">
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
 <semtype kind="INT"/>
 </semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
 </semtype>
-<absnode pos="(7:11-7:39)" kind="ArrayType">
-<semtype kind="ARRAY" value="(1,20)">
+</semtype>
+<absnode pos="(6:17-8:65)" kind="Decls">
+<absnode pos="(6:17-6:36)" kind="TypeDecl">
+<seminfo kind="DECL" value="2094048729"/>
+<seminfo kind="SCOPE" value="null"/>
+<semtype kind="INT"/>
+<absnode pos="(6:17-6:26)" kind="DeclName" value="num_queens">
+<seminfo kind="DECL" value="2094048729"/>
+<seminfo kind="SCOPE" value="null"/>
+</absnode>
+<absnode pos="(6:30-6:36)" kind="AtomType(INT)">
+<semtype kind="INT"/>
+</absnode>
+</absnode>
+<absnode pos="(7:17-7:65)" kind="TypeDecl">
+<seminfo kind="DECL" value="1220081709"/>
+<seminfo kind="SCOPE" value="null"/>
+<semtype kind="ARRAY" value="(1,8)">
 <semtype kind="INT"/>
 </semtype>
-<absnode pos="(7:18-7:18)" kind="AtomExpr(INT)" value="1">
+<absnode pos="(7:17-7:25)" kind="DeclName" value="used_cols">
+<seminfo kind="DECL" value="1220081709"/>
+<seminfo kind="SCOPE" value="null"/>
+</absnode>
+<absnode pos="(7:29-7:65)" kind="ArrayType">
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<absnode pos="(7:36-7:36)" kind="AtomExpr(INT)" value="1">
 <seminfo kind="VALUE" value="1"/>
 <semtype kind="INT"/>
 </absnode>
-<absnode pos="(7:21-7:27)" kind="ValName" value="arrSize">
-<seminfo kind="DECL" value="1296549372"/>
+<absnode pos="(7:39-7:53)" kind="ValName" value="chessboard_size">
+<seminfo kind="DECL" value="588729095"/>
 <semtype kind="INT"/>
 </absnode>
-<absnode pos="(7:33-7:39)" kind="AtomType(INT)">
+<absnode pos="(7:59-7:65)" kind="AtomType(INT)">
 <semtype kind="INT"/>
 </absnode>
 </absnode>
 </absnode>
+<absnode pos="(8:17-8:65)" kind="TypeDecl">
+<seminfo kind="DECL" value="1789308653"/>
+<seminfo kind="SCOPE" value="null"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+<absnode pos="(8:17-8:25)" kind="DeclName" value="free_lins">
+<seminfo kind="DECL" value="1789308653"/>
+<seminfo kind="SCOPE" value="null"/>
 </absnode>
-<absnode pos="(9:5-13:8)" kind="ProcDecl">
-<seminfo kind="DECL" value="1132403619"/>
+<absnode pos="(8:29-8:65)" kind="ArrayType">
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+<absnode pos="(8:36-8:36)" kind="AtomExpr(INT)" value="1">
+<seminfo kind="VALUE" value="1"/>
+<semtype kind="INT"/>
+</absnode>
+<absnode pos="(8:39-8:53)" kind="ValName" value="chessboard_size">
+<seminfo kind="DECL" value="588729095"/>
+<semtype kind="INT"/>
+</absnode>
+<absnode pos="(8:59-8:65)" kind="AtomType(BOOL)">
+<semtype kind="BOOL"/>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+<absnode pos="(10:5-66:8)" kind="ProcDecl">
+<seminfo kind="DECL" value="24105143"/>
 <seminfo kind="SCOPE" value="0"/>
 <semtype kind="SUBPROGRAM">
-<semtype kind="POINTER">
-<semtype kind="ARRAY" value="(1,20)">
-<semtype kind="INT"/>
-</semtype>
-</semtype>
 <semtype kind="VOID"/></semtype>
 <frmnode>
 <frm kind="level" value="0"/>
 <frm kind="label" value="L0"/>
-<frm kind="size" value="16"/>
+<frm kind="size" value="88"/>
 <frm kind="FP" value="T1"/>
 </frmnode>
-<absnode pos="(9:15-9:22)" kind="DeclName" value="printArr">
+<absnode pos="(10:15-10:20)" kind="DeclName" value="solver">
 </absnode>
-<absnode pos="(9:23-9:55)" kind="Decls">
-<absnode pos="(9:24-0:0)" kind="VarDecl">
-<seminfo kind="DECL" value="705613182"/>
-<seminfo kind="SCOPE" value="1"/>
-<semtype kind="POINTER">
-<semtype kind="ARRAY" value="(1,20)">
-<semtype kind="INT"/>
-</semtype>
-</semtype>
-<frmnode>
-<frm kind="arg offset" value="4"/>
-</frmnode>
-<absnode pos="(9:24-9:24)" kind="DeclName" value="a">
+<absnode pos="(10:21-10:22)" kind="Decls">
 </absnode>
-<absnode pos="(0:0-0:0)" kind="PointerType">
-<semtype kind="POINTER">
-<semtype kind="ARRAY" value="(1,20)">
-<semtype kind="INT"/>
-</semtype>
-</semtype>
-<absnode pos="(9:26-9:54)" kind="ArrayType">
-<semtype kind="ARRAY" value="(1,20)">
-<semtype kind="INT"/>
-</semtype>
-<absnode pos="(9:33-9:33)" kind="AtomExpr(INT)" value="1">
-<seminfo kind="VALUE" value="1"/>
-<semtype kind="INT"/>
-</absnode>
-<absnode pos="(9:36-9:42)" kind="ValName" value="arrSize">
-<seminfo kind="DECL" value="1296549372"/>
-<semtype kind="INT"/>
-</absnode>
-<absnode pos="(9:48-9:54)" kind="AtomType(INT)">
-<semtype kind="INT"/>
-</absnode>
-</absnode>
-</absnode>
-</absnode>
-</absnode>
-<absnode pos="(10:13-10:22)" kind="Decls">
-<absnode pos="(10:13-10:21)" kind="VarDecl">
-<seminfo kind="DECL" value="1307544819"/>
+<absnode pos="(12:13-55:12)" kind="Decls">
+<absnode pos="(12:13-12:35)" kind="VarDecl">
+<seminfo kind="DECL" value="1408212765"/>
 <seminfo kind="SCOPE" value="1"/>
 <semtype kind="INT"/>
 <frmnode>
 <frm kind="loc offset" value="-4"/>
 </frmnode>
-<absnode pos="(10:13-10:13)" kind="DeclName" value="i">
+<absnode pos="(12:13-12:25)" kind="DeclName" value="num_solutions">
 </absnode>
-<absnode pos="(10:15-10:21)" kind="AtomType(INT)">
+<absnode pos="(12:29-12:35)" kind="AtomType(INT)">
 <semtype kind="INT"/>
 </absnode>
 </absnode>
-</absnode>
-<absnode pos="(11:5-13:7)" kind="BlockStmt">
-<absnode pos="(12:9-12:21)" kind="Stmts">
-<absnode pos="(12:9-12:21)" kind="ExprStmt">
-<semtype kind="VOID"/><absnode pos="(12:9-12:21)" kind="CallExpr">
-<semtype kind="VOID"/><absnode pos="(12:9-12:14)" kind="ValName" value="putint">
-<seminfo kind="DECL" value="1484511730"/>
-</absnode>
-<absnode pos="(12:15-12:21)" kind="ValExprs">
-<absnode pos="(12:16-12:20)" kind="BinExpr" value="ARRACCESS">
-<seminfo kind="VALUE" value="null"/>
+<absnode pos="(13:13-13:41)" kind="VarDecl">
+<seminfo kind="DECL" value="414667768"/>
+<seminfo kind="SCOPE" value="1"/>
+<semtype kind="RECORD2014336824">
 <semtype kind="INT"/>
-<absnode pos="(12:16-12:17)" kind="UnExpr" value="VAL">
-<seminfo kind="VALUE" value="null"/>
-<semtype kind="ARRAY" value="(1,20)">
+<semtype kind="ARRAY" value="(1,8)">
 <semtype kind="INT"/>
 </semtype>
-<absnode pos="(12:16-12:16)" kind="ValName" value="a">
-<seminfo kind="DECL" value="705613182"/>
-<semtype kind="POINTER">
-<semtype kind="ARRAY" value="(1,20)">
-<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
 </semtype>
 </semtype>
+<frmnode>
+<frm kind="loc offset" value="-72"/>
+</frmnode>
+<absnode pos="(13:13-13:28)" kind="DeclName" value="empty_chessboard">
 </absnode>
-</absnode>
-<absnode pos="(12:19-12:19)" kind="AtomExpr(INT)" value="3">
-<seminfo kind="VALUE" value="3"/>
-<semtype kind="INT"/>
-</absnode>
-</absnode>
-</absnode>
-</absnode>
-</absnode>
-</absnode>
-</absnode>
-</absnode>
-</absnode>
-<absnode pos="(14:1-20:3)" kind="BlockStmt">
-<absnode pos="(15:5-18:15)" kind="Stmts">
-<absnode pos="(15:5-15:14)" kind="AssignStmt">
-<absnode pos="(15:5-15:9)" kind="BinExpr" value="ARRACCESS">
-<seminfo kind="VALUE" value="null"/>
-<semtype kind="INT"/>
-<absnode pos="(15:5-15:6)" kind="UnExpr" value="VAL">
-<seminfo kind="VALUE" value="null"/>
-<semtype kind="ARRAY" value="(1,20)">
-<semtype kind="INT"/>
-</semtype>
-<absnode pos="(15:5-15:5)" kind="ValName" value="a">
+<absnode pos="(13:32-13:41)" kind="TypeName" value="chessboard">
 <seminfo kind="DECL" value="2086984721"/>
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+</absnode>
+</absnode>
+<absnode pos="(14:13-14:23)" kind="VarDecl">
+<seminfo kind="DECL" value="36472025"/>
+<seminfo kind="SCOPE" value="1"/>
+<semtype kind="INT"/>
+<frmnode>
+<frm kind="loc offset" value="-76"/>
+</frmnode>
+<absnode pos="(14:13-14:13)" kind="DeclName" value="i">
+</absnode>
+<absnode pos="(14:17-14:23)" kind="AtomType(INT)">
+<semtype kind="INT"/>
+</absnode>
+</absnode>
+<absnode pos="(15:9-55:12)" kind="ProcDecl">
+<seminfo kind="DECL" value="952484780"/>
+<seminfo kind="SCOPE" value="1"/>
+<semtype kind="SUBPROGRAM">
 <semtype kind="POINTER">
-<semtype kind="ARRAY" value="(1,20)">
+<semtype kind="RECORD2014336824">
 <semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+</semtype>
+<semtype kind="VOID"/></semtype>
+<frmnode>
+<frm kind="level" value="1"/>
+<frm kind="label" value="_solve"/>
+<frm kind="size" value="24"/>
+<frm kind="FP" value="T2"/>
+</frmnode>
+<absnode pos="(15:19-15:23)" kind="DeclName" value="solve">
+</absnode>
+<absnode pos="(15:24-15:57)" kind="Decls">
+<absnode pos="(15:25-0:0)" kind="VarDecl">
+<seminfo kind="DECL" value="4461550"/>
+<seminfo kind="SCOPE" value="2"/>
+<semtype kind="POINTER">
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+</semtype>
+<frmnode>
+<frm kind="arg offset" value="4"/>
+</frmnode>
+<absnode pos="(15:25-15:42)" kind="DeclName" value="current_chessboard">
+</absnode>
+<absnode pos="(0:0-0:0)" kind="PointerType">
+<semtype kind="POINTER">
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+</semtype>
+<absnode pos="(15:46-15:56)" kind="TypeName" value="chessboard">
+<seminfo kind="DECL" value="2086984721"/>
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
 </semtype>
 </semtype>
 </absnode>
 </absnode>
-<absnode pos="(15:8-15:8)" kind="AtomExpr(INT)" value="3">
-<seminfo kind="VALUE" value="3"/>
+</absnode>
+</absnode>
+<absnode pos="(17:17-19:29)" kind="Decls">
+<absnode pos="(17:17-17:27)" kind="VarDecl">
+<seminfo kind="DECL" value="1068592722"/>
+<seminfo kind="SCOPE" value="2"/>
+<semtype kind="INT"/>
+<frmnode>
+<frm kind="loc offset" value="-4"/>
+</frmnode>
+<absnode pos="(17:17-17:17)" kind="DeclName" value="i">
+</absnode>
+<absnode pos="(17:21-17:27)" kind="AtomType(INT)">
 <semtype kind="INT"/>
 </absnode>
 </absnode>
-<absnode pos="(15:14-15:14)" kind="AtomExpr(INT)" value="4">
-<seminfo kind="VALUE" value="4"/>
+<absnode pos="(18:17-18:27)" kind="VarDecl">
+<seminfo kind="DECL" value="432138793"/>
+<seminfo kind="SCOPE" value="2"/>
+<semtype kind="INT"/>
+<frmnode>
+<frm kind="loc offset" value="-8"/>
+</frmnode>
+<absnode pos="(18:17-18:17)" kind="DeclName" value="j">
+</absnode>
+<absnode pos="(18:21-18:27)" kind="AtomType(INT)">
 <semtype kind="INT"/>
 </absnode>
 </absnode>
-<absnode pos="(17:5-17:17)" kind="ExprStmt">
-<semtype kind="VOID"/><absnode pos="(17:5-17:17)" kind="CallExpr">
-<semtype kind="VOID"/><absnode pos="(17:5-17:10)" kind="ValName" value="putint">
-<seminfo kind="DECL" value="1484511730"/>
+<absnode pos="(19:17-19:28)" kind="VarDecl">
+<seminfo kind="DECL" value="166999797"/>
+<seminfo kind="SCOPE" value="2"/>
+<semtype kind="BOOL"/>
+<frmnode>
+<frm kind="loc offset" value="-12"/>
+</frmnode>
+<absnode pos="(19:17-19:18)" kind="DeclName" value="ok">
 </absnode>
-<absnode pos="(17:11-17:17)" kind="ValExprs">
-<absnode pos="(17:12-17:16)" kind="BinExpr" value="ARRACCESS">
+<absnode pos="(19:22-19:28)" kind="AtomType(BOOL)">
+<semtype kind="BOOL"/>
+</absnode>
+</absnode>
+</absnode>
+<absnode pos="(20:9-55:11)" kind="BlockStmt">
+<absnode pos="(21:13-54:19)" kind="Stmts">
+<absnode pos="(21:13-54:19)" kind="IfStmt">
+<absnode pos="(21:16-21:63)" kind="BinExpr" value="EQU">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="BOOL"/>
+<absnode pos="(21:16-21:45)" kind="BinExpr" value="RECACCESS">
 <seminfo kind="VALUE" value="null"/>
 <semtype kind="INT"/>
-<absnode pos="(17:12-17:13)" kind="UnExpr" value="VAL">
+<absnode pos="(21:16-21:34)" kind="UnExpr" value="VAL">
 <seminfo kind="VALUE" value="null"/>
-<semtype kind="ARRAY" value="(1,20)">
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
 <semtype kind="INT"/>
 </semtype>
-<absnode pos="(17:12-17:12)" kind="ValName" value="a">
-<seminfo kind="DECL" value="2086984721"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+<absnode pos="(21:16-21:33)" kind="ValName" value="current_chessboard">
+<seminfo kind="DECL" value="4461550"/>
 <semtype kind="POINTER">
-<semtype kind="ARRAY" value="(1,20)">
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
 <semtype kind="INT"/>
 </semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
 </semtype>
 </absnode>
 </absnode>
-<absnode pos="(17:15-17:15)" kind="AtomExpr(INT)" value="3">
-<seminfo kind="VALUE" value="3"/>
+<absnode pos="(21:36-21:45)" kind="ValName" value="num_queens">
+</absnode>
+</absnode>
+<absnode pos="(21:49-21:63)" kind="ValName" value="chessboard_size">
+<seminfo kind="DECL" value="588729095"/>
 <semtype kind="INT"/>
 </absnode>
 </absnode>
+<absnode pos="(22:17-32:19)" kind="BlockStmt">
+<absnode pos="(23:21-31:54)" kind="Stmts">
+<absnode pos="(23:21-30:27)" kind="ForStmt">
+<absnode pos="(23:25-23:25)" kind="ValName" value="j">
+<seminfo kind="DECL" value="432138793"/>
 </absnode>
+<absnode pos="(23:30-23:30)" kind="AtomExpr(INT)" value="1">
+<seminfo kind="VALUE" value="1"/>
+<semtype kind="INT"/>
 </absnode>
+<absnode pos="(23:35-23:49)" kind="ValName" value="chessboard_size">
+<seminfo kind="DECL" value="588729095"/>
+<semtype kind="INT"/>
 </absnode>
-<absnode pos="(18:5-18:15)" kind="ExprStmt">
-<semtype kind="VOID"/><absnode pos="(18:5-18:15)" kind="CallExpr">
-<semtype kind="VOID"/><absnode pos="(18:5-18:12)" kind="ValName" value="printArr">
-<seminfo kind="DECL" value="1132403619"/>
+<absnode pos="(24:25-30:27)" kind="BlockStmt">
+<absnode pos="(25:29-29:42)" kind="Stmts">
+<absnode pos="(25:29-28:51)" kind="ForStmt">
+<absnode pos="(25:33-25:33)" kind="ValName" value="i">
+<seminfo kind="DECL" value="1068592722"/>
 </absnode>
-<absnode pos="(18:13-18:15)" kind="ValExprs">
-<absnode pos="(18:14-18:14)" kind="ValName" value="a">
-<seminfo kind="DECL" value="2086984721"/>
+<absnode pos="(25:38-25:38)" kind="AtomExpr(INT)" value="1">
+<seminfo kind="VALUE" value="1"/>
+<semtype kind="INT"/>
+</absnode>
+<absnode pos="(25:43-25:57)" kind="ValName" value="chessboard_size">
+<seminfo kind="DECL" value="588729095"/>
+<semtype kind="INT"/>
+</absnode>
+<absnode pos="(26:33-28:51)" kind="IfStmt">
+<absnode pos="(26:36-26:71)" kind="BinExpr" value="EQU">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="BOOL"/>
+<absnode pos="(26:36-26:67)" kind="BinExpr" value="ARRACCESS">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="INT"/>
+<absnode pos="(26:36-26:64)" kind="BinExpr" value="RECACCESS">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<absnode pos="(26:36-26:54)" kind="UnExpr" value="VAL">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+<absnode pos="(26:36-26:53)" kind="ValName" value="current_chessboard">
+<seminfo kind="DECL" value="4461550"/>
 <semtype kind="POINTER">
-<semtype kind="ARRAY" value="(1,20)">
+<semtype kind="RECORD2014336824">
 <semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
 </semtype>
 </semtype>
 </absnode>
+</absnode>
+<absnode pos="(26:56-26:64)" kind="ValName" value="used_cols">
+</absnode>
+</absnode>
+<absnode pos="(26:66-26:66)" kind="ValName" value="i">
+<seminfo kind="DECL" value="1068592722"/>
+<semtype kind="INT"/>
+</absnode>
+</absnode>
+<absnode pos="(26:71-26:71)" kind="ValName" value="j">
+<seminfo kind="DECL" value="432138793"/>
+<semtype kind="INT"/>
+</absnode>
+</absnode>
+<absnode pos="(27:42-27:51)" kind="ExprStmt">
+<semtype kind="VOID"/><absnode pos="(27:42-27:51)" kind="CallExpr">
+<semtype kind="VOID"/><absnode pos="(27:42-27:46)" kind="ValName" value="putch">
+<seminfo kind="DECL" value="1665228262"/>
+</absnode>
+<absnode pos="(27:47-27:51)" kind="ValExprs">
+<absnode pos="(27:48-27:50)" kind="AtomExpr(CHAR)" value="'*'">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="CHAR"/>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+<absnode pos="(28:42-28:51)" kind="ExprStmt">
+<semtype kind="VOID"/><absnode pos="(28:42-28:51)" kind="CallExpr">
+<semtype kind="VOID"/><absnode pos="(28:42-28:46)" kind="ValName" value="putch">
+<seminfo kind="DECL" value="1665228262"/>
+</absnode>
+<absnode pos="(28:47-28:51)" kind="ValExprs">
+<absnode pos="(28:48-28:50)" kind="AtomExpr(CHAR)" value="'.'">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="CHAR"/>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+<absnode pos="(29:29-29:42)" kind="ExprStmt">
+<semtype kind="VOID"/><absnode pos="(29:29-29:42)" kind="CallExpr">
+<semtype kind="VOID"/><absnode pos="(29:29-29:33)" kind="ValName" value="putch">
+<seminfo kind="DECL" value="1665228262"/>
+</absnode>
+<absnode pos="(29:34-29:42)" kind="ValExprs">
+<absnode pos="(29:35-29:41)" kind="CallExpr">
+<semtype kind="CHAR"/>
+<absnode pos="(29:35-29:37)" kind="ValName" value="chr">
+<seminfo kind="DECL" value="640079089"/>
+</absnode>
+<absnode pos="(29:38-29:41)" kind="ValExprs">
+<absnode pos="(29:39-29:40)" kind="AtomExpr(INT)" value="10">
+<seminfo kind="VALUE" value="10"/>
+<semtype kind="INT"/>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+<absnode pos="(31:21-31:54)" kind="AssignStmt">
+<absnode pos="(31:21-31:33)" kind="ValName" value="num_solutions">
+<seminfo kind="DECL" value="1408212765"/>
+<semtype kind="INT"/>
+</absnode>
+<absnode pos="(31:38-31:54)" kind="BinExpr" value="ADD">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="INT"/>
+<absnode pos="(31:38-31:50)" kind="ValName" value="num_solutions">
+<seminfo kind="DECL" value="1408212765"/>
+<semtype kind="INT"/>
+</absnode>
+<absnode pos="(31:54-31:54)" kind="AtomExpr(INT)" value="1">
+<seminfo kind="VALUE" value="1"/>
+<semtype kind="INT"/>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+<absnode pos="(34:17-54:19)" kind="BlockStmt">
+<absnode pos="(35:21-0:0)" kind="Stmts">
+<absnode pos="(35:21-0:0)" kind="ForStmt">
+<absnode pos="(35:25-35:25)" kind="ValName" value="j">
+<seminfo kind="DECL" value="432138793"/>
+</absnode>
+<absnode pos="(35:30-35:30)" kind="AtomExpr(INT)" value="1">
+<seminfo kind="VALUE" value="1"/>
+<semtype kind="INT"/>
+</absnode>
+<absnode pos="(35:35-35:49)" kind="ValName" value="chessboard_size">
+<seminfo kind="DECL" value="588729095"/>
+<semtype kind="INT"/>
+</absnode>
+<absnode pos="(36:25-0:0)" kind="IfStmt">
+<absnode pos="(36:28-36:59)" kind="BinExpr" value="ARRACCESS">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="BOOL"/>
+<absnode pos="(36:28-36:56)" kind="BinExpr" value="RECACCESS">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+<absnode pos="(36:28-36:46)" kind="UnExpr" value="VAL">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+<absnode pos="(36:28-36:45)" kind="ValName" value="current_chessboard">
+<seminfo kind="DECL" value="4461550"/>
+<semtype kind="POINTER">
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+</semtype>
+</absnode>
+</absnode>
+<absnode pos="(36:48-36:56)" kind="ValName" value="free_lins">
+</absnode>
+</absnode>
+<absnode pos="(36:58-36:58)" kind="ValName" value="j">
+<seminfo kind="DECL" value="432138793"/>
+<semtype kind="INT"/>
+</absnode>
+</absnode>
+<absnode pos="(37:29-53:31)" kind="BlockStmt">
+<absnode pos="(38:33-0:0)" kind="Stmts">
+<absnode pos="(38:33-38:42)" kind="AssignStmt">
+<absnode pos="(38:33-38:34)" kind="ValName" value="ok">
+<seminfo kind="DECL" value="166999797"/>
+<semtype kind="BOOL"/>
+</absnode>
+<absnode pos="(38:39-38:42)" kind="AtomExpr(BOOL)" value="true">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="BOOL"/>
+</absnode>
+</absnode>
+<absnode pos="(39:33-0:0)" kind="ForStmt">
+<absnode pos="(39:37-39:37)" kind="ValName" value="i">
+<seminfo kind="DECL" value="1068592722"/>
+</absnode>
+<absnode pos="(39:42-39:42)" kind="AtomExpr(INT)" value="1">
+<seminfo kind="VALUE" value="1"/>
+<semtype kind="INT"/>
+</absnode>
+<absnode pos="(39:47-39:76)" kind="BinExpr" value="RECACCESS">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="INT"/>
+<absnode pos="(39:47-39:65)" kind="UnExpr" value="VAL">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+<absnode pos="(39:47-39:64)" kind="ValName" value="current_chessboard">
+<seminfo kind="DECL" value="4461550"/>
+<semtype kind="POINTER">
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+</semtype>
+</absnode>
+</absnode>
+<absnode pos="(39:67-39:76)" kind="ValName" value="num_queens">
+</absnode>
+</absnode>
+<absnode pos="(40:37-0:0)" kind="IfStmt">
+<absnode pos="(40:40-41:120)" kind="BinExpr" value="OR">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="BOOL"/>
+<absnode pos="(40:40-40:120)" kind="BinExpr" value="EQU">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="BOOL"/>
+<absnode pos="(40:40-40:79)" kind="BinExpr" value="SUB">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="INT"/>
+<absnode pos="(40:40-40:75)" kind="BinExpr" value="ADD">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="INT"/>
+<absnode pos="(40:41-40:70)" kind="BinExpr" value="RECACCESS">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="INT"/>
+<absnode pos="(40:41-40:59)" kind="UnExpr" value="VAL">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+<absnode pos="(40:41-40:58)" kind="ValName" value="current_chessboard">
+<seminfo kind="DECL" value="4461550"/>
+<semtype kind="POINTER">
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+</semtype>
+</absnode>
+</absnode>
+<absnode pos="(40:61-40:70)" kind="ValName" value="num_queens">
+</absnode>
+</absnode>
+<absnode pos="(40:74-40:74)" kind="AtomExpr(INT)" value="1">
+<seminfo kind="VALUE" value="1"/>
+<semtype kind="INT"/>
+</absnode>
+</absnode>
+<absnode pos="(40:79-40:79)" kind="ValName" value="i">
+<seminfo kind="DECL" value="1068592722"/>
+<semtype kind="INT"/>
+</absnode>
+</absnode>
+<absnode pos="(40:83-40:120)" kind="BinExpr" value="SUB">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="INT"/>
+<absnode pos="(40:84-40:115)" kind="BinExpr" value="ARRACCESS">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="INT"/>
+<absnode pos="(40:84-40:112)" kind="BinExpr" value="RECACCESS">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<absnode pos="(40:84-40:102)" kind="UnExpr" value="VAL">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+<absnode pos="(40:84-40:101)" kind="ValName" value="current_chessboard">
+<seminfo kind="DECL" value="4461550"/>
+<semtype kind="POINTER">
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+</semtype>
+</absnode>
+</absnode>
+<absnode pos="(40:104-40:112)" kind="ValName" value="used_cols">
+</absnode>
+</absnode>
+<absnode pos="(40:114-40:114)" kind="ValName" value="i">
+<seminfo kind="DECL" value="1068592722"/>
+<semtype kind="INT"/>
+</absnode>
+</absnode>
+<absnode pos="(40:119-40:119)" kind="ValName" value="j">
+<seminfo kind="DECL" value="432138793"/>
+<semtype kind="INT"/>
+</absnode>
+</absnode>
+</absnode>
+<absnode pos="(41:40-41:120)" kind="BinExpr" value="EQU">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="BOOL"/>
+<absnode pos="(41:40-41:79)" kind="BinExpr" value="SUB">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="INT"/>
+<absnode pos="(41:40-41:75)" kind="BinExpr" value="ADD">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="INT"/>
+<absnode pos="(41:41-41:70)" kind="BinExpr" value="RECACCESS">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="INT"/>
+<absnode pos="(41:41-41:59)" kind="UnExpr" value="VAL">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+<absnode pos="(41:41-41:58)" kind="ValName" value="current_chessboard">
+<seminfo kind="DECL" value="4461550"/>
+<semtype kind="POINTER">
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+</semtype>
+</absnode>
+</absnode>
+<absnode pos="(41:61-41:70)" kind="ValName" value="num_queens">
+</absnode>
+</absnode>
+<absnode pos="(41:74-41:74)" kind="AtomExpr(INT)" value="1">
+<seminfo kind="VALUE" value="1"/>
+<semtype kind="INT"/>
+</absnode>
+</absnode>
+<absnode pos="(41:79-41:79)" kind="ValName" value="i">
+<seminfo kind="DECL" value="1068592722"/>
+<semtype kind="INT"/>
+</absnode>
+</absnode>
+<absnode pos="(41:83-41:120)" kind="BinExpr" value="SUB">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="INT"/>
+<absnode pos="(41:84-41:84)" kind="ValName" value="j">
+<seminfo kind="DECL" value="432138793"/>
+<semtype kind="INT"/>
+</absnode>
+<absnode pos="(41:88-41:119)" kind="BinExpr" value="ARRACCESS">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="INT"/>
+<absnode pos="(41:88-41:116)" kind="BinExpr" value="RECACCESS">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<absnode pos="(41:88-41:106)" kind="UnExpr" value="VAL">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+<absnode pos="(41:88-41:105)" kind="ValName" value="current_chessboard">
+<seminfo kind="DECL" value="4461550"/>
+<semtype kind="POINTER">
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+</semtype>
+</absnode>
+</absnode>
+<absnode pos="(41:108-41:116)" kind="ValName" value="used_cols">
+</absnode>
+</absnode>
+<absnode pos="(41:118-41:118)" kind="ValName" value="i">
+<seminfo kind="DECL" value="1068592722"/>
+<semtype kind="INT"/>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+<absnode pos="(42:41-42:51)" kind="AssignStmt">
+<absnode pos="(42:41-42:42)" kind="ValName" value="ok">
+<seminfo kind="DECL" value="166999797"/>
+<semtype kind="BOOL"/>
+</absnode>
+<absnode pos="(42:47-42:51)" kind="AtomExpr(BOOL)" value="false">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="BOOL"/>
+</absnode>
+</absnode>
+<absnode pos="(0:0-0:0)" kind="BlockStmt">
+<absnode pos="(0:0-0:0)" kind="Stmts">
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+<absnode pos="(43:33-0:0)" kind="IfStmt">
+<absnode pos="(43:36-43:37)" kind="ValName" value="ok">
+<seminfo kind="DECL" value="166999797"/>
+<semtype kind="BOOL"/>
+</absnode>
+<absnode pos="(44:37-52:39)" kind="BlockStmt">
+<absnode pos="(45:41-51:108)" kind="Stmts">
+<absnode pos="(45:41-45:108)" kind="AssignStmt">
+<absnode pos="(45:41-45:70)" kind="BinExpr" value="RECACCESS">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="INT"/>
+<absnode pos="(45:41-45:59)" kind="UnExpr" value="VAL">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+<absnode pos="(45:41-45:58)" kind="ValName" value="current_chessboard">
+<seminfo kind="DECL" value="4461550"/>
+<semtype kind="POINTER">
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+</semtype>
+</absnode>
+</absnode>
+<absnode pos="(45:61-45:70)" kind="ValName" value="num_queens">
+</absnode>
+</absnode>
+<absnode pos="(45:75-45:108)" kind="BinExpr" value="ADD">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="INT"/>
+<absnode pos="(45:75-45:104)" kind="BinExpr" value="RECACCESS">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="INT"/>
+<absnode pos="(45:75-45:93)" kind="UnExpr" value="VAL">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+<absnode pos="(45:75-45:92)" kind="ValName" value="current_chessboard">
+<seminfo kind="DECL" value="4461550"/>
+<semtype kind="POINTER">
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+</semtype>
+</absnode>
+</absnode>
+<absnode pos="(45:95-45:104)" kind="ValName" value="num_queens">
+</absnode>
+</absnode>
+<absnode pos="(45:108-45:108)" kind="AtomExpr(INT)" value="1">
+<seminfo kind="VALUE" value="1"/>
+<semtype kind="INT"/>
+</absnode>
+</absnode>
+</absnode>
+<absnode pos="(46:41-46:106)" kind="AssignStmt">
+<absnode pos="(46:41-46:101)" kind="BinExpr" value="ARRACCESS">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="INT"/>
+<absnode pos="(46:41-46:69)" kind="BinExpr" value="RECACCESS">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<absnode pos="(46:41-46:59)" kind="UnExpr" value="VAL">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+<absnode pos="(46:41-46:58)" kind="ValName" value="current_chessboard">
+<seminfo kind="DECL" value="4461550"/>
+<semtype kind="POINTER">
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+</semtype>
+</absnode>
+</absnode>
+<absnode pos="(46:61-46:69)" kind="ValName" value="used_cols">
+</absnode>
+</absnode>
+<absnode pos="(46:71-46:100)" kind="BinExpr" value="RECACCESS">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="INT"/>
+<absnode pos="(46:71-46:89)" kind="UnExpr" value="VAL">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+<absnode pos="(46:71-46:88)" kind="ValName" value="current_chessboard">
+<seminfo kind="DECL" value="4461550"/>
+<semtype kind="POINTER">
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+</semtype>
+</absnode>
+</absnode>
+<absnode pos="(46:91-46:100)" kind="ValName" value="num_queens">
+</absnode>
+</absnode>
+</absnode>
+<absnode pos="(46:106-46:106)" kind="ValName" value="j">
+<seminfo kind="DECL" value="432138793"/>
+<semtype kind="INT"/>
+</absnode>
+</absnode>
+<absnode pos="(47:41-47:81)" kind="AssignStmt">
+<absnode pos="(47:41-47:72)" kind="BinExpr" value="ARRACCESS">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="BOOL"/>
+<absnode pos="(47:41-47:69)" kind="BinExpr" value="RECACCESS">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+<absnode pos="(47:41-47:59)" kind="UnExpr" value="VAL">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+<absnode pos="(47:41-47:58)" kind="ValName" value="current_chessboard">
+<seminfo kind="DECL" value="4461550"/>
+<semtype kind="POINTER">
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+</semtype>
+</absnode>
+</absnode>
+<absnode pos="(47:61-47:69)" kind="ValName" value="free_lins">
+</absnode>
+</absnode>
+<absnode pos="(47:71-47:71)" kind="ValName" value="j">
+<seminfo kind="DECL" value="432138793"/>
+<semtype kind="INT"/>
+</absnode>
+</absnode>
+<absnode pos="(47:77-47:81)" kind="AtomExpr(BOOL)" value="false">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="BOOL"/>
+</absnode>
+</absnode>
+<absnode pos="(48:41-48:65)" kind="ExprStmt">
+<semtype kind="VOID"/><absnode pos="(48:41-48:65)" kind="CallExpr">
+<semtype kind="VOID"/><absnode pos="(48:41-48:45)" kind="ValName" value="solve">
+<seminfo kind="DECL" value="952484780"/>
+</absnode>
+<absnode pos="(48:46-48:65)" kind="ValExprs">
+<absnode pos="(48:47-48:64)" kind="ValName" value="current_chessboard">
+<seminfo kind="DECL" value="4461550"/>
+<semtype kind="POINTER">
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+</semtype>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+<absnode pos="(49:41-49:80)" kind="AssignStmt">
+<absnode pos="(49:41-49:72)" kind="BinExpr" value="ARRACCESS">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="BOOL"/>
+<absnode pos="(49:41-49:69)" kind="BinExpr" value="RECACCESS">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+<absnode pos="(49:41-49:59)" kind="UnExpr" value="VAL">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+<absnode pos="(49:41-49:58)" kind="ValName" value="current_chessboard">
+<seminfo kind="DECL" value="4461550"/>
+<semtype kind="POINTER">
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+</semtype>
+</absnode>
+</absnode>
+<absnode pos="(49:61-49:69)" kind="ValName" value="free_lins">
+</absnode>
+</absnode>
+<absnode pos="(49:71-49:71)" kind="ValName" value="j">
+<seminfo kind="DECL" value="432138793"/>
+<semtype kind="INT"/>
+</absnode>
+</absnode>
+<absnode pos="(49:77-49:80)" kind="AtomExpr(BOOL)" value="true">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="BOOL"/>
+</absnode>
+</absnode>
+<absnode pos="(50:41-50:106)" kind="AssignStmt">
+<absnode pos="(50:41-50:101)" kind="BinExpr" value="ARRACCESS">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="INT"/>
+<absnode pos="(50:41-50:69)" kind="BinExpr" value="RECACCESS">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<absnode pos="(50:41-50:59)" kind="UnExpr" value="VAL">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+<absnode pos="(50:41-50:58)" kind="ValName" value="current_chessboard">
+<seminfo kind="DECL" value="4461550"/>
+<semtype kind="POINTER">
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+</semtype>
+</absnode>
+</absnode>
+<absnode pos="(50:61-50:69)" kind="ValName" value="used_cols">
+</absnode>
+</absnode>
+<absnode pos="(50:71-50:100)" kind="BinExpr" value="RECACCESS">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="INT"/>
+<absnode pos="(50:71-50:89)" kind="UnExpr" value="VAL">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+<absnode pos="(50:71-50:88)" kind="ValName" value="current_chessboard">
+<seminfo kind="DECL" value="4461550"/>
+<semtype kind="POINTER">
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+</semtype>
+</absnode>
+</absnode>
+<absnode pos="(50:91-50:100)" kind="ValName" value="num_queens">
+</absnode>
+</absnode>
+</absnode>
+<absnode pos="(50:106-50:106)" kind="AtomExpr(INT)" value="0">
+<seminfo kind="VALUE" value="0"/>
+<semtype kind="INT"/>
+</absnode>
+</absnode>
+<absnode pos="(51:41-51:108)" kind="AssignStmt">
+<absnode pos="(51:41-51:70)" kind="BinExpr" value="RECACCESS">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="INT"/>
+<absnode pos="(51:41-51:59)" kind="UnExpr" value="VAL">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+<absnode pos="(51:41-51:58)" kind="ValName" value="current_chessboard">
+<seminfo kind="DECL" value="4461550"/>
+<semtype kind="POINTER">
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+</semtype>
+</absnode>
+</absnode>
+<absnode pos="(51:61-51:70)" kind="ValName" value="num_queens">
+</absnode>
+</absnode>
+<absnode pos="(51:75-51:108)" kind="BinExpr" value="SUB">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="INT"/>
+<absnode pos="(51:75-51:104)" kind="BinExpr" value="RECACCESS">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="INT"/>
+<absnode pos="(51:75-51:93)" kind="UnExpr" value="VAL">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+<absnode pos="(51:75-51:92)" kind="ValName" value="current_chessboard">
+<seminfo kind="DECL" value="4461550"/>
+<semtype kind="POINTER">
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+</semtype>
+</absnode>
+</absnode>
+<absnode pos="(51:95-51:104)" kind="ValName" value="num_queens">
+</absnode>
+</absnode>
+<absnode pos="(51:108-51:108)" kind="AtomExpr(INT)" value="1">
+<seminfo kind="VALUE" value="1"/>
+<semtype kind="INT"/>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+<absnode pos="(0:0-0:0)" kind="BlockStmt">
+<absnode pos="(0:0-0:0)" kind="Stmts">
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+<absnode pos="(0:0-0:0)" kind="BlockStmt">
+<absnode pos="(0:0-0:0)" kind="Stmts">
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+<absnode pos="(56:5-66:7)" kind="BlockStmt">
+<absnode pos="(57:9-65:29)" kind="Stmts">
+<absnode pos="(57:9-57:26)" kind="AssignStmt">
+<absnode pos="(57:9-57:21)" kind="ValName" value="num_solutions">
+<seminfo kind="DECL" value="1408212765"/>
+<semtype kind="INT"/>
+</absnode>
+<absnode pos="(57:26-57:26)" kind="AtomExpr(INT)" value="0">
+<seminfo kind="VALUE" value="0"/>
+<semtype kind="INT"/>
+</absnode>
+</absnode>
+<absnode pos="(58:9-62:15)" kind="ForStmt">
+<absnode pos="(58:13-58:13)" kind="ValName" value="i">
+<seminfo kind="DECL" value="36472025"/>
+</absnode>
+<absnode pos="(58:18-58:18)" kind="AtomExpr(INT)" value="1">
+<seminfo kind="VALUE" value="1"/>
+<semtype kind="INT"/>
+</absnode>
+<absnode pos="(58:23-58:37)" kind="ValName" value="chessboard_size">
+<seminfo kind="DECL" value="588729095"/>
+<semtype kind="INT"/>
+</absnode>
+<absnode pos="(59:13-62:15)" kind="BlockStmt">
+<absnode pos="(60:17-61:53)" kind="Stmts">
+<absnode pos="(60:17-60:50)" kind="AssignStmt">
+<absnode pos="(60:17-60:45)" kind="BinExpr" value="ARRACCESS">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="INT"/>
+<absnode pos="(60:17-60:42)" kind="BinExpr" value="RECACCESS">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<absnode pos="(60:17-60:32)" kind="ValName" value="empty_chessboard">
+<seminfo kind="DECL" value="414667768"/>
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+</absnode>
+<absnode pos="(60:34-60:42)" kind="ValName" value="used_cols">
+</absnode>
+</absnode>
+<absnode pos="(60:44-60:44)" kind="ValName" value="i">
+<seminfo kind="DECL" value="36472025"/>
+<semtype kind="INT"/>
+</absnode>
+</absnode>
+<absnode pos="(60:50-60:50)" kind="AtomExpr(INT)" value="0">
+<seminfo kind="VALUE" value="0"/>
+<semtype kind="INT"/>
+</absnode>
+</absnode>
+<absnode pos="(61:17-61:53)" kind="AssignStmt">
+<absnode pos="(61:17-61:45)" kind="BinExpr" value="ARRACCESS">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="BOOL"/>
+<absnode pos="(61:17-61:42)" kind="BinExpr" value="RECACCESS">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+<absnode pos="(61:17-61:32)" kind="ValName" value="empty_chessboard">
+<seminfo kind="DECL" value="414667768"/>
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+</absnode>
+<absnode pos="(61:34-61:42)" kind="ValName" value="free_lins">
+</absnode>
+</absnode>
+<absnode pos="(61:44-61:44)" kind="ValName" value="i">
+<seminfo kind="DECL" value="36472025"/>
+<semtype kind="INT"/>
+</absnode>
+</absnode>
+<absnode pos="(61:50-61:53)" kind="AtomExpr(BOOL)" value="true">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="BOOL"/>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+<absnode pos="(63:9-63:40)" kind="AssignStmt">
+<absnode pos="(63:9-63:35)" kind="BinExpr" value="RECACCESS">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="INT"/>
+<absnode pos="(63:9-63:24)" kind="ValName" value="empty_chessboard">
+<seminfo kind="DECL" value="414667768"/>
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+</absnode>
+<absnode pos="(63:26-63:35)" kind="ValName" value="num_queens">
+</absnode>
+</absnode>
+<absnode pos="(63:40-63:40)" kind="AtomExpr(INT)" value="0">
+<seminfo kind="VALUE" value="0"/>
+<semtype kind="INT"/>
+</absnode>
+</absnode>
+<absnode pos="(64:9-64:32)" kind="ExprStmt">
+<semtype kind="VOID"/><absnode pos="(64:9-64:32)" kind="CallExpr">
+<semtype kind="VOID"/><absnode pos="(64:9-64:13)" kind="ValName" value="solve">
+<seminfo kind="DECL" value="952484780"/>
+</absnode>
+<absnode pos="(64:14-64:32)" kind="ValExprs">
+<absnode pos="(64:15-64:31)" kind="UnExpr" value="MEM">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="POINTER">
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+</semtype>
+<absnode pos="(64:16-64:31)" kind="ValName" value="empty_chessboard">
+<seminfo kind="DECL" value="414667768"/>
+<semtype kind="RECORD2014336824">
+<semtype kind="INT"/>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="INT"/>
+</semtype>
+<semtype kind="ARRAY" value="(1,8)">
+<semtype kind="BOOL"/>
+</semtype>
+</semtype>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+<absnode pos="(65:9-65:29)" kind="ExprStmt">
+<semtype kind="VOID"/><absnode pos="(65:9-65:29)" kind="CallExpr">
+<semtype kind="VOID"/><absnode pos="(65:9-65:14)" kind="ValName" value="putint">
+<seminfo kind="DECL" value="723635264"/>
+</absnode>
+<absnode pos="(65:15-65:29)" kind="ValExprs">
+<absnode pos="(65:16-65:28)" kind="ValName" value="num_solutions">
+<seminfo kind="DECL" value="1408212765"/>
+<semtype kind="INT"/>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+<absnode pos="(67:1-69:3)" kind="BlockStmt">
+<absnode pos="(68:5-68:12)" kind="Stmts">
+<absnode pos="(68:5-68:12)" kind="ExprStmt">
+<semtype kind="VOID"/><absnode pos="(68:5-68:12)" kind="CallExpr">
+<semtype kind="VOID"/><absnode pos="(68:5-68:10)" kind="ValName" value="solver">
+<seminfo kind="DECL" value="24105143"/>
+</absnode>
+<absnode pos="(68:11-68:12)" kind="ValExprs">
 </absnode>
 </absnode>
 </absnode>

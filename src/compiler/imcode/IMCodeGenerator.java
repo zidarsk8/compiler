@@ -44,7 +44,6 @@ import compiler.frames.FrmVarAccess;
 import compiler.semanal.SemDesc;
 import compiler.semanal.SistemskeFunkcije;
 import compiler.semanal.type.SemArrayType;
-import compiler.semanal.type.SemPointerType;
 import compiler.semanal.type.SemRecordType;
 import compiler.semanal.type.SemType;
 
@@ -113,25 +112,13 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 		}else if (acceptor.oper == AbsBinExpr.ARRACCESS){
 			ImcExpr fexp = (ImcExpr) ((ImcMEM)acceptor.fstExpr.codeVisit(this)).expr;
 			ImcExpr sexp = (ImcExpr) acceptor.sndExpr.codeVisit(this);
-			
-			SemArrayType arr;
-			if (SemDesc.getActualType(acceptor.fstExpr) instanceof SemPointerType){
-				arr = (SemArrayType) ((SemPointerType)SemDesc.getActualType(acceptor.fstExpr)).type;
-			}else{
-				arr = (SemArrayType) SemDesc.getActualType(acceptor.fstExpr);
-			}
-				
 
-			ImcBINOP ind = new ImcBINOP(ImcBINOP.ADD, sexp, new ImcCONST(arr.loBound));
+			SemArrayType arr = (SemArrayType) SemDesc.getActualType(acceptor.fstExpr);
+
+			ImcBINOP ind = new ImcBINOP(ImcBINOP.SUB, sexp, new ImcCONST(arr.loBound));
 			ImcBINOP ofset = new ImcBINOP(ImcBINOP.MUL, ind, new ImcCONST(arr.type.size()));
-
-//			AbsDecl decl = SemDesc.getNameDecl(acceptor.fstExpr);
-//			FrmAccess access = FrmDesc.getAccess(decl);
-//			System.out.println(String.format("accsess %s",access));
-//			if (!(access instanceof FrmArgAccess)){
-//				
-//			}
-			return new ImcMEM(new ImcBINOP(ImcBINOP.ADD, fexp , ofset));
+			
+			return new ImcMEM(new ImcBINOP(ImcBINOP.ADD, fexp instanceof ImcMEM ? fexp : new ImcMEM(fexp), ofset));
 		}else{
 			ImcExpr fexp = (ImcExpr) acceptor.fstExpr.codeVisit(this);
 			ImcExpr sexp = (ImcExpr) acceptor.sndExpr.codeVisit(this);
@@ -158,14 +145,15 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 			call.size.add(4);
 		}
 		for(AbsValExpr expression: acceptor.args.exprs) {
-			if (SemDesc.getActualType(expression) instanceof SemRecordType ||
-					SemDesc.getActualType(expression) instanceof SemArrayType){
-				call.args.add(((ImcMEM)expression.codeVisit(this)).expr);
-				call.size.add(4);
-			}else{
+//			if (SemDesc.getActualType(expression) instanceof SemRecordType ||
+//					SemDesc.getActualType(expression) instanceof SemArrayType){
+//				//call.args.add(((ImcMEM)expression.codeVisit(this)).expr);
+//				call.args.add(((ImcMEM)expression.codeVisit(this)));
+//				call.size.add(4);
+//			}else{
 				call.args.add((ImcExpr)expression.codeVisit(this));
 				call.size.add(SemDesc.getActualType(expression).size());
-			}
+//			}
 		}
 		return call;
 	}
