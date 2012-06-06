@@ -155,8 +155,6 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 		} else {
 			FrmFrame frame = FrmDesc.getFrame(SemDesc.getNameDecl(acceptor.name));
 			call = new ImcCALL(frame.label);
-			System.out.println(String.format("frame: %s",frame));
-			System.out.println(String.format("frame: %s",currentFrame));
 			if (currentFrame.equals(frame)){
 				call.args.add(new ImcMEM(new ImcTEMP(currentFrame.FP)));
 				call.size.add(4);
