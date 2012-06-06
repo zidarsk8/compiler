@@ -2,7 +2,7 @@
 
 export PASCALXSL=xsl
 
-java -cp bin/java_cup/runtime:lib/java-cup-11a.jar:bin/compiler/.. compiler.Main $1 semanal > /dev/null
+java -cp bin/java_cup/runtime:lib/java-cup-11a.jar:bin/compiler/.. compiler.Main $1 semanal > /dev/null 
 java -cp bin/java_cup/runtime:lib/java-cup-11a.jar:bin/compiler/.. compiler.Main $1 frames  > /dev/null
 java -cp bin/java_cup/runtime:lib/java-cup-11a.jar:bin/compiler/.. compiler.Main $1 imcode  > /dev/null
 java -cp bin/java_cup/runtime:lib/java-cup-11a.jar:bin/compiler/.. compiler.Main $1 

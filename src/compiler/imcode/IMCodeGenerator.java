@@ -118,7 +118,24 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 			ImcBINOP ind = new ImcBINOP(ImcBINOP.SUB, sexp, new ImcCONST(arr.loBound));
 			ImcBINOP ofset = new ImcBINOP(ImcBINOP.MUL, ind, new ImcCONST(arr.type.size()));
 			
-			return new ImcMEM(new ImcBINOP(ImcBINOP.ADD, fexp instanceof ImcMEM ? fexp : new ImcMEM(fexp), ofset));
+			if (acceptor.fstExpr instanceof AbsValName){
+				System.out.println(String.format("valname: %s", acceptor.fstExpr));
+				
+				AbsVarDecl varDecl = (AbsVarDecl)(SemDesc.getNameDecl(acceptor.fstExpr) 
+						instanceof AbsVarDecl ? SemDesc.getNameDecl(acceptor.fstExpr) : null);
+				System.out.println(String.format("decl   : %s", varDecl));
+
+				FrmAccess access = FrmDesc.getAccess(varDecl);
+				System.out.println(String.format("decl   : %s", access));
+				if (access instanceof FrmArgAccess){
+					fexp = fexp instanceof ImcMEM ? fexp : new ImcMEM(fexp);
+				}
+			}
+			
+			
+			
+			//return new ImcMEM(new ImcBINOP(ImcBINOP.ADD, fexp instanceof ImcMEM ? fexp : new ImcMEM(fexp), ofset));
+			return new ImcMEM(new ImcBINOP(ImcBINOP.ADD, fexp , ofset));
 		}else{
 			ImcExpr fexp = (ImcExpr) acceptor.fstExpr.codeVisit(this);
 			ImcExpr sexp = (ImcExpr) acceptor.sndExpr.codeVisit(this);
