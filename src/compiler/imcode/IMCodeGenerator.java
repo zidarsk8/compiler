@@ -173,13 +173,12 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 		} else {
 			FrmFrame frame = FrmDesc.getFrame(SemDesc.getNameDecl(acceptor.name));
 			call = new ImcCALL(frame.label);
-			if (currentFrame.equals(frame)){
-				call.args.add(new ImcMEM(new ImcTEMP(currentFrame.FP)));
-				call.size.add(4);
-			}else{
-				call.args.add(new ImcTEMP(currentFrame.FP));
-				call.size.add(4);
+			ImcExpr staticLink = new ImcTEMP(currentFrame.FP);
+			for (int cfl = currentFrame.level; cfl>= frame.level; cfl--){
+				staticLink = (new ImcMEM(staticLink));
 			}
+			call.args.add(staticLink);
+			call.size.add(4);
 		}
 		for(AbsValExpr expression: acceptor.args.exprs) {
 			if (SemDesc.getActualType(expression) instanceof SemRecordType ||
