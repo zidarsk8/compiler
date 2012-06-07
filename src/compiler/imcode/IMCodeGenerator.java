@@ -98,12 +98,21 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 			int offset = 0;
 			for (int i = 0; i < srt.getNumFields(); i++) {
 				if (((AbsValName)acceptor.sndExpr).name.equals(srt.getFieldName(i).name)){
-					ImcExpr fexp = ((ImcMEM)acceptor.fstExpr.codeVisit(this)).expr;
+					
+					ImcCode fexpCode = acceptor.fstExpr.codeVisit(this);
+					ImcExpr fexp = null;
+					if (fexpCode instanceof ImcMEM){
+						fexp = ((ImcMEM) fexpCode).expr;
+					}else if (fexpCode instanceof ImcCALL){
+						fexp = new ImcMEM((ImcCALL) fexpCode);
+					}else if (fexpCode instanceof ImcTEMP){
+						fexp = new ImcMEM((ImcTEMP) fexpCode);
+					}
 					if (acceptor.fstExpr instanceof AbsValName){
 						AbsVarDecl varDecl = (AbsVarDecl)(SemDesc.getNameDecl(acceptor.fstExpr) 
 								instanceof AbsVarDecl ? SemDesc.getNameDecl(acceptor.fstExpr) : null);
 						FrmAccess access = FrmDesc.getAccess(varDecl);
-						if (access instanceof FrmArgAccess){
+						if (access instanceof FrmArgAccess ){
 							fexp = fexp instanceof ImcMEM ? fexp : new ImcMEM(fexp);
 						}
 					}
@@ -112,7 +121,16 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 				offset += srt.getFieldType(i).size();
 			}
 		}else if (acceptor.oper == AbsBinExpr.ARRACCESS){
-			ImcExpr fexp = (ImcExpr) ((ImcMEM)acceptor.fstExpr.codeVisit(this)).expr;
+
+			ImcCode fexpCode = acceptor.fstExpr.codeVisit(this);
+			ImcExpr fexp = null;
+			if (fexpCode instanceof ImcMEM){
+				fexp = ((ImcMEM) fexpCode).expr;
+			}else if (fexpCode instanceof ImcCALL){
+				fexp = new ImcMEM((ImcCALL) fexpCode);
+			}else if (fexpCode instanceof ImcTEMP){
+				fexp = new ImcMEM((ImcTEMP) fexpCode);
+			}
 			ImcExpr sexp = (ImcExpr) acceptor.sndExpr.codeVisit(this);
 
 			SemArrayType arr = (SemArrayType) SemDesc.getActualType(acceptor.fstExpr);
