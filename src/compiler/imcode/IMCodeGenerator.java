@@ -55,7 +55,7 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 
 	@Override
 	public ImcCode codeVisit(AbsAlloc acceptor) {
-		SemType t = SemDesc.getActualType(acceptor.type);
+		SemType t = SemDesc.getActualType(acceptor);
 		ImcCALL call = new ImcCALL(FrmLabel.newLabel("malloc"));
 		call.args.add(new ImcCONST(SistemskeFunkcije.FAKE_FP));
 		call.size.add(4);
