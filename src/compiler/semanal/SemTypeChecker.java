@@ -51,7 +51,11 @@ public class SemTypeChecker implements AbsVisitor{
 
 	@Override
 	public void visit(AbsAlloc acceptor) {
-		SemDesc.setActualType(acceptor, typeInt);
+		acceptor.type.accept(this);
+		SemType a = SemDesc.getActualType(acceptor.type);
+		if(a!=null){
+			SemDesc.setActualType(acceptor, new SemPointerType(a));
+		}
 	}
 
 	@Override
@@ -493,7 +497,7 @@ public class SemTypeChecker implements AbsVisitor{
 		AbsDecl decl = SemDesc.getNameDecl(acceptor);
 		SemType type = SemDesc.getActualType(decl);
 		if (decl instanceof AbsFunDecl){
-			
+
 			type = SemDesc.getActualType(((AbsFunDecl)decl).type);
 		}
 		if (type != null){
