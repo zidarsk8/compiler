@@ -24,6 +24,7 @@ import compiler.abstree.tree.AbsPointerType;
 import compiler.abstree.tree.AbsProcDecl;
 import compiler.abstree.tree.AbsProgram;
 import compiler.abstree.tree.AbsRecordType;
+import compiler.abstree.tree.AbsRepeatStmt;
 import compiler.abstree.tree.AbsStmt;
 import compiler.abstree.tree.AbsStmts;
 import compiler.abstree.tree.AbsTypeDecl;
@@ -527,6 +528,18 @@ public class SemTypeChecker implements AbsVisitor{
 		}
 
 		acceptor.stmt.accept(this);
+	}
+
+	@Override
+	public void visit(AbsRepeatStmt acceptor) {
+		acceptor.stmt.accept(this);
+		acceptor.cond.accept(this);
+		SemType cond = SemDesc.getActualType(acceptor.cond);
+		if (cond == null){
+			noTypeError(acceptor.cond.begLine, acceptor.cond.begColumn);
+		}else if (!cond.coercesTo(typeBool)){
+			integerTypeError(acceptor.cond.begLine, acceptor.cond.begColumn);
+		}
 	}
 
 	private void argumentsTypeError(int begLine, int begColumn) {

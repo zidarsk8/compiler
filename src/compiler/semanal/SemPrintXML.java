@@ -414,4 +414,13 @@ public class SemPrintXML implements AbsVisitor {
 		xml.print("</absnode>\n");
 	}
 
+	@Override
+	public void visit(AbsRepeatStmt acceptor) {
+		if (acceptor.error) { xml.print("<abserror kind=\"RepeatStmt\"/>\n"); return; }
+		xml.print("<absnode " + printPos(acceptor) + " kind=\"RepeatStmt\">\n");
+		acceptor.cond.accept(this);
+		acceptor.stmt.accept(this);
+		xml.print("</absnode>\n");
+	}
+
 }

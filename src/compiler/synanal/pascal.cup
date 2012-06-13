@@ -25,9 +25,9 @@ terminal String IDENTIFIER;
 terminal String BOOL, CHAR, INT;
 terminal String COLON, COMMA, DOT, DOTS, LBRACKET, LPARENTHESIS, RBRACKET, RPARENTHESIS, SEMIC;
 terminal String ADD, AND, DIV, EQU, GEQ, GTH, LEQ, LTH, MUL, NEQ, NOT, OR, PTR, SUB, MEM, UADD, USUB, VAL;
-terminal String ARRAY, ASSIGN, BEGIN, CONST, DO, ELSE, END, FOR, FUNCTION, IF, OF, PROCEDURE, PROGRAM, RECORD, THEN, TO, TYPE, VAR, WHILE;
+terminal String ARRAY, ASSIGN, BEGIN, CONST, DO, ELSE, END, FOR, FUNCTION, IF, OF, PROCEDURE, PROGRAM, RECORD, THEN, TO, TYPE, VAR, WHILE, REPEAT, UNTIL;
 
-
+ 
 non terminal AbsProgram 	source;
 non terminal AbsDeclName 		program_name;
 non terminal AbsProgram 		source_body;
@@ -81,8 +81,10 @@ non terminal AbsStmt						full_matched_if_statement;
 non terminal AbsStmt							matched_if_statement;
 non terminal AbsStmt								no_if_statement;
 non terminal AbsStmt								matched_if_while_statement;
+//non terminal AbsStmt								matched_if_repeat_statement;
 non terminal AbsStmt								matched_if_for_statement;
 non terminal AbsStmt					while_statement;
+non terminal AbsStmt					repeat_statement;
 non terminal AbsStmt					for_statement;
 non terminal AbsStmt					final_statement;
 				
@@ -953,6 +955,10 @@ statement ::=
 					{:
 						RESULT = st;
 					:}
+		|		repeat_statement:st
+					{:
+						RESULT = st;
+					:}
 		|		for_statement:st
 					{:
 						RESULT = st;
@@ -999,6 +1005,16 @@ while_statement ::=
 					:}
 		;
 
+repeat_statement ::= 
+				REPEAT:w statement_list:stmt UNTIL value_expression:cond 
+					{:
+						AbsRepeatStmt st = new AbsRepeatStmt(cond,stmt);
+						st.setBeg(w,wleft,wright);
+						st.setEnd(cond);
+						RESULT = st;
+					:}
+		;
+		
 for_statement ::= 
 				FOR:f IDENTIFIER:name ASSIGN value_expression:lobound TO value_expression:hibound DO statement:stmt
 				{:
@@ -1093,6 +1109,10 @@ no_if_statement ::=
 					{:
 						RESULT = val;
 					:}
+		|		repeat_statement:val
+					{:
+						RESULT = val;
+					:}
 		|		matched_if_for_statement:val
 					{:
 						RESULT = val;
@@ -1108,6 +1128,16 @@ matched_if_while_statement ::=
 					RESULT = st;
 				:}
 		;
+
+//matched_if_repeat_statement ::= 
+//			REPEAT:w no_if_statement:stmt UNTIL value_expression:cond 
+//			{:
+//				AbsRepeatStmt st = new AbsRepeatStmt(cond,stmt);
+//				st.setBeg(w,wleft,wright);
+//				st.setEnd(cond);
+//				RESULT = st;
+//			:}
+//		;
 
 matched_if_for_statement ::=
 				FOR:f IDENTIFIER:name ASSIGN value_expression:lobound TO value_expression:hibound DO matched_if_statement:stmt

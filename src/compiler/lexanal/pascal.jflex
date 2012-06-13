@@ -52,7 +52,7 @@ white_space		= [ \n\t]+
 letter = [A-Za-z]
 digit = [0-9]
 integer = {digit}+
-identifier = {letter}({letter}|{digit}|"_")*
+identifier = ({letter}|"_")({letter}|{digit}|"_")*
 
 %state YYCOMMENT
 
@@ -87,6 +87,8 @@ identifier = {letter}({letter}|{digit}|"_")*
 	type				{ return sym(PascalTok.TYPE); }
 	var					{ return sym(PascalTok.VAR); }
 	while				{ return sym(PascalTok.WHILE); }
+	repeat				{ return sym(PascalTok.REPEAT); }
+	until				{ return sym(PascalTok.UNTIL); }
 	
 	":="				{ return sym(PascalTok.ASSIGN); }
 	":"					{ return sym(PascalTok.COLON); }
@@ -113,7 +115,7 @@ identifier = {letter}({letter}|{digit}|"_")*
 	
 	{boolean_const}		{ return sym(PascalTok.BOOL_CONST); }
 	{char_const}		{ return sym(PascalTok.CHAR_CONST); }
-	{integer}		{ return sym(PascalTok.INT_CONST); }
+	{integer}		    { return sym(PascalTok.INT_CONST); }
 	
 	
 	{identifier}		{ return sym(PascalTok.IDENTIFIER); }
