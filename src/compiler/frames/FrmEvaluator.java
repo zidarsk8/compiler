@@ -317,8 +317,6 @@ public class FrmEvaluator extends AbsEmptyVisitor implements AbsCallVisitor{
 
 	@Override
 	public int callVisit(AbsWhileStmt acceptor) {
-		// TODO Auto-generated method stub
-		//Thread.dumpStack();
-		return 0; 
+		return Math.max(acceptor.cond.callVisit(this), acceptor.stmt.callVisit(this)); 
 	}
 }
