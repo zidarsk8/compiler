@@ -23,6 +23,7 @@ import compiler.abstree.tree.AbsPointerType;
 import compiler.abstree.tree.AbsProcDecl;
 import compiler.abstree.tree.AbsProgram;
 import compiler.abstree.tree.AbsRecordType;
+import compiler.abstree.tree.AbsReturnStmt;
 import compiler.abstree.tree.AbsStmt;
 import compiler.abstree.tree.AbsStmts;
 import compiler.abstree.tree.AbsTypeDecl;
@@ -318,5 +319,10 @@ public class FrmEvaluator extends AbsEmptyVisitor implements AbsCallVisitor{
 	@Override
 	public int callVisit(AbsWhileStmt acceptor) {
 		return Math.max(acceptor.cond.callVisit(this), acceptor.stmt.callVisit(this)); 
+	}
+
+	@Override
+	public int callVisit(AbsReturnStmt acceptor) {
+		return 0;
 	}
 }

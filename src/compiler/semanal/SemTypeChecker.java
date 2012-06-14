@@ -24,6 +24,7 @@ import compiler.abstree.tree.AbsPointerType;
 import compiler.abstree.tree.AbsProcDecl;
 import compiler.abstree.tree.AbsProgram;
 import compiler.abstree.tree.AbsRecordType;
+import compiler.abstree.tree.AbsReturnStmt;
 import compiler.abstree.tree.AbsStmt;
 import compiler.abstree.tree.AbsStmts;
 import compiler.abstree.tree.AbsTypeDecl;
@@ -43,6 +44,7 @@ import compiler.semanal.type.SemType;
 
 public class SemTypeChecker implements AbsVisitor{
 
+	private boolean isProcedure = false;
 	public boolean error = false;
 	private SemType typeInt = new SemAtomType(SemAtomType.INT);
 	private SemType typeBool = new SemAtomType(SemAtomType.BOOL);
@@ -262,6 +264,10 @@ public class SemTypeChecker implements AbsVisitor{
 				}else{
 					noTypeError(acceptor.expr.begLine, acceptor.expr.begColumn);
 				}
+			}else if (acceptor.expr instanceof AbsReturnStmt){
+				if (!isProcedure){
+					subprogramTypeError(acceptor.expr.begLine, acceptor.expr.begColumn);
+				}
 			}else{
 				procedureTypeError(acceptor.expr.begLine, acceptor.expr.begColumn);
 			}
@@ -367,7 +373,9 @@ public class SemTypeChecker implements AbsVisitor{
 		SemDesc.setActualType(acceptor, type);
 
 		acceptor.decls.accept(this);
+		isProcedure = true;
 		acceptor.stmt.accept(this);
+		isProcedure = false;
 	}
 
 	@Override
@@ -576,6 +584,17 @@ public class SemTypeChecker implements AbsVisitor{
 	private void recordNameError(String name, int begLine, int begColumn) {
 		error = true;
 		System.out.println(String.format("record element '%s' already exists (%d,%d)",name, begLine, begColumn));
+	}
+	private void notInProcedure(int begLine, int begColumn) {
+		error = true;
+		System.out.println(String.format("return statement is not in procedure (%d,%d)",begLine, begColumn));
+	}
+
+	@Override
+	public void visit(AbsReturnStmt acceptor) {
+		if (!isProcedure){
+			notInProcedure(acceptor.begLine, acceptor.begColumn);
+		}
 	}
 
 }

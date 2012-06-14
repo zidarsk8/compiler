@@ -22,6 +22,7 @@ import compiler.abstree.tree.AbsPointerType;
 import compiler.abstree.tree.AbsProcDecl;
 import compiler.abstree.tree.AbsProgram;
 import compiler.abstree.tree.AbsRecordType;
+import compiler.abstree.tree.AbsReturnStmt;
 import compiler.abstree.tree.AbsStmt;
 import compiler.abstree.tree.AbsStmts;
 import compiler.abstree.tree.AbsTypeDecl;
@@ -334,6 +335,11 @@ public class SemNameResolver implements AbsVisitor{
 	private void notDeclaredError(String name, int line, int col){
 		System.out.println(String.format("var %s is undefined at (%d,%d)", name, line, col));
 		error = true;
+	}
+
+	@Override
+	public void visit(AbsReturnStmt acceptor) {
+		
 	}
 
 }

@@ -24,6 +24,7 @@ import compiler.abstree.tree.AbsPointerType;
 import compiler.abstree.tree.AbsProcDecl;
 import compiler.abstree.tree.AbsProgram;
 import compiler.abstree.tree.AbsRecordType;
+import compiler.abstree.tree.AbsReturnStmt;
 import compiler.abstree.tree.AbsStmt;
 import compiler.abstree.tree.AbsStmts;
 import compiler.abstree.tree.AbsTypeDecl;
@@ -52,6 +53,7 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 	public LinkedList<ImcChunk> chunks = new LinkedList<ImcChunk>();
 
 	private FrmFrame currentFrame;
+	private ImcLABEL procedureEndLabel = null;
 
 	@Override
 	public ImcCode codeVisit(AbsAlloc acceptor) {
@@ -211,7 +213,12 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 	}
 	@Override
 	public ImcCode codeVisit(AbsExprStmt acceptor) {
-		return new ImcEXP((ImcExpr)acceptor.expr.codeVisit(this));
+		ImcCode code = acceptor.expr.codeVisit(this);
+		if (code instanceof ImcExpr){
+			return new ImcEXP((ImcExpr)acceptor.expr.codeVisit(this));
+		}else{
+			return code;
+		}
 	}
 	@Override
 	public ImcCode codeVisit(AbsForStmt acceptor) {
@@ -274,7 +281,13 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 	@Override
 	public ImcCode codeVisit(AbsProcDecl acceptor) {
 		currentFrame = FrmDesc.getFrame(acceptor);
-		chunks.add(new ImcCodeChunk(currentFrame, (ImcStmt)acceptor.stmt.codeVisit(this)));
+		
+		procedureEndLabel = new ImcLABEL(FrmLabel.newLabel());
+		ImcSEQ stmt = (ImcSEQ)acceptor.stmt.codeVisit(this);
+		stmt.stmts.add(procedureEndLabel);
+		procedureEndLabel = null;
+		chunks.add(new ImcCodeChunk(currentFrame, stmt));
+
 		acceptor.decls.codeVisit(this);
 		return null;
 	}
@@ -399,6 +412,15 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 		s.stmts.add(finish);
 
 		return s;
+	}
+	
+	@Override
+	public ImcCode codeVisit(AbsReturnStmt acceptor) {
+		if (procedureEndLabel != null){
+			return new ImcJUMP(procedureEndLabel.label);
+		}
+		System.out.println("neki ful narobe k mas return pa ni procedura");
+		return null;
 	}
 
 }

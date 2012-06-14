@@ -32,5 +32,6 @@ public interface AbsCallVisitor {
 	public int callVisit(AbsValName acceptor);
 	public int callVisit(AbsVarDecl acceptor);
 	public int callVisit(AbsWhileStmt acceptor);
+	public int callVisit(AbsReturnStmt acceptor);
 
 }

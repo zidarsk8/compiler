@@ -20,6 +20,7 @@ import compiler.abstree.tree.AbsPointerType;
 import compiler.abstree.tree.AbsProcDecl;
 import compiler.abstree.tree.AbsProgram;
 import compiler.abstree.tree.AbsRecordType;
+import compiler.abstree.tree.AbsReturnStmt;
 import compiler.abstree.tree.AbsStmts;
 import compiler.abstree.tree.AbsTypeDecl;
 import compiler.abstree.tree.AbsTypeName;
@@ -197,6 +198,12 @@ public class AbsEmptyVisitor implements AbsVisitor {
 	public void visit(AbsWhileStmt acceptor) {
 		//Thread.dumpStack();
 		//Report.error("Unimplemented visitor method.", 1);
+	}
+
+	@Override
+	public void visit(AbsReturnStmt acceptor) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
