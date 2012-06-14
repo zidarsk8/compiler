@@ -80,7 +80,24 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 		case AbsAtomConst.BOOL:
 			return new ImcCONST(acceptor.value.equals("true") ? 1 : 0);
 		case AbsAtomConst.CHAR:
-			return new ImcCONST((int) acceptor.value.charAt(1));
+			String str = acceptor.value.replace("'", "");
+			int c = str.charAt(1);
+			if (str.length()==0){
+				c = '\'';
+			}else if (str.length() > 1){
+				try {
+					if (str.charAt(str.length()-1) == 'h'){
+						c = Integer.parseInt(str.replace("h", ""), 16);
+					}else if (str.charAt(str.length()-1) == 'd') {
+						c = Integer.parseInt(str.replace("d", ""), 10);
+					}else{
+						throw new Exception();
+					}
+				} catch (Exception e) {
+					System.out.println(String.format("Napacna Deklaracija znaka: %s (%d, %d)",str,acceptor.begLine,acceptor.begColumn));
+				}
+			}
+			return new ImcCONST((int) c);
 		case AbsAtomConst.INT:
 			return new ImcCONST(Integer.parseInt(acceptor.value));
 		default:

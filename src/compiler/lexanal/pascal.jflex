@@ -46,7 +46,7 @@ rbrace			= \}
 nobrace			= [^{}]
 comment_body	= {nobrace}*
 boolean_const	= "true"|"false"
-char_const		= '[^'\n]'|''
+char_const		= '[^'\n]'|''|'[0-9]{1,3}d'|'[0-9a-fA-F]{1,2}h'
 white_space		= [ \n\t]+
 
 letter = [A-Za-z]
