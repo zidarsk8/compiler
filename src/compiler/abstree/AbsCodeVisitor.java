@@ -17,6 +17,7 @@ import compiler.abstree.tree.AbsFunDecl;
 import compiler.abstree.tree.AbsIfStmt;
 import compiler.abstree.tree.AbsNilConst;
 import compiler.abstree.tree.AbsPointerType;
+import compiler.abstree.tree.AbsPrivateVarDecl;
 import compiler.abstree.tree.AbsProcDecl;
 import compiler.abstree.tree.AbsProgram;
 import compiler.abstree.tree.AbsRecordType;
@@ -60,5 +61,6 @@ public interface AbsCodeVisitor {
 	public ImcCode codeVisit(AbsValName acceptor);
 	public ImcCode codeVisit(AbsVarDecl acceptor);
 	public ImcCode codeVisit(AbsWhileStmt acceptor);
+	public ImcCode codeVisit(AbsPrivateVarDecl acceptor);
 
 }

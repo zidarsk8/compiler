@@ -9,7 +9,7 @@ public class SemTable {
 
 	private static HashMap<String, LinkedList<AbsDecl>> mapping = new HashMap<String, LinkedList<AbsDecl>>();
 
-	private static int scope = 0;
+	public static int scope = 0;
 
 	public static void newScope() {
 		scope++;

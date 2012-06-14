@@ -21,6 +21,7 @@ import compiler.abstree.tree.AbsFunDecl;
 import compiler.abstree.tree.AbsIfStmt;
 import compiler.abstree.tree.AbsNilConst;
 import compiler.abstree.tree.AbsPointerType;
+import compiler.abstree.tree.AbsPrivateVarDecl;
 import compiler.abstree.tree.AbsProcDecl;
 import compiler.abstree.tree.AbsProgram;
 import compiler.abstree.tree.AbsRecordType;
@@ -379,6 +380,10 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 	}
 	@Override
 	public ImcCode codeVisit(AbsVarDecl acceptor) {
+		return null;
+	}
+	@Override
+	public ImcCode codeVisit(AbsPrivateVarDecl acceptor) {
 		return null;
 	}
 	@Override

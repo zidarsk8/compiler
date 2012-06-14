@@ -406,6 +406,19 @@ public class SemPrintXML implements AbsVisitor {
 		xml.print("</absnode>\n");
 	}
 
+	public void visit(AbsPrivateVarDecl acceptor) {
+		if (acceptor.error) { xml.print("<abserror kind=\"VarDecl\"/>\n"); return; }
+		xml.print("<absnode " + printPos(acceptor) + " kind=\"VarDecl\">\n");
+		{
+			xml.print("<seminfo kind=\"DECL\" value=\"" + acceptor.hashCode() + "\"/>\n");
+			xml.print("<seminfo kind=\"SCOPE\" value=\"" + SemDesc.getScope(acceptor) + "\"/>\n");
+			SemType actualType = SemDesc.getActualType(acceptor); if (actualType != null) actualType.toXML(xml);
+		}
+		acceptor.name.accept(this);
+		acceptor.type.accept(this);
+		xml.print("</absnode>\n");
+	}
+
 	public void visit(AbsWhileStmt acceptor) {
 		if (acceptor.error) { xml.print("<abserror kind=\"WhileStmt\"/>\n"); return; }
 		xml.print("<absnode " + printPos(acceptor) + " kind=\"WhileStmt\">\n");

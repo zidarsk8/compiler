@@ -21,6 +21,7 @@ import compiler.abstree.tree.AbsFunDecl;
 import compiler.abstree.tree.AbsIfStmt;
 import compiler.abstree.tree.AbsNilConst;
 import compiler.abstree.tree.AbsPointerType;
+import compiler.abstree.tree.AbsPrivateVarDecl;
 import compiler.abstree.tree.AbsProcDecl;
 import compiler.abstree.tree.AbsProgram;
 import compiler.abstree.tree.AbsRecordType;
@@ -507,6 +508,17 @@ public class SemTypeChecker implements AbsVisitor{
 
 	@Override
 	public void visit(AbsVarDecl acceptor) {
+		acceptor.type.accept(this);
+		SemType type = SemDesc.getActualType(acceptor.type);
+		if (type != null){
+			SemDesc.setActualType(acceptor, type);
+		}else{
+			noTypeError(acceptor.begLine, acceptor.begColumn);
+		}
+	}
+
+	@Override
+	public void visit(AbsPrivateVarDecl acceptor) {
 		acceptor.type.accept(this);
 		SemType type = SemDesc.getActualType(acceptor.type);
 		if (type != null){

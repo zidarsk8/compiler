@@ -343,6 +343,14 @@ public class AbsPrintXML implements AbsVisitor {
 		xml.print("</absnode>\n");
 	}
 
+	public void visit(AbsPrivateVarDecl acceptor) {
+		if (acceptor.error) { xml.println("<abserror kind=\"VarDecl\"/>"); return; }
+		xml.print("<absnode " + printPos(acceptor) + " kind=\"VarDecl\">\n");
+		acceptor.name.accept(this);
+		acceptor.type.accept(this);
+		xml.print("</absnode>\n");
+	}
+
 	public void visit(AbsWhileStmt acceptor) {
 		if (acceptor.error) { xml.println("<abserror kind=\"WhileStmt\"/>"); return; }
 		xml.print("<absnode " + printPos(acceptor) + " kind=\"WhileStmt\">");

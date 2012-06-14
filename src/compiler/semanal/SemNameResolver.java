@@ -1,5 +1,9 @@
 package compiler.semanal;
 
+import java.util.HashMap;
+import java.util.Stack;
+import java.util.TreeSet;
+
 import compiler.abstree.AbsVisitor;
 import compiler.abstree.tree.AbsAlloc;
 import compiler.abstree.tree.AbsArrayType;
@@ -19,11 +23,13 @@ import compiler.abstree.tree.AbsFunDecl;
 import compiler.abstree.tree.AbsIfStmt;
 import compiler.abstree.tree.AbsNilConst;
 import compiler.abstree.tree.AbsPointerType;
+import compiler.abstree.tree.AbsPrivateVarDecl;
 import compiler.abstree.tree.AbsProcDecl;
 import compiler.abstree.tree.AbsProgram;
 import compiler.abstree.tree.AbsRecordType;
 import compiler.abstree.tree.AbsStmt;
 import compiler.abstree.tree.AbsStmts;
+import compiler.abstree.tree.AbsTree;
 import compiler.abstree.tree.AbsTypeDecl;
 import compiler.abstree.tree.AbsTypeName;
 import compiler.abstree.tree.AbsUnExpr;
@@ -37,7 +43,8 @@ public class SemNameResolver implements AbsVisitor{
 
 	public boolean error = false;
 	private int isRecord = 0;
-
+	public static HashMap<String, TreeSet<Integer>> privateVars = new HashMap<String, TreeSet<Integer>>();
+	
 	@Override
 	public void visit(AbsAlloc acceptor) {
 		acceptor.type.accept(this);
@@ -189,6 +196,15 @@ public class SemNameResolver implements AbsVisitor{
 		acceptor.decls.accept(this);
 		acceptor.type.accept(this);
 		acceptor.stmt.accept(this);
+
+		
+		for (String key : privateVars.keySet()){
+			TreeSet<Integer> ts = privateVars.get(key);
+			ts.remove(SemTable.scope);
+			ts.remove(SemTable.scope+1);
+			privateVars.remove(key);
+			privateVars.put(key, ts);
+		}
 		SemTable.oldScope();
 		try {
 			SemTable.ins(acceptor.name.name, acceptor);
@@ -225,7 +241,17 @@ public class SemNameResolver implements AbsVisitor{
 		acceptor.decls.accept(this);
 		acceptor.pars.accept(this);
 		acceptor.stmt.accept(this);
+		
+		
+		for (String key : privateVars.keySet()){
+			TreeSet<Integer> ts = privateVars.get(key);
+			ts.remove(SemTable.scope);
+			ts.remove(SemTable.scope+1);
+			privateVars.remove(key);
+			privateVars.put(key, ts);
+		}
 		SemTable.oldScope();
+		
 		try {
 			SemTable.ins(acceptor.name.name, acceptor);
 		} catch (SemIllegalInsertException e) {
@@ -292,9 +318,19 @@ public class SemNameResolver implements AbsVisitor{
 	@Override
 	public void visit(AbsValName acceptor) {
 		AbsDecl decl = SemTable.fnd(acceptor.name);
+		if (privateVars.containsKey(acceptor.name)){
+//			System.out.println(String.format("private var name: %s (%d,%d)", acceptor.name,acceptor.begLine,acceptor.begColumn));
+//			System.out.println(String.format("private var scope: %s (%d,%d)", privateVars.get(acceptor.name),acceptor.begLine,acceptor.begColumn));
+			TreeSet<Integer> ts = privateVars.get(acceptor.name);
+			if (!ts.contains(SemTable.scope)){
+				privateVarAccess(acceptor.name, acceptor.begLine, acceptor.begColumn);
+			}
+		}
+		
 		if (decl == null){
 			notDeclaredError(acceptor.name, acceptor.begLine, acceptor.begColumn);
 		}else{
+			
 			SemDesc.setNameDecl(acceptor, decl);
 			Integer val = SemDesc.getActualConst(decl);
 			if (val != null){
@@ -305,6 +341,36 @@ public class SemNameResolver implements AbsVisitor{
 
 	@Override
 	public void visit(AbsVarDecl acceptor) {
+//		System.out.println(String.format("AbsVarDecl acceptor: %s", acceptor));
+		if (acceptor instanceof AbsPrivateVarDecl){
+			if (SemTable.scope == 0){
+				notInSub(acceptor.name.name, acceptor.begLine, acceptor.begColumn);
+			}
+//			System.out.println(String.format("scope: %s  (%d,%d)", acceptor.name.name+SemTable.scope,acceptor.begLine,acceptor.begColumn));
+//			privateVars.put(SemTable.scope+"_"+acceptor.name.name, acceptor);
+			TreeSet<Integer> ts = null;
+			if (privateVars.containsKey(acceptor.name.name)){
+				ts = privateVars.get(acceptor.name.name);
+			}else{
+				ts = new TreeSet<Integer>();
+			}
+			ts.add(SemTable.scope);
+			privateVars.remove(acceptor.name.name);
+			privateVars.put(acceptor.name.name, ts);
+		}
+		if (isRecord == 0){
+			try {
+				SemTable.ins(acceptor.name.name, acceptor);
+			} catch (SemIllegalInsertException e) {
+				isDeclaredError(acceptor.name.name, acceptor.begLine, acceptor.begColumn);
+			}
+		}
+		acceptor.type.accept(this);
+	}
+
+	@Override
+	public void visit(AbsPrivateVarDecl acceptor) {
+		System.out.println(String.format("scope: %s", SemDesc.getScope(acceptor)));
 		if (isRecord == 0){
 			try {
 				SemTable.ins(acceptor.name.name, acceptor);
@@ -333,6 +399,15 @@ public class SemNameResolver implements AbsVisitor{
 
 	private void notDeclaredError(String name, int line, int col){
 		System.out.println(String.format("var %s is undefined at (%d,%d)", name, line, col));
+		error = true;
+	}
+
+	private void notInSub(String name, int line, int col){
+		System.out.println(String.format("var %s not in a subprogram (%d,%d)", name, line, col));
+		error = true;
+	}
+	private void privateVarAccess(String name, int line, int col){
+		System.out.println(String.format("private var %s is not here (%d,%d)", name, line, col));
 		error = true;
 	}
 

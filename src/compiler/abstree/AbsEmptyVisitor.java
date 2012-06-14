@@ -17,6 +17,7 @@ import compiler.abstree.tree.AbsFunDecl;
 import compiler.abstree.tree.AbsIfStmt;
 import compiler.abstree.tree.AbsNilConst;
 import compiler.abstree.tree.AbsPointerType;
+import compiler.abstree.tree.AbsPrivateVarDecl;
 import compiler.abstree.tree.AbsProcDecl;
 import compiler.abstree.tree.AbsProgram;
 import compiler.abstree.tree.AbsRecordType;
@@ -197,6 +198,11 @@ public class AbsEmptyVisitor implements AbsVisitor {
 	public void visit(AbsWhileStmt acceptor) {
 		//Thread.dumpStack();
 		//Report.error("Unimplemented visitor method.", 1);
+	}
+
+	@Override
+	public void visit(AbsPrivateVarDecl acceptor) {
+		
 	}
 
 }
