@@ -19,3 +19,4 @@ PascalSyn.java
 PascalTok.java
 *.pascal
 *~
+*.swp
