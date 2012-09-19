@@ -45,7 +45,6 @@ lbrace			= \{
 rbrace			= \}
 nobrace			= [^{}]
 comment_body	= {nobrace}*
-comment			= {lbrace}{comment_body}{rbrace}
 boolean_const	= "true"|"false"
 char_const		= '[^'\n]'|''
 white_space		= [ \n\t]+

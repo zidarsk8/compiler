@@ -1,6 +1,16 @@
 #!/bin/sh
-JAVACUP=/usr/share/java/cup/java-cup-11a.jar
+JAVACUP=/usr/share/java/java-cup-11a.jar
 JFLEX=/usr/bin/jflex
+
+function clean()
+{
+  rm -f src/compiler/lexanal/PascalLex.java
+  rm -f src/compiler/synanal/PascalTok.java
+  rm -f src/compiler/synanal/PascalSyn.java
+  rm -rf bin/
+  rm -f *.xml
+  echo "Uspesno brisanje generiranih datotek"
+}
 
 if [ $# -ne 1 ]; then
   echo "Manjka argument: ImePrograma | compile | clean"
@@ -8,15 +18,12 @@ if [ $# -ne 1 ]; then
 fi
 
 if [ "$1" == "clean" ]; then
-  rm -f src/compiler/lexanal/PascalLex.java
-  rm -f src/compiler/synanal/PascalTok.java
-  rm -f src/compiler/synanal/PascalSyn.java
-  rm -rf bin/
-  echo "Uspesno brisanje generiranih datotek"
+  clean 
   exit 0
 fi
 
 if [ "$1" == "compile" ]; then
+  clean
   $JFLEX --nobak src/compiler/lexanal/pascal.jflex
   java -jar $JAVACUP -package synanal -parser PascalSyn -symbols PascalTok -nonterms -expect 1 src/compiler/synanal/pascal.cup
   mv PascalTok.java src/compiler/synanal/PascalTok.java
@@ -38,7 +45,9 @@ PROGNAME=$1
 #fi
 
 export PASCALXSL=xsl
-java -cp bin/java_cup/runtime:$JAVACUP:bin/compiler/.. compiler.Main $PROGNAME semanal > /dev/null
-java -cp bin/java_cup/runtime:$JAVACUP:bin/compiler/.. compiler.Main $PROGNAME frames > /dev/null
-java -cp bin/java_cup/runtime:$JAVACUP:bin/compiler/.. compiler.Main $PROGNAME imcode > /dev/null
-java -cp bin/java_cup/runtime:$JAVACUP:bin/compiler/.. compiler.Main $PROGNAME compiler/Main.java 
+java -cp bin/java_cup/runtime:bin/compiler/.. compiler.Main $PROGNAME synanal > /dev/null 2>&1
+java -cp bin/java_cup/runtime:bin/compiler/.. compiler.Main $PROGNAME abstree > /dev/null
+java -cp bin/java_cup/runtime:bin/compiler/.. compiler.Main $PROGNAME semanal > /dev/null
+java -cp bin/java_cup/runtime:bin/compiler/.. compiler.Main $PROGNAME frames > /dev/null
+java -cp bin/java_cup/runtime:bin/compiler/.. compiler.Main $PROGNAME imcode > /dev/null
+java -cp bin/java_cup/runtime:bin/compiler/.. compiler.Main $PROGNAME lincode

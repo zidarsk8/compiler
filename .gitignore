@@ -9,14 +9,19 @@ bin/**
 
 
 # Custom
-lib/**
 synanal.xml
 lexanal.xml
 abstree.xml
 semanal.xml
+lincode.xml
+frames.xml
+imcode.xml
 PascalLex.java
 PascalSyn.java
 PascalTok.java
+
+zidarTesti
+
 *.pascal
 *~
 *.swp
