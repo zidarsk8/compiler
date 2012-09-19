@@ -258,7 +258,11 @@ public class SemNameResolver implements AbsVisitor{
 	public void visit(AbsTypeDecl acceptor) {
 		if (isRecord == 0){
 			try {
-				SemTable.ins(acceptor.name.name, acceptor);
+				if (acceptor.name.name.charAt(0) >= 'A' && acceptor.name.name.charAt(0) <= 'Z'){
+					SemTable.ins(acceptor.name.name, acceptor);
+				} else {
+					notCamelCase(acceptor.name.name, acceptor.begLine, acceptor.begColumn);
+				}
 			} catch (SemIllegalInsertException e) {
 				isDeclaredError(acceptor.name.name, acceptor.begLine, acceptor.begColumn);
 			}
@@ -333,6 +337,11 @@ public class SemNameResolver implements AbsVisitor{
 
 	private void notDeclaredError(String name, int line, int col){
 		System.out.println(String.format("var %s is undefined at (%d,%d)", name, line, col));
+		error = true;
+	}
+
+	private void notCamelCase(String name, int line, int col) {
+		System.out.println(String.format("type %s should start with a big letter (%d,%d)", name, line, col));
 		error = true;
 	}
 
