@@ -18,6 +18,7 @@ public interface AbsCallVisitor {
 	public int callVisit(AbsExprStmt acceptor);
 	public int callVisit(AbsForStmt acceptor);
 	public int callVisit(AbsFunDecl acceptor);
+	public int callVisit(AbsIifExpr acceptor);
 	public int callVisit(AbsIfStmt acceptor);
 	public int callVisit(AbsNilConst acceptor);
 	public int callVisit(AbsPointerType acceptor);

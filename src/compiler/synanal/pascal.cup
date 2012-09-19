@@ -25,7 +25,7 @@ terminal String IDENTIFIER;
 terminal String BOOL, CHAR, INT;
 terminal String COLON, COMMA, DOT, DOTS, LBRACKET, LPARENTHESIS, RBRACKET, RPARENTHESIS, SEMIC;
 terminal String ADD, AND, DIV, EQU, GEQ, GTH, LEQ, LTH, MUL, NEQ, NOT, OR, PTR, SUB, MEM, UADD, USUB, VAL;
-terminal String ARRAY, ASSIGN, BEGIN, CONST, DO, ELSE, END, FOR, FUNCTION, IF, OF, PROCEDURE, PROGRAM, RECORD, THEN, TO, TYPE, VAR, WHILE;
+terminal String ARRAY, ASSIGN, BEGIN, CONST, DO, ELSE, END, FOR, FUNCTION, IF, IIF, OF, PROCEDURE, PROGRAM, RECORD, THEN, TO, TYPE, VAR, WHILE;
 
 
 non terminal AbsProgram 	source;
@@ -63,6 +63,7 @@ non terminal AbsTypeDecl						single_record_component;
 non terminal AbsTypeExpr				type_pointer;
 
 non terminal AbsValExpr			value_expression;
+non terminal AbsValExpr             iif_expression;
 non terminal AbsValExpr				const_values;
 non terminal AbsValExpr				or_expression;
 non terminal AbsValExpr				and_expression;
@@ -633,11 +634,25 @@ type_pointer ::=
 
 
 value_expression ::= 
-				or_expression:nextExpr
-					{:
-						RESULT = nextExpr;
-					:}
-		;
+                iif_expression:nextExpr
+                    {:
+                        RESULT = nextExpr;
+                    :}
+        ;
+        
+iif_expression ::= 
+                or_expression:nextExpr
+                    {:
+                        RESULT = nextExpr;
+                    :}
+        |       iif_expression:condExpr IIF iif_expression:fstExpr COLON iif_expression:sndExpr
+                    {:
+                        AbsIifExpr iif = new AbsIifExpr(condExpr, fstExpr, sndExpr);
+                        iif.setBeg(iif);
+                        iif.setEnd(sndExpr);
+                        RESULT = iif;
+                    :} 
+        ;
 
 or_expression ::=
 				and_expression:nextExpr

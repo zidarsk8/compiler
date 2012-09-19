@@ -19,6 +19,7 @@ import compiler.abstree.tree.AbsExprStmt;
 import compiler.abstree.tree.AbsForStmt;
 import compiler.abstree.tree.AbsFunDecl;
 import compiler.abstree.tree.AbsIfStmt;
+import compiler.abstree.tree.AbsIifExpr;
 import compiler.abstree.tree.AbsNilConst;
 import compiler.abstree.tree.AbsPointerType;
 import compiler.abstree.tree.AbsProcDecl;
@@ -40,6 +41,7 @@ import compiler.frames.FrmDesc;
 import compiler.frames.FrmFrame;
 import compiler.frames.FrmLabel;
 import compiler.frames.FrmLocAccess;
+import compiler.frames.FrmTemp;
 import compiler.frames.FrmVarAccess;
 import compiler.semanal.SemDesc;
 import compiler.semanal.SistemskeFunkcije;
@@ -263,10 +265,37 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 
 		return statement;
 	}
+
+	@Override
+	public ImcCode codeVisit(AbsIifExpr acceptor) {
+		ImcTEMP tempRes = new ImcTEMP(new FrmTemp());
+
+		ImcSEQ statement = new ImcSEQ();
+
+		ImcExpr cond = (ImcExpr) acceptor.condExpr.codeVisit(this);
+
+		ImcLABEL trueLabel = new ImcLABEL(FrmLabel.newLabel());
+		ImcLABEL falseLabel = new ImcLABEL(FrmLabel.newLabel());
+		ImcLABEL finish = new ImcLABEL(FrmLabel.newLabel());
+
+		statement.stmts.add(new ImcCJUMP(cond, trueLabel.label, falseLabel.label));
+		statement.stmts.add(trueLabel);
+		statement.stmts.add(new ImcMOVE(tempRes, (ImcExpr) acceptor.fstExpr.codeVisit(this)));
+		statement.stmts.add(new ImcJUMP(finish.label));
+		statement.stmts.add(falseLabel);
+		statement.stmts.add(new ImcMOVE(tempRes, (ImcExpr) acceptor.sndExpr.codeVisit(this)));
+		statement.stmts.add(finish);
+
+		ImcESEQ result = new ImcESEQ(statement, tempRes);
+
+		return result;
+	}
+
 	@Override
 	public ImcCode codeVisit(AbsNilConst acceptor) {
 		return new ImcCONST(0);
 	}
+
 	@Override
 	public ImcCode codeVisit(AbsPointerType acceptor) {
 		return null;

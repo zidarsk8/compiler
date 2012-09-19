@@ -19,6 +19,7 @@ public interface AbsVisitor {
 	public void visit(AbsForStmt acceptor);
 	public void visit(AbsFunDecl acceptor);
 	public void visit(AbsIfStmt acceptor);
+	public void visit(AbsIifExpr acceptor);
 	public void visit(AbsNilConst acceptor);
 	public void visit(AbsPointerType acceptor);
 	public void visit(AbsProcDecl acceptor);

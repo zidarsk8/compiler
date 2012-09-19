@@ -15,6 +15,7 @@ import compiler.abstree.tree.AbsExprStmt;
 import compiler.abstree.tree.AbsForStmt;
 import compiler.abstree.tree.AbsFunDecl;
 import compiler.abstree.tree.AbsIfStmt;
+import compiler.abstree.tree.AbsIifExpr;
 import compiler.abstree.tree.AbsNilConst;
 import compiler.abstree.tree.AbsPointerType;
 import compiler.abstree.tree.AbsProcDecl;
@@ -197,6 +198,12 @@ public class AbsEmptyVisitor implements AbsVisitor {
 	public void visit(AbsWhileStmt acceptor) {
 		//Thread.dumpStack();
 		//Report.error("Unimplemented visitor method.", 1);
+	}
+
+	@Override
+	public void visit(AbsIifExpr acceptor) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

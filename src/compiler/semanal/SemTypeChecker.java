@@ -19,6 +19,7 @@ import compiler.abstree.tree.AbsExprStmt;
 import compiler.abstree.tree.AbsForStmt;
 import compiler.abstree.tree.AbsFunDecl;
 import compiler.abstree.tree.AbsIfStmt;
+import compiler.abstree.tree.AbsIifExpr;
 import compiler.abstree.tree.AbsNilConst;
 import compiler.abstree.tree.AbsPointerType;
 import compiler.abstree.tree.AbsProcDecl;
@@ -79,18 +80,24 @@ public class SemTypeChecker implements AbsVisitor{
 		acceptor.srcExpr.accept(this);
 		SemType ftype = SemDesc.getActualType(acceptor.dstExpr);
 		SemType stype = SemDesc.getActualType(acceptor.srcExpr);
-		if (ftype != null && stype != null){
-			if (ftype.coercesTo(stype)){
-				if (ftype instanceof SemAtomType || ftype instanceof SemPointerType){
-					SemDesc.setActualType(acceptor, ftype);
-				}else{
-					integerPointerTypeError(acceptor.begLine,acceptor.begColumn);
-				}
-			}else{
-				missmatchTypeError(acceptor.begLine,acceptor.begColumn);
+
+		if (ftype == null){
+			noTypeError(acceptor.dstExpr.begLine,acceptor.dstExpr.begColumn);
+			return;
+		}
+		if (stype == null){
+			noTypeError(acceptor.srcExpr.begLine,acceptor.srcExpr.begColumn);
+			return;
+		}
+
+		if (ftype.coercesTo(stype)) {
+			if (ftype instanceof SemAtomType || ftype instanceof SemPointerType) {
+				SemDesc.setActualType(acceptor, ftype);
+			} else {
+				integerPointerTypeError(acceptor.begLine, acceptor.begColumn);
 			}
-		}else{
-			noTypeError(acceptor.begLine,acceptor.begColumn);
+		} else {
+			missmatchTypeError(acceptor.begLine, acceptor.begColumn);
 		}
 	}
 
@@ -336,6 +343,37 @@ public class SemTypeChecker implements AbsVisitor{
 	}
 
 	@Override
+	public void visit(AbsIifExpr acceptor) {
+		acceptor.condExpr.accept(this);
+		acceptor.fstExpr.accept(this);
+		acceptor.sndExpr.accept(this);
+
+		SemType condType = SemDesc.getActualType(acceptor.condExpr);
+		SemType fstType = SemDesc.getActualType(acceptor.fstExpr);
+		SemType sndType = SemDesc.getActualType(acceptor.sndExpr);
+		if (fstType == null){
+			noTypeError(acceptor.begLine, acceptor.begColumn);
+			return;
+		}
+		if (sndType == null){
+			noTypeError(acceptor.begLine, acceptor.begColumn);
+			return;
+		}
+
+		if (!condType.coercesTo(new SemAtomType(SemAtomType.BOOL))){
+			booleanTypeError(acceptor.begLine, acceptor.begColumn);
+			return;
+		}
+		
+		if (!fstType.coercesTo(sndType)){
+			iifTypeError(acceptor.begLine, acceptor.begColumn);
+			return;
+		}
+		
+		SemDesc.setActualType(acceptor, fstType);
+	}
+	
+	@Override
 	public void visit(AbsNilConst acceptor) {
 		SemDesc.setActualType(acceptor, new SemPointerType(typeVoid));
 	}
@@ -570,12 +608,18 @@ public class SemTypeChecker implements AbsVisitor{
 		System.out.println(String.format("type error: missmatch at (%d,%d)", begLine, begColumn));
 	}
 	private void noTypeError(int begLine, int begColumn) {
+		(new Exception()).printStackTrace();
 		error = true;
 		System.out.println(String.format("can not resolve type at (%d,%d)", begLine, begColumn));
+	}
+	private void iifTypeError(int begLine, int begColumn) {
+		error = true;
+		System.out.println(String.format("inline if statement types don't match (%d,%d)", begLine, begColumn));
 	}
 	private void recordNameError(String name, int begLine, int begColumn) {
 		error = true;
 		System.out.println(String.format("record element '%s' already exists (%d,%d)",name, begLine, begColumn));
 	}
+
 
 }

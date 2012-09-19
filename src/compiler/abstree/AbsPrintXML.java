@@ -351,4 +351,10 @@ public class AbsPrintXML implements AbsVisitor {
 		xml.print("</absnode>\n");
 	}
 
+	@Override
+	public void visit(AbsIifExpr acceptor) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -15,6 +15,7 @@ import compiler.abstree.tree.AbsExprStmt;
 import compiler.abstree.tree.AbsForStmt;
 import compiler.abstree.tree.AbsFunDecl;
 import compiler.abstree.tree.AbsIfStmt;
+import compiler.abstree.tree.AbsIifExpr;
 import compiler.abstree.tree.AbsNilConst;
 import compiler.abstree.tree.AbsPointerType;
 import compiler.abstree.tree.AbsProcDecl;
@@ -46,6 +47,7 @@ public interface AbsCodeVisitor {
 	public ImcCode codeVisit(AbsExprStmt acceptor);
 	public ImcCode codeVisit(AbsForStmt acceptor);
 	public ImcCode codeVisit(AbsFunDecl acceptor);
+	public ImcCode codeVisit(AbsIifExpr acceptor);
 	public ImcCode codeVisit(AbsIfStmt acceptor);
 	public ImcCode codeVisit(AbsNilConst acceptor);
 	public ImcCode codeVisit(AbsPointerType acceptor);
