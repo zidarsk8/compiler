@@ -95,7 +95,7 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 
 				stmts.stmts.add(new ImcCJUMP(cond, trueLabel.label, falseLabel.label));
 				stmts.stmts.add(trueLabel);
-				stmts.stmts.add(new ImcERROR("invalid asignment !"));
+				stmts.stmts.add(new ImcERROR(String.format("Invalid asignment for positive integer at (%s, %s)", valname.begLine,valname.endLine)));
 				stmts.stmts.add(falseLabel);
 				
 				

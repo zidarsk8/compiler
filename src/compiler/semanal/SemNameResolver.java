@@ -309,8 +309,12 @@ public class SemNameResolver implements AbsVisitor{
 			try {
 				SemTable.ins(acceptor.name.name, acceptor);
 				int scope = SemDesc.getScope(acceptor);
-				if (scope == 0){
-					invalidPrivateScopeError(acceptor.name.name, acceptor.begLine, acceptor.begColumn);
+				//System.out.println(String.format("%s", acceptor));
+				if (acceptor.type instanceof AbsAtomType){
+					AbsAtomType t = (AbsAtomType) acceptor.type;
+					if (scope == 0 && t.type == AbsAtomType.POS){
+						invalidPrivateScopeError(acceptor.name.name, acceptor.begLine, acceptor.begColumn);
+					}
 				}
 			} catch (SemIllegalInsertException e) {
 				isDeclaredError(acceptor.name.name, acceptor.begLine, acceptor.begColumn);
