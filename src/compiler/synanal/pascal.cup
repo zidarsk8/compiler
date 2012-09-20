@@ -23,7 +23,7 @@ terminal String BOOL_CONST, CHAR_CONST, INT_CONST, NIL;
 terminal String IDENTIFIER;
 
 terminal String BOOL, CHAR, INT;
-terminal String COLON, COMMA, DOT, DOTS, LBRACKET, LPARENTHESIS, RBRACKET, RPARENTHESIS, SEMIC;
+terminal String COLON, COMMA, DOT, DOTS, LBRACKET, LPARENTHESIS, RBRACKET, RPARENTHESIS, SEMIC, POSITIVE;
 terminal String ADD, AND, DIV, EQU, GEQ, GTH, LEQ, LTH, MUL, NEQ, NOT, OR, PTR, SUB, MEM, UADD, USUB, VAL;
 terminal String ARRAY, ASSIGN, BEGIN, CONST, DO, ELSE, END, FOR, FUNCTION, IF, OF, PROCEDURE, PROGRAM, RECORD, THEN, TO, TYPE, VAR, WHILE;
 
@@ -541,13 +541,20 @@ primitive_type ::=
 						r.setEnd(t,tleft,tright);
 						RESULT = r;
 					:}
-		|		INT:t
-					{:
-						AbsAtomType r = new AbsAtomType(AbsAtomType.INT);
-						r.setBeg(t,tleft,tright);
-						r.setEnd(t,tleft,tright);
-						RESULT = r;
-					:}
+        |       INT:t
+                    {:
+                        AbsAtomType r = new AbsAtomType(AbsAtomType.INT);
+                        r.setBeg(t,tleft,tright);
+                        r.setEnd(t,tleft,tright);
+                        RESULT = r;
+                    :}
+        |       POSITIVE INT:t
+                    {:
+                        AbsAtomType r = new AbsAtomType(AbsAtomType.POS);
+                        r.setBeg(t,tleft,tright);
+                        r.setEnd(t,tleft,tright);
+                        RESULT = r;
+                    :}
 		;
 
 reference_type ::= 

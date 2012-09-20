@@ -16,6 +16,7 @@ public class ImcBINOP extends ImcExpr {
 	public static final int GEQ = 9;
 	public static final int AND = 10;
 	public static final int OR  = 11;
+	public static final int LTZ = 12;
 
 	/** Operator.  */
 	public int op;
@@ -43,6 +44,7 @@ public class ImcBINOP extends ImcExpr {
 		case EQU: op = "=="; break;
 		case NEQ: op = "!="; break;
 		case LTH: op = "&#60;" ; break;
+		case LTZ: op = "&#60; 0" ; break;
 		case GTH: op = "&#62;" ; break;
 		case LEQ: op = "&#60;="; break;
 		case GEQ: op = "&#62;="; break;

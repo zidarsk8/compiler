@@ -145,6 +145,11 @@ public class Interpreter {
 		if (stmt instanceof ImcLABEL) {
 			return null;
 		}
+		if (stmt instanceof ImcERROR) {
+			System.out.println(((ImcERROR)stmt).err);
+			System.exit(1);
+			//return null;
+		}
 		if (stmt instanceof ImcMOVE) {
 			ImcMOVE move = (ImcMOVE)stmt;
 			if (move.dst instanceof ImcTEMP) {
@@ -185,6 +190,10 @@ public class Interpreter {
 			case ImcBINOP.GEQ: return (lval >= rval ? 1 : 0);
 			case ImcBINOP.AND: return lval * rval;
 			case ImcBINOP.OR : return (lval + rval > 0 ? 1 :0);
+			case ImcBINOP.LTZ : {
+				//System.out.println(lval+"  "+(lval < 0 ? 1 :0));
+				return (lval < 0 ? 1 :0);
+			}
 			}
 		}
 		if (expr instanceof ImcCALL) {

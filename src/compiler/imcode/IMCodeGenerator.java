@@ -40,10 +40,12 @@ import compiler.frames.FrmDesc;
 import compiler.frames.FrmFrame;
 import compiler.frames.FrmLabel;
 import compiler.frames.FrmLocAccess;
+import compiler.frames.FrmTemp;
 import compiler.frames.FrmVarAccess;
 import compiler.semanal.SemDesc;
 import compiler.semanal.SistemskeFunkcije;
 import compiler.semanal.type.SemArrayType;
+import compiler.semanal.type.SemAtomType;
 import compiler.semanal.type.SemRecordType;
 import compiler.semanal.type.SemType;
 
@@ -72,7 +74,37 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 	public ImcCode codeVisit(AbsAssignStmt acceptor) {
 		ImcExpr srcExpr = (ImcExpr)acceptor.srcExpr.codeVisit(this);
 		ImcExpr dstExpr = (ImcExpr)acceptor.dstExpr.codeVisit(this);
-		return new ImcMOVE(dstExpr,srcExpr);
+
+		ImcSEQ stmts = new  ImcSEQ();
+		
+		//System.out.println(String.format(" -- %s", acceptor.dstExpr));
+		if (acceptor.dstExpr instanceof AbsValName){
+			AbsValName valname = (AbsValName) acceptor.dstExpr;
+			SemAtomType valtype = (SemAtomType) SemDesc.getActualType(valname);
+			//System.out.println(String.format(" -- %s", valtype));
+			//System.out.println(String.format(" -- %s", valtype.type));
+			
+			if (valtype.type == 4){
+				
+
+
+				ImcExpr cond = new ImcBINOP(ImcBINOP.LTZ, srcExpr, srcExpr);
+
+				ImcLABEL trueLabel = new ImcLABEL(FrmLabel.newLabel());
+				ImcLABEL falseLabel = new ImcLABEL(FrmLabel.newLabel());
+
+				stmts.stmts.add(new ImcCJUMP(cond, trueLabel.label, falseLabel.label));
+				stmts.stmts.add(trueLabel);
+				stmts.stmts.add(new ImcERROR("invalid asignment !"));
+				stmts.stmts.add(falseLabel);
+				
+				
+			}
+		}
+		
+		stmts.stmts.add(new ImcMOVE(dstExpr,srcExpr));
+		
+		return stmts;
 	}
 	@Override
 	public ImcCode codeVisit(AbsAtomConst acceptor) {

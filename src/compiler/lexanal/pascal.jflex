@@ -86,7 +86,8 @@ identifier = ({letter}|"_")({letter}|{digit}|"_")*
 	to					{ return sym(PascalTok.TO); }
 	type				{ return sym(PascalTok.TYPE); }
 	var					{ return sym(PascalTok.VAR); }
-	while				{ return sym(PascalTok.WHILE); }
+    while               { return sym(PascalTok.WHILE); }
+    positive            { return sym(PascalTok.POSITIVE); }
 	
 	":="				{ return sym(PascalTok.ASSIGN); }
 	":"					{ return sym(PascalTok.COLON); }

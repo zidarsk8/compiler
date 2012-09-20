@@ -13,6 +13,7 @@ public class AbsAtomType extends AbsTypeExpr {
 	public static final int BOOL = 0;
 	public static final int CHAR = 1;
 	public static final int INT = 2;
+	public static final int POS = 4;
 	
 	/* Tip. */
 	public int type;
