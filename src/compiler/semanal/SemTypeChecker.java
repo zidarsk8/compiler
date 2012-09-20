@@ -327,12 +327,22 @@ public class SemTypeChecker implements AbsVisitor{
 		acceptor.thenStmt.accept(this);
 		acceptor.elseStmt.accept(this);
 		SemType condType = SemDesc.getActualType(acceptor.cond);
+		
 		if (condType == null){
 			noTypeError(acceptor.begLine, acceptor.begColumn);
-		}else if (!(condType instanceof SemAtomType) || 
-				((SemAtomType)condType).type != SemAtomType.BOOL){
-			booleanTypeError(acceptor.begLine, acceptor.begColumn);
 		}
+		
+		if (!(condType instanceof SemAtomType)){
+			booleanTypeError(acceptor.begLine, acceptor.begColumn);
+			return;
+		}
+		if (((SemAtomType)condType).type == SemAtomType.BOOL ){
+			return;
+		}
+		if (((SemAtomType)condType).type == SemAtomType.INT ){
+			return;
+		}
+		booleanTypeError(acceptor.begLine, acceptor.begColumn);
 	}
 
 	@Override

@@ -7,7 +7,7 @@ function clean()
   rm -f src/compiler/lexanal/PascalLex.java
   rm -f src/compiler/synanal/PascalTok.java
   rm -f src/compiler/synanal/PascalSyn.java
-  rm -rf bin/
+  rm -rf bin
   rm -f *.xml
   echo "Uspesno brisanje generiranih datotek"
 }
@@ -45,9 +45,15 @@ PROGNAME=$1
 #fi
 
 export PASCALXSL=xsl
-java -cp bin/java_cup/runtime:bin/compiler/.. compiler.Main $PROGNAME synanal > /dev/null 2>&1
-java -cp bin/java_cup/runtime:bin/compiler/.. compiler.Main $PROGNAME abstree > /dev/null
-java -cp bin/java_cup/runtime:bin/compiler/.. compiler.Main $PROGNAME semanal > /dev/null
-java -cp bin/java_cup/runtime:bin/compiler/.. compiler.Main $PROGNAME frames > /dev/null
-java -cp bin/java_cup/runtime:bin/compiler/.. compiler.Main $PROGNAME imcode > /dev/null
+echo -e "\n\n\n\n\nsynanal\n\n"
+java -cp bin/java_cup/runtime:bin/compiler/.. compiler.Main $PROGNAME synanal
+echo -e "\n\n\n\n\nabstree\n\n"
+java -cp bin/java_cup/runtime:bin/compiler/.. compiler.Main $PROGNAME abstree
+echo -e "\n\n\n\n\nsemanal\n\n"
+java -cp bin/java_cup/runtime:bin/compiler/.. compiler.Main $PROGNAME semanal
+echo -e "\n\n\n\n\nframes\n\n"
+java -cp bin/java_cup/runtime:bin/compiler/.. compiler.Main $PROGNAME frames 
+echo -e "\n\n\n\n\nimcode\n\n"
+java -cp bin/java_cup/runtime:bin/compiler/.. compiler.Main $PROGNAME imcode 
+echo -e "\n\n\n\n\nlincode\n\n"
 java -cp bin/java_cup/runtime:bin/compiler/.. compiler.Main $PROGNAME lincode
