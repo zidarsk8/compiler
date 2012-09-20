@@ -83,6 +83,8 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 			return new ImcCONST((int) acceptor.value.charAt(1));
 		case AbsAtomConst.INT:
 			return new ImcCONST(Integer.parseInt(acceptor.value));
+		case AbsAtomConst.LINE:
+			return new ImcCONST(acceptor.begLine);
 		default:
 			return null;
 		}

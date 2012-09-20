@@ -9,6 +9,7 @@ public class SemAtomType extends SemType {
 	public static final int CHAR = 1;
 	public static final int INT = 2;
 	public static final int VOID = 3;
+	public static final int LINE = 4;
 	
 	/* Tip. */
 	public int type;
@@ -39,7 +40,9 @@ public class SemAtomType extends SemType {
 	public boolean coercesTo(SemType type) {
 		if (type instanceof SemAtomType) {
 			SemAtomType atomType = (SemAtomType)type;
-			return this.type == atomType.type;
+			return (this.type == atomType.type ) ||
+					(this.type == INT && atomType.type == LINE)||
+					(this.type == LINE && atomType.type == INT);
 		} else
 			return false;
 	}

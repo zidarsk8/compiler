@@ -19,7 +19,7 @@ parser code
         }
 :}
 
-terminal String BOOL_CONST, CHAR_CONST, INT_CONST, NIL;
+terminal String LINE_CONST, BOOL_CONST, CHAR_CONST, INT_CONST, NIL;
 terminal String IDENTIFIER;
 
 terminal String BOOL, CHAR, INT;
@@ -888,13 +888,20 @@ const_values ::=
 						r.setEnd(atomConst,atomConstleft,atomConstright);
 						RESULT = r;
 					:}
-		|		INT_CONST:atomConst
-					{:
-						AbsAtomConst r = new AbsAtomConst(atomConst,AbsAtomConst.INT);
-						r.setBeg(atomConst,atomConstleft,atomConstright);
-						r.setEnd(atomConst,atomConstleft,atomConstright);
-						RESULT = r;
-					:}
+        |       INT_CONST:atomConst
+                    {:
+                        AbsAtomConst r = new AbsAtomConst(atomConst,AbsAtomConst.INT);
+                        r.setBeg(atomConst,atomConstleft,atomConstright);
+                        r.setEnd(atomConst,atomConstleft,atomConstright);
+                        RESULT = r;
+                    :}
+        |       LINE_CONST:atomConst
+                    {:
+                        AbsAtomConst r = new AbsAtomConst(atomConst,AbsAtomConst.LINE);
+                        r.setBeg(atomConst,atomConstleft,atomConstright);
+                        r.setEnd(atomConst,atomConstleft,atomConstright);
+                        RESULT = r;
+                    :}
 		|		NIL:atomConst
 					{:
 						AbsNilConst r = new AbsNilConst();
