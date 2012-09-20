@@ -23,7 +23,7 @@ terminal String BOOL_CONST, CHAR_CONST, INT_CONST, NIL;
 terminal String IDENTIFIER;
 
 terminal String BOOL, CHAR, INT;
-terminal String COLON, COMMA, DOT, DOTS, LBRACKET, LPARENTHESIS, RBRACKET, RPARENTHESIS, SEMIC;
+terminal String COLON, COMMA, DOT, DOTS, LBRACKET, LPARENTHESIS, RBRACKET, RPARENTHESIS, SEMIC, SINGLE;
 terminal String ADD, AND, DIV, EQU, GEQ, GTH, LEQ, LTH, MUL, NEQ, NOT, OR, PTR, SUB, MEM, UADD, USUB, VAL;
 terminal String ARRAY, ASSIGN, BEGIN, CONST, DO, ELSE, END, FOR, FUNCTION, IF, OF, PROCEDURE, PROGRAM, RECORD, THEN, TO, TYPE, VAR, WHILE;
 
@@ -309,16 +309,27 @@ var_list ::=
 		;
 
 single_var ::= 
-				IDENTIFIER:name COLON type_description:type 
-					{:
-						AbsDeclName dname = new AbsDeclName(name);
-						dname.setBeg(name,nameleft,nameright);
-						dname.setEnd(name,nameleft,nameright);
-						AbsVarDecl r = new AbsVarDecl(dname,type);
-						r.setBeg(name,nameleft,nameright);
-						r.setEnd(type);
-						RESULT = r;
-					:}
+                IDENTIFIER:name COLON type_description:type 
+                    {:
+                        AbsDeclName dname = new AbsDeclName(name);
+                        dname.setBeg(name,nameleft,nameright);
+                        dname.setEnd(name,nameleft,nameright);
+                        AbsVarDecl r = new AbsVarDecl(dname,type);
+                        r.setBeg(name,nameleft,nameright);
+                        r.setEnd(type);
+                        RESULT = r;
+                    :}
+        |
+                IDENTIFIER:name COLON SINGLE type_description:type 
+                    {:
+                        AbsDeclName dname = new AbsDeclName(name);
+                        dname.setBeg(name,nameleft,nameright);
+                        dname.setEnd(name,nameleft,nameright);
+                        AbsVarDecl r = new AbsVarDecl(dname,type,true);
+                        r.setBeg(name,nameleft,nameright);
+                        r.setEnd(type);
+                        RESULT = r;
+                    :}
 		;
 
 

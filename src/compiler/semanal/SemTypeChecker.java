@@ -79,19 +79,32 @@ public class SemTypeChecker implements AbsVisitor{
 		acceptor.srcExpr.accept(this);
 		SemType ftype = SemDesc.getActualType(acceptor.dstExpr);
 		SemType stype = SemDesc.getActualType(acceptor.srcExpr);
-		if (ftype != null && stype != null){
-			if (ftype.coercesTo(stype)){
-				if (ftype instanceof SemAtomType || ftype instanceof SemPointerType){
-					SemDesc.setActualType(acceptor, ftype);
-				}else{
-					integerPointerTypeError(acceptor.begLine,acceptor.begColumn);
-				}
-			}else{
-				missmatchTypeError(acceptor.begLine,acceptor.begColumn);
+
+		AbsDecl declName = SemDesc.getNameDecl(acceptor.dstExpr);
+		if (declName instanceof AbsVarDecl){
+			AbsVarDecl varDecl = (AbsVarDecl) declName;
+			if (varDecl.single && varDecl.isSet){
+				//before runtime error
+				System.out.println(String.format("warning, single might be set multiple times"));
 			}
-		}else{
+			//varDecl.isSet = true;
+		}
+		
+		if (ftype == null || stype == null){
 			noTypeError(acceptor.begLine,acceptor.begColumn);
 		}
+		
+		if (!ftype.coercesTo(stype)) {
+			missmatchTypeError(acceptor.begLine, acceptor.begColumn);
+		}
+
+		
+		if (ftype instanceof SemAtomType || ftype instanceof SemPointerType) {
+			SemDesc.setActualType(acceptor, ftype);
+		} else {
+			integerPointerTypeError(acceptor.begLine, acceptor.begColumn);
+		}
+		
 	}
 
 	@Override

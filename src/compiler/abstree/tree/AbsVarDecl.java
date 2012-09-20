@@ -15,10 +15,25 @@ public class AbsVarDecl extends AbsDecl {
 	
 	/** Tip spremenljivke. */
 	public AbsTypeExpr type;
+
+	/* Single */
+	public boolean single;
 	
+	/* Single */
+	public boolean isSet;
+
 	public AbsVarDecl(AbsDeclName name, AbsTypeExpr type) {
 		this.name = name;
 		this.type = type;
+		this.single = false;
+		this.isSet = false;
+	}
+
+	public AbsVarDecl(AbsDeclName name, AbsTypeExpr type, boolean single) {
+		this.name = name;
+		this.type = type;
+		this.single = single;
+		this.isSet = false;
 	}
 
 	public void accept(AbsVisitor visitor) {

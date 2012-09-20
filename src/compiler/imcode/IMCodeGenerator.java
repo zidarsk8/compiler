@@ -40,6 +40,7 @@ import compiler.frames.FrmDesc;
 import compiler.frames.FrmFrame;
 import compiler.frames.FrmLabel;
 import compiler.frames.FrmLocAccess;
+import compiler.frames.FrmTemp;
 import compiler.frames.FrmVarAccess;
 import compiler.semanal.SemDesc;
 import compiler.semanal.SistemskeFunkcije;
@@ -72,6 +73,18 @@ public class IMCodeGenerator implements AbsCodeVisitor {
 	public ImcCode codeVisit(AbsAssignStmt acceptor) {
 		ImcExpr srcExpr = (ImcExpr)acceptor.srcExpr.codeVisit(this);
 		ImcExpr dstExpr = (ImcExpr)acceptor.dstExpr.codeVisit(this);
+
+		ImcTEMP tmp = new ImcTEMP(new FrmTemp());
+		AbsDecl declName = SemDesc.getNameDecl(acceptor.dstExpr);
+		if (declName instanceof AbsVarDecl){
+			AbsVarDecl varDecl = (AbsVarDecl) declName;
+			if (varDecl.single && varDecl.isSet){
+				//before runtime error
+				System.out.println(String.format("warning, single might be set multiple times"));
+			}
+			//varDecl.isSet = true;
+		}
+		
 		return new ImcMOVE(dstExpr,srcExpr);
 	}
 	@Override

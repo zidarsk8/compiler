@@ -308,6 +308,10 @@ public class SemNameResolver implements AbsVisitor{
 		if (isRecord == 0){
 			try {
 				SemTable.ins(acceptor.name.name, acceptor);
+				int scope = SemDesc.getScope(acceptor);
+				if (scope == 0 && acceptor.single){
+					wrongScopeSingleError(acceptor.name.name, acceptor.begLine, acceptor.begColumn);
+				}
 			} catch (SemIllegalInsertException e) {
 				isDeclaredError(acceptor.name.name, acceptor.begLine, acceptor.begColumn);
 			}
@@ -319,6 +323,11 @@ public class SemNameResolver implements AbsVisitor{
 	public void visit(AbsWhileStmt acceptor) {
 		acceptor.cond.accept(this);
 		acceptor.stmt.accept(this);
+	}
+
+	private void wrongScopeSingleError(String name, int line, int col){
+		System.out.println(String.format("single var %s has to be local (proc, fun) (%d,%d)", name, line, col));
+		error = true;
 	}
 
 	private void isDeclaredError(String name, int line, int col){
