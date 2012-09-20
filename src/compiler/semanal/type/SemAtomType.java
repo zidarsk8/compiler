@@ -39,7 +39,9 @@ public class SemAtomType extends SemType {
 	public boolean coercesTo(SemType type) {
 		if (type instanceof SemAtomType) {
 			SemAtomType atomType = (SemAtomType)type;
-			return this.type == atomType.type;
+			return (this.type == atomType.type) ||
+					(this.type == BOOL && atomType.type == INT) ||
+					(this.type == INT && atomType.type == BOOL);
 		} else
 			return false;
 	}
